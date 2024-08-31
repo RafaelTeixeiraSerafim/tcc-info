@@ -1,101 +1,47 @@
 package com.rafaelteixeiraserafim.tcc.product;
 
+import com.rafaelteixeiraserafim.tcc.bought_product.BoughtProduct;
+import com.rafaelteixeiraserafim.tcc.category.Category;
+import com.rafaelteixeiraserafim.tcc.product_item.ProductItem;
+import com.rafaelteixeiraserafim.tcc.wishlist_item.WishlistItem;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
-    @SequenceGenerator(
-            name = "product_sequence",
-            sequenceName = "product_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "product_sequence"
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     private String name;
     private String about;
     private String description;
-    private float orig_price;
-    private float sale_price;
 
-    public Product() {
-    }
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductItem> productItems;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<WishlistItem> wishlistItems;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BoughtProduct> boughtProducts;
 
-    public Product(Long id,
-                   String name,
-                   String about,
-                   String description,
-                   float orig_price,
-                   float sale_price) {
-        this.id = id;
+    public Product(Category category, String name, String about, String description) {
+        this.category = category;
         this.name = name;
         this.about = about;
         this.description = description;
-        this.orig_price = orig_price;
-        this.sale_price = sale_price;
-    }
-
-    public Product(String name,
-                   String about,
-                   String description,
-                   float orig_price,
-                   float sale_price) {
-        this.name = name;
-        this.about = about;
-        this.description = description;
-        this.orig_price = orig_price;
-        this.sale_price = sale_price;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public float getOrig_price() {
-        return orig_price;
-    }
-
-    public void setOrig_price(float orig_price) {
-        this.orig_price = orig_price;
-    }
-
-    public float getSale_price() {
-        return sale_price;
-    }
-
-    public void setSale_price(float sale_price) {
-        this.sale_price = sale_price;
     }
 }
