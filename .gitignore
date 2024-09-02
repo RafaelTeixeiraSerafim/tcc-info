@@ -23,5 +23,6 @@
 hs_err_pid*
 replay_pid*
 
+# property files
 application-dev.properties
 application-prod.properties
