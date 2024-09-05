@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Image {
     )
     private Long id;
     private String url;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_item_id")
     private ProductItem productItem;

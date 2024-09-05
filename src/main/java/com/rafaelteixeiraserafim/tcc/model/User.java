@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.util.Date;
 import java.util.List;
 
-@Entity
+@Entity(name = "\"user\"")
 @Table
 @Getter
 @Setter
@@ -34,12 +35,16 @@ public class User {
     @LastModifiedDate
     private Date updated_at;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<WishlistItem> wishlistItems;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Review> reviews;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BoughtProduct> boughtProducts;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<WishlistItem> wishlistItems;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Review> reviews;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Order> orders;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<BoughtProduct> boughtProducts;
 }

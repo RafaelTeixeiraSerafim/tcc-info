@@ -1,10 +1,14 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table
@@ -25,10 +29,12 @@ public class Product {
     private String about;
     private String description;
 
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<ProductItem> productItems;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductItem> productItems;
+//    @JsonManagedReference
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<WishlistItem> wishlistItems;
+//    @JsonManagedReference
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<BoughtProduct> boughtProducts;
 

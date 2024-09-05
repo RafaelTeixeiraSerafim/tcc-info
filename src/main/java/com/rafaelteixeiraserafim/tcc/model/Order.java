@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
 import java.util.List;
 
-@Entity
+@Entity(name = "\"order\"")
 @Table
 @Getter
 @Setter
@@ -30,8 +31,10 @@ public class Order {
     private Date date_placed;
     private String status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItems;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BoughtProduct> boughtProducts;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<OrderItem> orderItems;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<BoughtProduct> boughtProducts;
 }

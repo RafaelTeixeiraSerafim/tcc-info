@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class OrderItem {
     @CreatedDate
     private Date created_at;
 
-    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BoughtProduct> boughtProducts;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<BoughtProduct> boughtProducts;
 }

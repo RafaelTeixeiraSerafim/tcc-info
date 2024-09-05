@@ -1,9 +1,9 @@
 package com.rafaelteixeiraserafim.tcc.repository;
 
-import com.rafaelteixeiraserafim.tcc.model.Weight;
+import com.rafaelteixeiraserafim.tcc.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WeightRepository extends JpaRepository<Weight, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long> {
 }

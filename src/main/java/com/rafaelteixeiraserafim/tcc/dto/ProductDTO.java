@@ -1,4 +1,4 @@
-package com.rafaelteixeiraserafim.tcc.product;
+package com.rafaelteixeiraserafim.tcc.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
