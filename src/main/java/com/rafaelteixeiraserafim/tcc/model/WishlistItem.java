@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class WishlistItem {
     @Id
     @GeneratedValue(
@@ -28,5 +30,6 @@ public class WishlistItem {
     @JoinColumn(name = "product_id")
     private Product product;
     @CreatedDate
-    private Date created_at;
+    @Column(updatable = false)
+    private Date createdAt;
 }

@@ -7,11 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
-    private String name;
-    private String about;
-    private String description;
-    private Long category;
+@AllArgsConstructor
+public class OrderItemRequest {
+    private Long userId;
+    private Long productId;
+    private int qty;
 }

@@ -22,10 +22,12 @@ public class Image {
     private String url;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "product_item_id")
-    private ProductItem productItem;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    public Image(String url) {
+    public Image(String url, Product product) {
         this.url = url;
+        this.product = product;
     }
+
 }

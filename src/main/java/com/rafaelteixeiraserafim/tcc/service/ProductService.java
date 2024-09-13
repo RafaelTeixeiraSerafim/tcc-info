@@ -1,20 +1,15 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
-import com.rafaelteixeiraserafim.tcc.dto.ImageDTO;
-import com.rafaelteixeiraserafim.tcc.dto.ProductDTO;
-import com.rafaelteixeiraserafim.tcc.dto.ProductItemDTO;
-import com.rafaelteixeiraserafim.tcc.dto.ProductRequest;
+import com.rafaelteixeiraserafim.tcc.dto.ImageDto;
+import com.rafaelteixeiraserafim.tcc.dto.ProductDto;
 import com.rafaelteixeiraserafim.tcc.model.Category;
-import com.rafaelteixeiraserafim.tcc.model.Image;
 import com.rafaelteixeiraserafim.tcc.model.Product;
-import com.rafaelteixeiraserafim.tcc.model.ProductItem;
 import com.rafaelteixeiraserafim.tcc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +19,12 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
-    private final ProductItemService productItemService;
     private final ImageService imageService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, ProductItemService productItemService, ImageService imageService) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, ImageService imageService) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
-        this.productItemService = productItemService;
         this.imageService = imageService;
     }
 
@@ -64,10 +57,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void createProductRequest(ProductRequest productRequest) {
-        ProductDTO productDTO = productRequest.getProductDTO();
-        List<ProductItemDTO> productItemDTOs = productRequest.getProductItemDTOs();
-
+    public void createProductRequest(ProductDto productDTO) {
         Category category = categoryService.getCategoryById(productDTO.getCategory());
 
         Product product = new Product();
@@ -75,35 +65,26 @@ public class ProductService {
         product.setAbout(productDTO.getAbout());
         product.setDescription(productDTO.getDescription());
         product.setCategory(category);
+        product.setOrigPrice(productDTO.getOrigPrice());
+        product.setSalePrice(productDTO.getSalePrice());
+        product.setStockQty(productDTO.getStockQty());
 
         createProduct(product);
 
-        for (ProductItemDTO productItemDTO : productItemDTOs) {
-            ProductItem productItem = new ProductItem();
-            productItem.setOrigPrice(productItemDTO.getOrigPrice());
-            productItem.setSalePrice(productItemDTO.getSalePrice());
-            productItem.setStockQty(productItemDTO.getStockQty());
-            productItem.setWeight(productItemDTO.getWeight());
-            productItem.setWeightUnit(productItemDTO.getWeightUnit());
-            productItem.setProduct(product);
+        List<ImageDto> images = productDTO.getImages();
 
-            productItemService.createProductItem(productItem);
+        Instant currentTimestamp = Instant.now();
 
-            List<ImageDTO> images = productItemDTO.getImages();
-
-                Instant currentTimestamp = Instant.now();
-
-                for (int i = 0; i < images.size(); i++) {
-                    imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), productItem);
-                }
+        for (int i = 0; i < images.size(); i++) {
+            if (images.get(i).getFile() != null) {
+                imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), product);
+            }
         }
     }
 
     @Transactional
-    public void updateProductById(Long productId, ProductRequest productRequest) {
+    public void updateProductById(Long productId, ProductDto productDTO) {
         Product product = getProductById(productId);
-        ProductDTO productDTO = productRequest.getProductDTO();
-        List<ProductItemDTO> productItemDTOs = productRequest.getProductItemDTOs();
         Category category = categoryService.getCategoryById(productDTO.getCategory());
 
         product.setName(productDTO.getName());
@@ -111,32 +92,23 @@ public class ProductService {
         product.setDescription(productDTO.getDescription());
         product.setCategory(category);
 
-        for (ProductItemDTO productItemDTO : productItemDTOs) {
-            ProductItem productItem = productItemService.getProductItemById(productItemDTO.getId());
+        product.setOrigPrice(productDTO.getOrigPrice());
+        product.setSalePrice(productDTO.getSalePrice());
+        product.setStockQty(productDTO.getStockQty());
 
-            productItem.setOrigPrice(productItemDTO.getOrigPrice());
-            productItem.setSalePrice(productItemDTO.getSalePrice());
-            productItem.setStockQty(productItemDTO.getStockQty());
-            productItem.setWeight(productItemDTO.getWeight());
-            productItem.setWeightUnit(productItemDTO.getWeightUnit());
-            productItem.setProduct(product);
+        List<ImageDto> images = productDTO.getImages();
 
-            List<ImageDTO> images = productItemDTO.getImages();
+        Instant currentTimestamp = Instant.now();
 
-            Instant currentTimestamp = Instant.now();
+        for (int i = 0; i < images.size(); i++) {
+            String imageUrl = images.get(i).getUrl();
+            MultipartFile imageFile = images.get(i).getFile();
 
-            for (int i = 0; i < images.size(); i++) {
-                String imageUrl = images.get(i).getUrl();
-                MultipartFile imageFile = images.get(i).getFile();
-
-                if (imageUrl.isEmpty()) {
-                    imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), productItem);
-                } else if (!imageFile.isEmpty()) {
-                    imageService.handleImageUpdate(imageUrl, imageFile);
-                }
+            if (imageUrl.isEmpty()) {
+                imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), product);
+            } else if (imageFile != null) {
+                imageService.handleImageUpdate(imageUrl, imageFile);
             }
         }
-
-
     }
 }

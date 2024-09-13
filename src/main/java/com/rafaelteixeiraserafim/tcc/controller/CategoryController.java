@@ -3,9 +3,7 @@ package com.rafaelteixeiraserafim.tcc.controller;
 import com.rafaelteixeiraserafim.tcc.model.Category;
 import com.rafaelteixeiraserafim.tcc.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,26 @@ public class CategoryController {
     @GetMapping
     public List<Category> getCategories() {
         return categoryService.getCategories();
+    }
+
+    @PostMapping
+    public String createCategory(@RequestBody Category category) {
+        categoryService.createCategory(category);
+
+        return "Category created successfully";
+    }
+
+    @PutMapping("/{categoryId}")
+    public String updateCategoryById(@PathVariable Long categoryId, @RequestBody Category category) {
+        categoryService.updateCategoryById(categoryId, category);
+
+        return "Category altered successfully";
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public String deleteCategoryById(@PathVariable Long categoryId) {
+        categoryService.deleteCategoryById(categoryId);
+
+        return "Category deleted successfully";
     }
 }

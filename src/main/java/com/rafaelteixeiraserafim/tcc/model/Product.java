@@ -1,7 +1,5 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,9 +26,12 @@ public class Product {
     private String name;
     private String about;
     private String description;
+    private float origPrice;
+    private float salePrice;
+    private int stockQty;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProductItem> productItems;
+    private List<Image> images;
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<WishlistItem> wishlistItems;
@@ -38,10 +39,14 @@ public class Product {
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<BoughtProduct> boughtProducts;
 
-    public Product(Category category, String name, String about, String description) {
+
+    public Product(Category category, String name, String about, String description, float origPrice, float salePrice, int stockQty) {
         this.category = category;
         this.name = name;
         this.about = about;
         this.description = description;
+        this.origPrice = origPrice;
+        this.salePrice = salePrice;
+        this.stockQty = stockQty;
     }
 }

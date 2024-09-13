@@ -1,14 +1,16 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -18,24 +20,44 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@EqualsAndHashCode(of = "id")
+@ToString
+@EntityListeners(AuditingEntityListener.class)
+public class User implements UserDetails {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
     private String username;
-    private String password;
     private String email;
+    private String password;
     private String profile_pic;
     private String about;
-    private String isAdm;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     @CreatedDate
-    private Date created_at;
+    @Column(updatable = false)
+    private Date createdAt;
     @LastModifiedDate
-    private Date updated_at;
+    private Date updatedAt;
 
-//    @JsonManagedReference
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public User(String username, String email, String password, UserRole role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    //    @JsonManagedReference
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<WishlistItem> wishlistItems;
 //    @JsonManagedReference

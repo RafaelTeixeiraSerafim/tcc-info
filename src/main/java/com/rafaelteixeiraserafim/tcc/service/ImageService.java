@@ -1,15 +1,13 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
 import com.rafaelteixeiraserafim.tcc.model.Image;
-import com.rafaelteixeiraserafim.tcc.model.ProductItem;
+import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
 
 @Service
 public class ImageService {
@@ -26,15 +24,15 @@ public class ImageService {
         imageRepository.save(image);
     }
 
-    public List<Image> getImages() {
-        return imageRepository.findAll();
-    }
+//    public List<Image> getImages() {
+//        return imageRepository.findAll();
+//    }
 
-    public void handleImageCreation(Instant currentTimestamp, MultipartFile file, String imageName, ProductItem productItem) {
+    public void handleImageCreation(Instant currentTimestamp, MultipartFile file, String imageName, Product product) {
         s3Service.uploadNewFile(currentTimestamp, imageName, file);
 
         Image image = new Image();
-        image.setProductItem(productItem);
+        image.setProduct(product);
         image.setUrl(s3Service.getImageUrl(currentTimestamp, imageName));
         createImage(image);
     }

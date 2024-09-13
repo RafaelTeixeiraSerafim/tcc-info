@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Review {
     @Id
     @GeneratedValue(
@@ -32,7 +34,8 @@ public class Review {
     private String title;
     private String comment;
     @CreatedDate
-    private Date created_at;
+    @Column(updatable = false)
+    private Date createdAt;
     @LastModifiedDate
-    private Date updated_at;
+    private Date updatedAt;
 }
