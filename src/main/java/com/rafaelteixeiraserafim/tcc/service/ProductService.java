@@ -58,16 +58,8 @@ public class ProductService {
 
     @Transactional
     public void createProductRequest(ProductDto productDTO) {
-        Category category = categoryService.getCategoryById(productDTO.getCategory());
-
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setAbout(productDTO.getAbout());
-        product.setDescription(productDTO.getDescription());
-        product.setCategory(category);
-        product.setOrigPrice(productDTO.getOrigPrice());
-        product.setSalePrice(productDTO.getSalePrice());
-        product.setStockQty(productDTO.getStockQty());
+        Product newProduct = new Product();
+        Product product = populateProductFromDto(productDTO, newProduct);
 
         createProduct(product);
 
@@ -85,16 +77,7 @@ public class ProductService {
     @Transactional
     public void updateProductById(Long productId, ProductDto productDTO) {
         Product product = getProductById(productId);
-        Category category = categoryService.getCategoryById(productDTO.getCategory());
-
-        product.setName(productDTO.getName());
-        product.setAbout(productDTO.getAbout());
-        product.setDescription(productDTO.getDescription());
-        product.setCategory(category);
-
-        product.setOrigPrice(productDTO.getOrigPrice());
-        product.setSalePrice(productDTO.getSalePrice());
-        product.setStockQty(productDTO.getStockQty());
+        populateProductFromDto(productDTO, product);
 
         List<ImageDto> images = productDTO.getImages();
 
@@ -109,6 +92,26 @@ public class ProductService {
             } else if (imageFile != null) {
                 imageService.handleImageUpdate(imageUrl, imageFile);
             }
+        }
+    }
+
+    private Product populateProductFromDto(ProductDto productDTO, Product product) {
+        Category category = categoryService.getCategoryById(productDTO.getCategoryId());
+
+        product.setName(productDTO.getName());
+        product.setAbout(productDTO.getAbout());
+        product.setDescription(productDTO.getDescription());
+        product.setCategory(category);
+        product.setOrigPrice(productDTO.getOrigPrice());
+        product.setSalePrice(productDTO.getSalePrice());
+        product.setStockQty(productDTO.getStockQty());
+
+        return product;
+    }
+
+    public void deleteProductsById(List<Long> productIds) {
+        for (Long productId : productIds) {
+            deleteProductById(productId);
         }
     }
 }

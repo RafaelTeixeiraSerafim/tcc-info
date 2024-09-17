@@ -47,4 +47,10 @@ public class CategoryService {
     public void deleteCategoryById(Long categoryId) {
         categoryRepository.deleteById(categoryId);
     }
+
+    public void deleteCategoriesById(List<Long> categoryIds) {
+        for (Long categoryId : categoryIds) {
+            deleteCategoryById(categoryId);
+        }
+    }
 }

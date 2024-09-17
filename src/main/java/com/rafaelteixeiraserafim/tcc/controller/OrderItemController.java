@@ -1,15 +1,13 @@
 package com.rafaelteixeiraserafim.tcc.controller;
 
 import com.rafaelteixeiraserafim.tcc.dto.OrderItemRequest;
-import com.rafaelteixeiraserafim.tcc.dto.OrderItemResponse;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.service.OrderItemService;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/order-items")
@@ -19,17 +17,24 @@ public class OrderItemController {
     @Autowired
     private OrderItemService orderItemService;
 
-    @GetMapping
-    public List<OrderItemResponse> getOrderItems() {
-        Order order = orderService.getOrderByStatus(OrderStatus.IN_PROGRESS);
-        return orderItemService.getOrderItemsByOrder(order);
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getOrderItemsByUserId(@PathVariable Long userId) {
+        try {
+            Order order = orderService.getOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
+            return ResponseEntity.ok(orderItemService.getOrderItemsByOrder(order));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping
-    public String createOrderItem(@RequestBody OrderItemRequest orderItemRequest) {
-        orderItemService.createOrderItem(orderItemRequest);
-
-        return "OrderItem created successfully";
+    public ResponseEntity<String> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) {
+        try {
+            orderItemService.createOrderItem(orderItemRequest);
+            return ResponseEntity.ok("OrderItem created successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{orderItemId}")

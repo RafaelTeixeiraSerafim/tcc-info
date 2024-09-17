@@ -28,7 +28,7 @@ public class OrderItemService {
 //        return orderItemRepository.findAll();
 //    }
 
-    public List<OrderItemResponse> getOrderItemsByOrder(Order order) {
+    public List<OrderItemResponse> getOrderItemsByOrder(Order order) throws IllegalArgumentException {
         Optional<List<OrderItem>> optionalOrderItems = orderItemRepository.findOrderItemsByOrder(order);
 
         if (optionalOrderItems.isEmpty()) {
@@ -46,18 +46,20 @@ public class OrderItemService {
     }
 
     @Transactional
-    public void createOrderItem(OrderItemRequest orderItemRequest) {
-        try {
-            OrderItem orderItem = this.getOrderItemByUserIdAndProductId(orderItemRequest.getUserId(), orderItemRequest.getProductId());
+    public void createOrderItem(OrderItemRequest orderItemRequest) throws IllegalArgumentException {
+        OrderItem orderItem = this.getOrderItemByUserIdAndProductId(orderItemRequest.getUserId(), orderItemRequest.getProductId());
+        Product product = productService.getProductById(orderItemRequest.getProductId());
+        if (orderItem != null) {
+            if (orderItem.getQty() + orderItemRequest.getQty() > product.getStockQty()) {
+                throw new IllegalArgumentException("OrderItem qty is greater than product stock");
+            }
             orderItem.setQty(orderItem.getQty() + orderItemRequest.getQty());
-        } catch (Exception e) {
-            Product product = productService.getProductById(orderItemRequest.getProductId());
-
+        } else {
             Order order = orderService.getOrderByUserId(orderItemRequest.getUserId());
 
-            OrderItem orderItem = new OrderItem(order, product, orderItemRequest.getQty());
+            OrderItem newOrderItem = new OrderItem(order, product, orderItemRequest.getQty());
 
-            orderItemRepository.save(orderItem);
+            orderItemRepository.save(newOrderItem);
         }
     }
 
@@ -71,10 +73,7 @@ public class OrderItemService {
 
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findByOrderAndProduct(order, product);
 
-        if (optionalOrderItem.isEmpty()) {
-            throw new IllegalArgumentException("Order with userId " + userId + " and productId " + productId + " not found");
-        }
+        return optionalOrderItem.orElse(null);
 
-        return optionalOrderItem.get();
     }
 }

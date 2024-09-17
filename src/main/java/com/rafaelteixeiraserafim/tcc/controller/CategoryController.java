@@ -42,4 +42,11 @@ public class CategoryController {
 
         return "Category deleted successfully";
     }
+
+    @DeleteMapping("/batch-delete")
+    public String deleteCategoriesById(@RequestBody List<Long> categoryIds) {
+        categoryService.deleteCategoriesById(categoryIds);
+
+        return "Categories deleted successfully";
+    }
 }

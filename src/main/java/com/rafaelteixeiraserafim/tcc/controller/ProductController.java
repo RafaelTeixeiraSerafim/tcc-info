@@ -42,6 +42,13 @@ public class ProductController {
         return "Product deleted successfully";
     }
 
+    @DeleteMapping("/batch-delete")
+    public String deleteProductsById(@RequestBody List<Long> productIds) {
+        productService.deleteProductsById(productIds);
+
+        return "Products deleted successfully";
+    }
+
     @PutMapping("/{productId}")
     public String updateProductById(@PathVariable Long productId, @ModelAttribute ProductDto productDTO) {
         productService.updateProductById(productId, productDTO);

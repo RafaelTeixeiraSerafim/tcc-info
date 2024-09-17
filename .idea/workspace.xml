@@ -5,59 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="856d6474-034d-43e1-b057-68820352048c" name="Changes" comment="Novas funcionalidades">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/AuthConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/auth/SecurityFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/auth/TokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/BoughtProductController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderItemController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/BoughtProductDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/JwtDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/LoginDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/OrderItemRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/OrderItemResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/OrderRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/OrderResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/SignUpDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/enums/OrderStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/enums/UserRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/repository/BoughtProductRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/repository/OrderItemRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/repository/OrderRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/AuthService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/BoughtProductService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/OrderItemService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/OrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/TccApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/TccApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/AuthConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/AuthConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/BoughtProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/BoughtProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderItemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ImageDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ImageDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ProductDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ProductItemDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ProductRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/BoughtProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/BoughtProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Image.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ProductDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Category.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/ProductItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Review.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/WishlistItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/WishlistItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/repository/ProductItemRepository.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/CategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ProductItemService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/OrderItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/OrderItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/OrderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +59,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 8
@@ -107,16 +74,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.TccApplication.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "back-end",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/rafae/OneDrive/Documents/Fase 4/tcc-info/back-end",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TccApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;back-end&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rafae/OneDrive/Documents/Fase 4/tcc-info/back-end&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end" />
@@ -126,7 +99,7 @@
       <recent name="C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.TccApplication">
     <configuration name="TccApplication" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.rafaelteixeiraserafim.tcc.TccApplication" />
       <module name="back-end" />
@@ -147,6 +120,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TccApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="back-end" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.rafaelteixeiraserafim.tcc.TccApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -156,10 +145,27 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725122769730</updated>
+      <workItem from="1726280533733" duration="1099000" />
+      <workItem from="1726281663590" duration="9502000" />
+      <workItem from="1726417500059" duration="3783000" />
+      <workItem from="1726431423494" duration="16283000" />
     </task>
+    <task id="LOCAL-00001" summary="Novas funcionalidades">
+      <option name="closed" value="true" />
+      <created>1726269983914</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1726269983914</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Criação do controller de produtos e serviços relacionados" />
     <MESSAGE value="Novas funcionalidades" />
     <option name="LAST_COMMIT_MESSAGE" value="Novas funcionalidades" />
   </component>

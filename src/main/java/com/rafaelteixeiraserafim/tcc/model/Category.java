@@ -1,6 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +24,9 @@ public class Category {
     private String name;
     private String description;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Product> products;
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Product> products;
 
     public Category(String name, String description) {
         this.name = name;

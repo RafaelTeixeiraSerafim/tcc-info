@@ -69,11 +69,11 @@ public class OrderService {
         }
     }
 
-    public Order getOrderByStatus(OrderStatus orderStatus) {
-        Optional<Order> optionalOrder = orderRepository.findByStatus(orderStatus);
+    public Order getOrderByUserIdAndStatus(Long userId, OrderStatus orderStatus) throws IllegalArgumentException {
+        Optional<Order> optionalOrder = orderRepository.findOrderByUserIdAndStatus(userId, orderStatus);
 
         if (optionalOrder.isEmpty()) {
-            throw new IllegalArgumentException("Order with orderStatus " + orderStatus.getStatus() + " not found");
+            throw new IllegalArgumentException("Order with userId " + userId + " orderStatus " + orderStatus.getStatus() + " not found");
         }
 
         return optionalOrder.get();

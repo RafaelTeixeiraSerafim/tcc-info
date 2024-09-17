@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -15,9 +16,9 @@ public class ProductDto {
     private String name;
     private String about;
     private String description;
-    private Long category;
-    private float origPrice;
-    private float salePrice;
+    private Long categoryId;
+    private BigDecimal origPrice;
+    private BigDecimal salePrice;
     private int stockQty;
     private List<ImageDto> images;
 }

@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.math.BigDecimal;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -32,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
             );
             categoryRepository.save(category);
 
-            Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", 100, 90, 4);
+            Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(100), new BigDecimal(90), 4);
             productRepository.save(product);
 
             Image image1 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_1_92e411091a3aa9100c2035d02d45028c.jpg", product);

@@ -24,5 +24,4 @@ public class BoughtProductController {
         }
         return ResponseEntity.badRequest().body("No request parameters sent");
     }
-
 }
