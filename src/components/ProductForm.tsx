@@ -1,70 +1,79 @@
-import { Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import WeightTabs from "./WeightTabs";
-import { Product } from "../interfaces";
+import React, { useState } from "react";
+import { ICategory, IFormProduct, IProduct } from "../interfaces";
 import SelectCategories from "./SelectCategories";
 import axiosInstance from "../config/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import ImageInput from "./ImageInput";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
+import PriceInput from "./PriceInput";
 
-export default function ProductForm() {
-  const [product, setProduct] = useState<Product>({
-    name: "",
-    about: "",
-    description: "",
-    category: "",
-    productItems: [
+interface ProductFormProps {
+  origProduct?: IProduct | undefined;
+}
+
+export default function ProductForm({ origProduct }: ProductFormProps) {
+  const isUpdating = Boolean(origProduct);
+  const category = origProduct?.category as ICategory | undefined;
+  const [formProduct, setFormProduct] = useState<IFormProduct>({
+    name: origProduct?.name || "",
+    about: origProduct?.about || "",
+    description: origProduct?.description || "",
+    categoryId: category?.id?.toString() || "",
+    origPrice: origProduct?.origPrice || "",
+    salePrice: origProduct?.salePrice || "",
+    stockQty:
+      origProduct?.stockQty !== null && origProduct?.stockQty !== undefined
+        ? origProduct.stockQty
+        : "",
+    images: origProduct?.images || [
       {
         id: 1,
-        origPrice: "",
-        salePrice: "",
-        stockQty: "",
-        weight: "",
-        weightUnit: "g",
-        images: [
-          {
-            id: 1,
-            file: null,
-            preview: null,
-          },
-          {
-            id: 2,
-            file: null,
-            preview: null,
-          },
-          {
-            id: 3,
-            file: null,
-            preview: null,
-          },
-        ],
+        file: null,
+      },
+      {
+        id: 2,
+        file: null,
+      },
+      {
+        id: 3,
+        file: null,
       },
     ],
+    createdAt: origProduct?.createdAt || "",
+    updatedAt: origProduct?.updatedAt || "",
   });
-  const [numOfVariants, setNumOfVariants] = useState(1);
+  const [sale, setSale] = useState(Boolean(formProduct.salePrice));
+  const navigate = useNavigate();
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();
 
-    formData.append("productDTO.name", product.name);
-    formData.append("productDTO.about", product.about);
-    formData.append("productDTO.description", product.description);
-    formData.append("productDTO.category", product.category as string);
-    product.productItems.forEach((item, index) => {
-      formData.append(`productItemDTOs[${index}].origPrice`, item.origPrice);
-      formData.append(`productItemDTOs[${index}].salePrice`, item.salePrice);
-      formData.append(`productItemDTOs[${index}].stockQty`, item.stockQty);
-      formData.append(`productItemDTOs[${index}].weight`, item.weight);
-      formData.append(`productItemDTOs[${index}].weightUnit`, item.weightUnit);
+    formData.append("name", formProduct.name);
+    formData.append("about", formProduct.about);
+    formData.append("description", formProduct.description);
+    formData.append("categoryId", formProduct.categoryId.toString());
+    formData.append("origPrice", formProduct.origPrice);
+    if (sale) {
+      formData.append("salePrice", formProduct.salePrice);
+    }
+    formData.append("stockQty", formProduct.stockQty);
 
-      item.images.forEach((image, index2) => {
-        if (image.file !== null) {
-          formData.append(
-            `productItemDTOs[${index}].images[${index2}].file`,
-            image.file!
-          );
-        }
-      });
+    formProduct.images.forEach((image, index) => {
+      formData.append(`images[${index}].url`, image.url ? image.url : "");
+      if (image.file instanceof File) {
+        formData.append(`images[${index}].file`, image.file);
+      }
     });
 
     const config = {
@@ -73,10 +82,18 @@ export default function ProductForm() {
       },
     };
 
-    axiosInstance
-      .post("api/v1/product", formData, config)
+    let url = "api/v1/products";
+    let request = axiosInstance.post;
+
+    if (isUpdating) {
+      url += `/${origProduct!.id}`;
+      request = axiosInstance.put;
+    }
+
+    request(url, formData, config)
       .then((response) => {
         console.log(response);
+        navigate("/admin/products");
       })
       .catch((error) => {
         console.error(error);
@@ -86,148 +103,179 @@ export default function ProductForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setProduct({
-      ...product,
+    setFormProduct({
+      ...formProduct,
       [name]: value,
     });
   };
 
-  const handleWeightAndUnitChange = (
-    index: number,
-    field: string,
-    value: string
-  ) => {
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      productItems: prevProduct.productItems.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
-      ),
-    }));
-  };
-
-  const addAditionalWeightInput = () => {
-    setProduct((prevProduct) => {
-      return {
-        ...prevProduct,
-        productItems: [
-          ...prevProduct.productItems,
-          {
-            id: numOfVariants + 1,
-            origPrice: "",
-            salePrice: "",
-            stockQty: "",
-            weight: "",
-            weightUnit: "g",
-            images: [
-              {
-                id: 1,
-                file: null,
-                preview: null,
-              },
-              {
-                id: 2,
-                file: null,
-                preview: null,
-              },
-              {
-                id: 3,
-                file: null,
-                preview: null,
-              },
-            ],
-          },
-        ],
-      };
-    });
-  };
-
-  const removeAditionalWeightInput = () => {
-    setProduct((prevProduct) => {
-      return {
-        ...prevProduct,
-        productItems: prevProduct.productItems.slice(0, -1),
-      };
-    });
-  };
-
-  useEffect(() => {
-    if (numOfVariants > product.productItems.length) {
-      addAditionalWeightInput();
-    } else if (numOfVariants < product.productItems.length) {
-      removeAditionalWeightInput();
-    }
-  }, [numOfVariants]);
+  console.log(formProduct.stockQty);
 
   return (
-    <form onSubmit={submitForm}>
-      <input
-        type="text"
-        name="name"
-        placeholder="name"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="about"
-        placeholder="about"
-        required
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="description"
-        placeholder="description"
-        required
-        onChange={handleChange}
-      />
-      <SelectCategories setProduct={setProduct} />
-      <Box>
-        {product.productItems.map((productItem, index) => (
-          <div key={index} data-variant-num={index}>
-            <input
-              type="text"
-              name={`weight${index}`}
-              placeholder="weight"
-              value={productItem.weight}
-              onChange={(e) =>
-                handleWeightAndUnitChange(index, "weight", e.target.value)
-              }
-              required={index === 0}
-            />
-            <select
-              name={`unit${index}`}
-              value={productItem.weightUnit}
-              onChange={(e) =>
-                handleWeightAndUnitChange(index, "weightUnit", e.target.value)
-              }
-            >
-              <option value="mg">mg</option>
-              <option value="g">g</option>
-              <option value="kg">kg</option>
-              <option value="ton">ton</option>
-            </select>
-          </div>
-        ))}
-      </Box>
-
-      <button type="button" onClick={() => setNumOfVariants(numOfVariants + 1)}>
-        Adicionar peso
-      </button>
-      {/* Button to remove the last input */}
-      <button
-        type="button"
-        onClick={() => setNumOfVariants(Math.max(numOfVariants - 1, 1))}
+    <Box
+      component={"form"}
+      onSubmit={handleSubmit}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "2rem",
+        width: "50%",
+      }}
+    >
+      <Typography variant="h3" component={"h1"}>
+        {isUpdating ? "Alterar produto" : "Criar produto"}
+      </Typography>
+      <FormControl
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+        }}
       >
-        Remover peso
-      </button>
+        <TextField
+          type="text"
+          name="name"
+          label="Nome"
+          value={formProduct.name}
+          required
+          onChange={handleChange}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              textAlign: "left",
+            }}
+          >
+            <SelectCategories
+              setFormProduct={setFormProduct}
+              formProduct={formProduct}
+            />
+          </Box>
+          <TextField
+            type="number"
+            name="stockQty"
+            label="Qtde em estoque"
+            value={formProduct.stockQty}
+            required
+            onChange={handleChange}
+            sx={{
+              flex: 1,
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 5,
+          }}
+        >
+          <PriceInput
+            formProduct={formProduct}
+            setFormProduct={setFormProduct}
+            label="Preço original"
+            name="origPrice"
+            required
+          />
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={sale}
+                  onChange={(e) => setSale(e.target.checked)}
+                />
+              }
+              label="Oferta"
+            />
+            <PriceInput
+              formProduct={formProduct}
+              setFormProduct={setFormProduct}
+              label="Preço de oferta"
+              name="salePrice"
+              disabled={!sale}
+            />
+          </Box>
+        </Box>
+        <TextField
+          multiline
+          minRows={5}
+          name="about"
+          label="Sobre"
+          value={formProduct.about}
+          required
+          onChange={handleChange}
+        />
+        <TextField
+          multiline
+          minRows={10}
+          name="description"
+          label="Descrição"
+          value={formProduct.description}
+          required
+          onChange={handleChange}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+          }}
+        >
+          {[0, 1, 2].map((index) => {
+            const image = formProduct.images[index] || {};
 
-      <WeightTabs
-        productItems={product.productItems}
-        setProduct={setProduct}
-        data={product}
-      />
-      <button type="submit">Submit</button>
-    </form>
+            return (
+              <ImageInput
+                defaultImage={image.url ? image.url : ""}
+                imageId={image.id || index + 1}
+                setFormProduct={setFormProduct}
+                key={image.id || index + 1}
+                label={"Imagem " + image.id}
+              />
+            );
+          })}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            mt: "2rem",
+            width: "100%",
+            gap: "2rem",
+          }}
+        >
+          <Button
+            type="submit"
+            variant="outlined"
+            onClick={() => navigate("/admin/products")}
+            sx={{
+              flex: 1,
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              flex: 1,
+            }}
+          >
+            {isUpdating ? "Alterar" : "Criar"}
+          </Button>
+        </Box>
+      </FormControl>
+    </Box>
   );
 }

@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Category, Product } from "../interfaces";
+import { ICategory, IFormProduct } from "../interfaces";
 import axiosInstance from "../config/axiosInstance";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 
 interface SelectCategoriesProps {
-  setProduct: React.Dispatch<React.SetStateAction<Product>>;
+  setFormProduct: React.Dispatch<React.SetStateAction<IFormProduct>>;
+  formProduct: IFormProduct;
 }
 
 export default function SelectCategories({
-  setProduct,
+  setFormProduct,
+  formProduct,
 }: SelectCategoriesProps) {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setProduct((prevProduct) => {
+  const handleChange = (e: SelectChangeEvent<string>) => {
+    setFormProduct((prevProduct) => {
       return {
         ...prevProduct,
-        category: e.target.value,
+        categoryId: e.target.value,
       };
     });
   };
@@ -33,13 +42,23 @@ export default function SelectCategories({
   }, []);
 
   return (
-    <select name={`category`} onChange={handleChange}>
-      <option value="" selected disabled>
+    <FormControl>
+      <InputLabel id="category-select-label" required>
         Categoria
-      </option>
-      {categories.map((category) => (
-        <option value={category.id}>{category.name}</option>
-      ))}
-    </select>
+      </InputLabel>
+      <Select
+        value={formProduct.categoryId}
+        label="Categoria"
+        labelId="category-select-label"
+        onChange={handleChange}
+        required
+      >
+        {categories.map((category) => (
+          <MenuItem value={category.id} key={category.id}>
+            {category.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

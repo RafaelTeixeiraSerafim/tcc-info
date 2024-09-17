@@ -1,91 +1,129 @@
-import React, { useEffect, useState } from "react";
-import { Product } from "../interfaces";
+import React, { memo, useEffect, useState } from "react";
+import { IFormProduct } from "../interfaces";
+import { alpha, Box, InputLabel, styled } from "@mui/material";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 interface ImageInputProps {
-  setProduct: React.Dispatch<React.SetStateAction<Product>>;
-  productItemId: number;
+  setFormProduct: React.Dispatch<React.SetStateAction<IFormProduct>>;
   imageId: number;
-  defaultImage: string | ArrayBuffer | null;
+  defaultImage: string;
+  label: string;
+  required?: boolean;
 }
 
-export default function ImageInput({
-  setProduct,
-  productItemId,
-  imageId,
-  defaultImage,
-}: ImageInputProps) {
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
-    null
-  );
+const StyledImageInput = styled(InputLabel)(({ theme }) => ({
+  position: "relative",
+  overflow: "visible",
+  marginTop: 20,
+  border: "1px solid",
+  borderColor:
+    theme.palette.mode === "dark" ? alpha("#fff", 0.2) : alpha("#000", 0.2),
+  borderRadius: theme.shape.borderRadius,
+  display: "inline-block",
+  textAlign: "center",
+  cursor: "pointer",
+  pointerEvents: "auto",
+  width: "100%",
+  ":hover": {
+    borderColor: theme.palette.mode === "dark" ? "#fff" : "#000",
+    color: theme.palette.mode === "dark" ? "#fff" : "#000",
+  },
+  ":focus-within": {
+    borderColor: theme.palette.primary.main, // Focused border color
+  },
+}));
 
-  const changeBgImage = (image: File | undefined) => {
-    if (!image) return;
+const ImageInput = memo(
+  ({
+    setFormProduct,
+    imageId,
+    defaultImage,
+    label,
+    required,
+  }: ImageInputProps) => {
+    const [previewImage, setPreviewImage] = useState<
+      string | ArrayBuffer | null
+    >(null);
+    const changeBgImage = (imageFile: File | undefined) => {
+      if (!imageFile) return;
 
-    const reader = new FileReader();
+      const reader = new FileReader();
 
-    reader.onload = () => {
-      setPreviewImage(reader.result);
-      setProduct((prevProduct) => {
+      reader.onload = () => {
+        setPreviewImage(reader.result);
+      };
+
+      reader.readAsDataURL(imageFile);
+    };
+
+    const handleChange = (
+      e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const target = e.target as HTMLInputElement & {
+        files: FileList;
+      };
+
+      setFormProduct((prevProduct) => {
         return {
           ...prevProduct,
-          productItems: prevProduct.productItems.map((item) =>
-            item.id === productItemId
-              ? {
-                  ...item,
-                  images: item.images.map((image) =>
-                    image.id === imageId
-                      ? { ...image, preview: reader.result }
-                      : image
-                  ),
-                }
-              : item
+          images: prevProduct.images.map((image) =>
+            image.id === imageId ? { ...image, file: target.files[0] } : image
           ),
         };
       });
+
+      changeBgImage(target.files[0]);
     };
 
-    reader.readAsDataURL(image);
-  };
+    useEffect(() => setPreviewImage(defaultImage), []);
 
-  const handleFileChange = (
-    e: React.FormEvent<HTMLInputElement>,
-    productItemId: number,
-    imageId: number
-  ) => {
-    const target = e.target as HTMLInputElement & {
-      files: FileList;
-    };
+    console.log("rerender img input");
 
-    setProduct((prevProduct) => {
-      return {
-        ...prevProduct,
-        productItems: prevProduct.productItems.map((item) =>
-          item.id === productItemId
-            ? {
-                ...item,
-                images: item.images.map((image) =>
-                  image.id === imageId
-                    ? { ...image, file: target.files[0] }
-                    : image
-                ),
-              }
-            : item
-        ),
-      };
-    });
+    return (
+      <Box sx={{ flex: 1 }}>
+        <StyledImageInput shrink={false} focused={false}>
+          <InputLabel
+            shrink={false}
+            sx={{
+              position: "absolute",
+              top: -40,
+              color: "inherit",
+            }}
+            focused={false}
+          >
+            {label}
+            {required && "*"}
+          </InputLabel>
+          {previewImage ? (
+            <Box
+              component={"img"}
+              src={previewImage as string}
+              loading="lazy"
+              alt=""
+              sx={{
+                width: "100%",
+              }}
+            />
+          ) : (
+            <AddPhotoAlternateIcon
+              fontSize="large"
+              sx={{
+                marginBlock: "20%",
+              }}
+            />
+          )}
+          <input
+            id="input"
+            type="file"
+            hidden
+            accept="image/*"
+            required={required}
+            onChange={handleChange}
+          />
+        </StyledImageInput>
+      </Box>
+    );
+  }
+);
 
-    changeBgImage(target.files[0]);
-  };
-
-  useEffect(() => setPreviewImage(defaultImage), []);
-
-  return (
-    <div>
-      <input
-        type="file"
-        onChange={(e) => handleFileChange(e, productItemId, imageId)}
-      />
-      <img src={previewImage as string} alt="" />
-    </div>
-  );
-}
+export default ImageInput;
