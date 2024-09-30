@@ -39,24 +39,11 @@ export default function PriceInput({
     } 
   };
 
-  const formatForBackend = (value: string) => {
-    // Convert the value to a number (replace '.' and ',' correctly)
-    return value.replace(/\./g, "").replace(",", ".");
-  };
-
-  const handleBlur = () => {
-    const numericValue = formatForBackend(
-      formProduct[name as keyof IFormProduct] as string
-    );
-    console.log("Numeric value for backend:", numericValue); // Use numericValue for backend calls
-  };
-
   return (
     <TextField
       label={label}
       value={formProduct[name as keyof IFormProduct]}
       onChange={handleChange}
-      onBlur={handleBlur}
       placeholder="0,00"
       inputProps={{
         inputMode: "decimal", // This ensures the numeric keyboard on mobile devices

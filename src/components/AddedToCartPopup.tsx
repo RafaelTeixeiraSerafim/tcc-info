@@ -104,19 +104,27 @@ export default function AddedToCartPopup() {
                 <Box
                   sx={{
                     position: "relative",
-                    display: "flex",
-                    width: "100%",
+                    display: "grid",
+                    gridTemplateColumns: "35% 65%",
+                    gap: "0.5rem"
                   }}
                 >
                   <Box
                     component={"img"}
                     src={cartItem.product.images[0].url}
-                    width={"40%"}
+                    width={"100%"}
                   />
                   <Box>
+                    <Box sx={{
+                      width: "80%",
+                      height: "3rem",
+                      overflow: "scroll"
+                    }}>
+
                     <Typography fontWeight={"bold"}>
                       {cartItem.product.name}
                     </Typography>
+                    </Box>
                     <Typography>
                       {new Intl.NumberFormat("pt-BR", {
                         style: "currency",

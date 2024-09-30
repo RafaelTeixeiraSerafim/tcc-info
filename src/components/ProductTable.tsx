@@ -6,17 +6,18 @@ import {
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { IProduct, IProductTableRow } from "../interfaces";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "Id", flex: 1 },
-  { field: "name", headerName: "Nome", flex: 3 },
-  { field: "category", headerName: "Categoria", flex: 2.5 },
-  { field: "origPrice", headerName: "Preço orig.", flex: 2.5 },
-  { field: "salePrice", headerName: "Preço oferta", flex: 2.5 },
-  { field: "createdAt", headerName: "Criado em", flex: 3 },
-  { field: "updatedAt", headerName: "Atualizado em", flex: 3 },
+  { field: "id", headerName: "Id", width: 80 },
+  { field: "name", headerName: "Nome", width: 300 },
+  { field: "category", headerName: "Categoria", width: 110 },
+  { field: "stockQty", headerName: "Qtde. em estoque", width: 140 },
+  { field: "origPrice", headerName: "Preço orig.", width: 100 },
+  { field: "salePrice", headerName: "Preço oferta", width: 100 },
+  { field: "createdAt", headerName: "Criado em", width: 180 },
+  { field: "updatedAt", headerName: "Atualizado em", width: 180 },
 ];
 
 interface ProductTableProps {

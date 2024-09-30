@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IOrder, IOrderTableRow } from "../interfaces";
-import axiosInstance from "../config/axiosInstance";
+import { IOrder, IOrderTableRow } from "../../../interfaces";
+import axiosInstance from "../../../config/axiosInstance";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../../../contexts/UserContext";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", flex: 1 },

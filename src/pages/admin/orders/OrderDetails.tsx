@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { IOrder } from "../interfaces";
-import axiosInstance from "../config/axiosInstance";
+import { IOrder } from "../../../interfaces";
+import axiosInstance from "../../../config/axiosInstance";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import StatusModal from "../components/StatusModal";
-import UserContext from "../contexts/UserContext";
+import StatusModal from "../../../components/StatusModal";
+import UserContext from "../../../contexts/UserContext";
 
 export default function OrderDetails() {
   const location = useLocation();
@@ -82,7 +82,7 @@ export default function OrderDetails() {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0.25rem"
+                gap: "0.25rem",
               }}
             >
               <Typography>
@@ -109,20 +109,20 @@ export default function OrderDetails() {
               setOrder={setOrder}
             />
           </Paper>
-          {order?.orderItems.map((orderItem) => (
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                overflow: "scroll",
-              }}
-            >
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              overflow: "scroll",
+              gap: "2rem",
+            }}
+          >
+            {order?.orderItems.map((orderItem) => (
               <Paper
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.75rem",
-                  width: "12rem",
+                  width: "13rem",
                   overflow: "hidden",
                 }}
               >
@@ -133,10 +133,20 @@ export default function OrderDetails() {
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "0.1rem",
-                    padding: "0.25rem"
+                    paddingInline: "0.5rem",
+                    paddingBlock: "1rem",
                   }}
                 >
-                  <Typography variant="h6" fontWeight={"bold"}>{orderItem.product.name}</Typography>
+                  <Box
+                    sx={{
+                      height: "4rem",
+                      overflow: "scroll",
+                    }}
+                  >
+                    <Typography variant="h6" fontWeight={"bold"}>
+                      {orderItem.product.name}
+                    </Typography>
+                  </Box>
                   <Typography>Qtde: {orderItem.qty}</Typography>
                   <Typography>
                     Preço unit:{" "}
@@ -157,8 +167,8 @@ export default function OrderDetails() {
                   </Typography>
                 </Box>
               </Paper>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       )}
     </>

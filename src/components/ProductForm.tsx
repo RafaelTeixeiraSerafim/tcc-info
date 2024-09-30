@@ -10,7 +10,6 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,6 +19,14 @@ interface ProductFormProps {
   origProduct?: IProduct | undefined;
 }
 
+const formatForBackend = (value: string) => {
+  return value.replace(",", ".");
+};
+
+const formatForFrontend = (value: string) => {
+  return value.replace(".", ",");
+};
+
 export default function ProductForm({ origProduct }: ProductFormProps) {
   const isUpdating = Boolean(origProduct);
   const category = origProduct?.category as ICategory | undefined;
@@ -28,8 +35,13 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     about: origProduct?.about || "",
     description: origProduct?.description || "",
     categoryId: category?.id?.toString() || "",
-    origPrice: origProduct?.origPrice || "",
-    salePrice: origProduct?.salePrice || "",
+    origPrice: origProduct
+      ? formatForFrontend(origProduct.origPrice.toString())
+      : "",
+    salePrice: origProduct
+      ? origProduct.salePrice &&
+        formatForFrontend(origProduct.salePrice.toString())
+      : "",
     stockQty:
       origProduct?.stockQty !== null && origProduct?.stockQty !== undefined
         ? origProduct.stockQty
@@ -63,13 +75,21 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     formData.append("about", formProduct.about);
     formData.append("description", formProduct.description);
     formData.append("categoryId", formProduct.categoryId.toString());
-    formData.append("origPrice", formProduct.origPrice);
+    formData.append(
+      "origPrice",
+      formatForBackend(formProduct.origPrice.toString())
+    );
     if (sale) {
-      formData.append("salePrice", formProduct.salePrice);
+      formData.append(
+        "salePrice",
+        formatForBackend(formProduct.salePrice.toString())
+      );
     }
     formData.append("stockQty", formProduct.stockQty);
 
     formProduct.images.forEach((image, index) => {
+      if (isUpdating)
+        formData.append(`images[${index}].id`, image.id.toString());
       formData.append(`images[${index}].url`, image.url ? image.url : "");
       if (image.file instanceof File) {
         formData.append(`images[${index}].file`, image.file);
@@ -93,7 +113,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     request(url, formData, config)
       .then((response) => {
         console.log(response);
-        navigate("/admin/products");
+        navigate("/admin/products/");
       })
       .catch((error) => {
         console.error(error);
@@ -108,8 +128,6 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       [name]: value,
     });
   };
-
-  console.log(formProduct.stockQty);
 
   return (
     <Box
@@ -208,7 +226,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
             />
           </Box>
         </Box>
-        <TextField
+        {/* <TextField
           multiline
           minRows={5}
           name="about"
@@ -216,10 +234,11 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
           value={formProduct.about}
           required
           onChange={handleChange}
-        />
+        /> */}
         <TextField
           multiline
           minRows={10}
+          maxRows={20}
           name="description"
           label="Descrição"
           value={formProduct.description}
@@ -239,10 +258,10 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
             return (
               <ImageInput
                 defaultImage={image.url ? image.url : ""}
-                imageId={image.id || index + 1}
+                imageId={image.id}
                 setFormProduct={setFormProduct}
                 key={image.id || index + 1}
-                label={"Imagem " + image.id}
+                label={"Imagem " + (index + 1)}
               />
             );
           })}

@@ -11,7 +11,7 @@ import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import type { Router, Navigation } from "@toolpad/core";
 import Logo from "../assets/images/logo.png";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import { dashboardTheme } from "../themes";
 
@@ -21,17 +21,17 @@ const NAVIGATION: Navigation = [
     title: "Geral",
   },
   {
-    segment: "admin/",
+    segment: "admin",
     title: "Painel",
     icon: <DashboardIcon />,
   },
   {
-    segment: "admin/orders/",
+    segment: "admin/orders",
     title: "Pedidos",
     icon: <ShoppingCartIcon />,
   },
   {
-    segment: "admin/users/",
+    segment: "admin/users",
     title: "Usuários",
     icon: <GroupIcon />,
   },
@@ -72,12 +72,12 @@ const NAVIGATION: Navigation = [
     title: "Conteúdo",
   },
   {
-    segment: "admin/products/",
+    segment: "admin/products",
     title: "Produtos",
     icon: <InventoryIcon />,
   },
   {
-    segment: "admin/categories/",
+    segment: "admin/categories",
     title: "Categorias",
     icon: <CategoryIcon />,
   },
@@ -92,6 +92,7 @@ export default function AdminDashboardLayout({
 }: AdminDashboardLayoutProps) {
   const [pathname, setPathname] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const router = useMemo<Router>(() => {
     return {
@@ -105,6 +106,10 @@ export default function AdminDashboardLayout({
     if (!pathname) return;
     navigate(pathname);
   }, [pathname]);
+
+  useEffect(() => {
+    setPathname(String(location.pathname))
+  }, [location.pathname])
 
   return (
     <AppProvider

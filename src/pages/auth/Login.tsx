@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import axiosInstance from "../config/axiosInstance";
+import axiosInstance from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../../contexts/UserContext";
 import {
   Box,
   Button,
@@ -20,7 +20,7 @@ export default function Login() {
 
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ export default function Login() {
       component={"form"}
       onSubmit={handleSubmit}
       style={{
-        marginTop: "9rem",
+        marginTop: "8rem",
         marginInline: "auto",
         width: "30%",
         paddingBlock: "2rem",
@@ -110,10 +110,16 @@ export default function Login() {
             Entrar
           </Button>
           <Typography>
-            Não possui uma conta? <Link to={"/signup"} style={{
-              textDecoration: "none",
-              color: theme.palette.secondary.dark
-            }}>Cadastre-se</Link>
+            Não possui uma conta?{" "}
+            <Link
+              to={"/signup"}
+              style={{
+                textDecoration: "none",
+                color: theme.palette.secondary.dark,
+              }}
+            >
+              Cadastre-se
+            </Link>
           </Typography>
         </Box>
       </FormControl>

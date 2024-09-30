@@ -4,7 +4,7 @@ import axiosInstance from "../config/axiosInstance";
 import ProductCarousel from "../components/ProductCarousel";
 import { Box } from "@mui/material";
 
-export default function UserHome() {
+export default function Home() {
   const [products, setProducts] = useState<IProduct[] | null>(null);
   // const [categories, setCategories] = useState<ICategory[] | null>(null);
   const [filteredCategories, setFilteredCategories] = useState<
@@ -33,16 +33,24 @@ export default function UserHome() {
   // };
 
   const filterCategories = () => {
+    if (!products) return;
     if (products?.length === 0) return;
-    console.log("function")
-    const ls = new Set<ICategory>();
-    products?.forEach((product) => ls.add(product.category as ICategory));
-    setFilteredCategories(Array.from(ls.values()));
+    const set = new Set<number>();
+    products?.forEach((product) =>
+      set.add((product.category as ICategory).id!)
+    );
+    const ls: ICategory[] = [];
+    Array.from(set.values()).forEach((categoryId) => {
+      ls.push(
+        products.find(
+          (product) => (product.category as ICategory).id === categoryId
+        )?.category as ICategory
+      );
+    });
+    setFilteredCategories(ls);
   };
 
   useEffect(() => {
-    if (!products) return;
-    console.log("useEffect")
     filterCategories();
   }, [products?.length]);
 
@@ -57,6 +65,7 @@ export default function UserHome() {
         display: "flex",
         flexDirection: "column",
         marginTop: "8rem",
+        marginBottom: "4rem",
         gap: "4rem",
       }}
     >

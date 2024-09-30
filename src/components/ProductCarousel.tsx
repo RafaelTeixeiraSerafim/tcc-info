@@ -27,7 +27,7 @@ export default function ProductCarousel({
       <Box
         sx={{
           display: "flex",
-          overflow: "scroll",
+          overflowX: "scroll",
           gap: 2,
         }}
       >

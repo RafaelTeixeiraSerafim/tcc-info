@@ -124,10 +124,29 @@ export interface IProductTableRow {
   origPrice: string;
   salePrice: string;
   stockQty: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICategoryTableRow {
   id: number;
   name: string;
   description: string;
+}
+
+export interface IFormAddress {
+  userId: number;
+  fullName: string;
+  postalCode: string;
+  state: string;
+  city: string;
+  neighbourhood: string;
+  street: string;
+  houseNumber: string;
+  apartmentNumber: string;
+  contactPhone: string;
+}
+
+export interface IAddress extends IFormAddress {
+  id: number;
 }

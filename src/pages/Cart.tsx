@@ -1,38 +1,42 @@
 import React, { useContext, useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
-import { IOrderItemResponse } from "../interfaces";
+import { IOrder } from "../interfaces";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import UserContext from "../contexts/UserContext";
 import CartCard from "../components/CartCard";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState<IOrderItemResponse[] | null>(null);
+  const [order, setOrder] = useState<IOrder | null>(null);
   const [total, setTotal] = useState(0);
 
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const getTotal = () => {
+    if (!order) return;
+
     let sum = 0;
-    cartItems?.forEach((cartItem) => {
+    order.orderItems.forEach((orderItem) => {
       let price = 0;
       price =
-        cartItem.qty *
-        (parseFloat(cartItem.product.salePrice) ||
-          parseFloat(cartItem.product.origPrice));
+        orderItem.qty *
+        (parseFloat(orderItem.product.salePrice) ||
+          parseFloat(orderItem.product.origPrice));
       sum += price;
     });
 
     setTotal(sum);
   };
 
-  const getCartItems = () => {
-    if (!user?.id) return;
+  const getOrder = () => {
+    if (!user) return;
 
     axiosInstance
-      .get(`api/v1/order-items/${user.id}`)
+      .get(`api/v1/orders/user/${user.id}`)
       .then((response) => {
         console.log(response);
-        setCartItems(response.data);
+        setOrder(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -40,17 +44,17 @@ export default function Cart() {
   };
 
   const handlePurchase = () => {
-    if (!cartItems || cartItems.length === 0) return;
+    if (!order) return;
 
     axiosInstance
-      .put(`api/v1/orders/place-order/${cartItems[0].order.id}`, {
+      .put(`api/v1/orders/place-order/${order.id}`, {
         datePlaced: Date.now(),
         status: "PENDING",
       })
       .then((response) => {
         console.log(response);
         alert("Compra finalizada com sucesso!");
-        setCartItems([]);
+        setOrder(null);
       })
       .catch((error) => {
         console.error(error);
@@ -58,31 +62,31 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    getCartItems();
+    getOrder();
   }, [user?.id]);
 
   useEffect(() => {
-    if (!cartItems?.length) return;
-
     getTotal();
-  }, [cartItems?.length]);
+  }, [order?.orderItems.length]);
 
   return (
     <>
-      {cartItems && (
+      {order && (
         <Paper
           sx={{
             display: "flex",
             flexDirection: "column",
             gap: "1.5rem",
             mt: "7rem",
+            mb: "3rem",
             width: "60%",
+            minHeight: "60vh",
             marginInline: "auto",
-            padding: "1rem"
+            padding: "1rem",
           }}
         >
           <Typography variant="h4">Meu Carrinho</Typography>
-          {cartItems.length > 0 ? (
+          {order.orderItems.length > 0 ? (
             <Box
               sx={{
                 display: "flex",
@@ -90,8 +94,8 @@ export default function Cart() {
                 gap: "1rem",
               }}
             >
-              {cartItems.map((cartItem) => (
-                <CartCard cartItem={cartItem} setCartItems={setCartItems} />
+              {order.orderItems.map((orderItem) => (
+                <CartCard cartItem={orderItem} setOrder={setOrder} />
               ))}
               <Typography fontWeight={"bold"} variant="h5">
                 Total:{" "}
@@ -100,7 +104,10 @@ export default function Cart() {
                   currency: "BRL",
                 }).format(total)}
               </Typography>
-              <Button variant="contained" onClick={handlePurchase}>
+              <Button
+                variant="contained"
+                onClick={() => navigate(`/checkout/address-options`, {state: order})}
+              >
                 Finalizar Compra
               </Button>
             </Box>

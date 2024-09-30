@@ -1,8 +1,16 @@
 import React, { useContext, useState } from "react";
-import axiosInstance from "../config/axiosInstance";
+import axiosInstance from "../../config/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
-import { Box, Button, FormControl, Paper, TextField, Typography, useTheme } from "@mui/material";
+import UserContext from "../../contexts/UserContext";
+import {
+  Box,
+  Button,
+  FormControl,
+  Paper,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 
 export default function Signup() {
   const [signupUser, setSignupUser] = useState({
@@ -14,7 +22,7 @@ export default function Signup() {
 
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,7 +53,7 @@ export default function Signup() {
       component={"form"}
       onSubmit={handleSubmit}
       style={{
-        marginTop: "10rem",
+        marginTop: "8rem",
         marginInline: "auto",
         width: "30%",
         paddingBlock: "2rem",
@@ -113,10 +121,16 @@ export default function Signup() {
             Cadastrar
           </Button>
           <Typography>
-            Já possui uma conta? <Link to={"/login"} style={{
-              textDecoration: "none",
-              color: theme.palette.secondary.dark
-            }}>Entrar</Link>
+            Já possui uma conta?{" "}
+            <Link
+              to={"/login"}
+              style={{
+                textDecoration: "none",
+                color: theme.palette.secondary.dark,
+              }}
+            >
+              Entrar
+            </Link>
           </Typography>
         </Box>
       </FormControl>

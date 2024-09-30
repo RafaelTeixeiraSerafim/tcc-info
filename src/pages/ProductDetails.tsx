@@ -16,8 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 
 export default function ProductDetails() {
-  const location = useLocation();
-  const productState: IProduct = location.state;
+  const productState: IProduct = useLocation().state;
 
   const [product, setProduct] = useState<IProduct | null>(productState || null);
   const [qty, setQty] = useState<string | number>(1);
@@ -57,12 +56,12 @@ export default function ProductDetails() {
       .post("api/v1/order-items", data)
       .then((response) => {
         console.log(response);
+        setAddedToCart(true);
       })
       .catch((error) => {
         console.error(error);
         setHasErrorCart(true);
-      })
-      .finally(() => setAddedToCart(true));
+      });
   };
 
   const getBoughtProduct = () => {
@@ -85,7 +84,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [productId]);
 
   useEffect(() => {
     if (!product?.id || !user?.id) return;
@@ -107,7 +106,7 @@ export default function ProductDetails() {
           <Box
             sx={{
               display: "flex",
-              gap: "1.5rem",
+              gap: "2rem",
             }}
           >
             <ProductImagesDisplay images={product.images} />
@@ -119,7 +118,7 @@ export default function ProductDetails() {
                 flex: 1,
               }}
             >
-              <Typography variant="h2">{product.name}</Typography>
+              <Typography variant="h4">{product.name}</Typography>
               {product.salePrice ? (
                 <Box>
                   <Typography
@@ -147,10 +146,10 @@ export default function ProductDetails() {
                   }).format(parseFloat(product.origPrice))}
                 </Typography>
               )}
-              <Box>
+              {/* <Box>
                 <Typography>Sobre</Typography>
                 <Typography>{product.about}</Typography>
-              </Box>
+              </Box> */}
               <FormControl
                 sx={{
                   display: "flex",

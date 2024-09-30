@@ -80,7 +80,7 @@ const ImageInput = memo(
     console.log("rerender img input");
 
     return (
-      <Box sx={{ flex: 1 }}>
+      <Box sx={{ display: "flex", flex: 1 }}>
         <StyledImageInput shrink={false} focused={false}>
           <InputLabel
             shrink={false}
@@ -105,12 +105,13 @@ const ImageInput = memo(
               }}
             />
           ) : (
-            <AddPhotoAlternateIcon
-              fontSize="large"
-              sx={{
-                marginBlock: "20%",
-              }}
-            />
+            <Box sx={{
+              display: "flex",
+              minHeight: "7rem",
+              height: "100%"
+            }}>
+              <AddPhotoAlternateIcon fontSize="large" sx={{ margin: "auto"}}/>
+            </Box>
           )}
           <input
             id="input"

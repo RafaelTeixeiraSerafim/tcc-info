@@ -6,6 +6,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  TextField,
   Toolbar,
   useTheme,
 } from "@mui/material";
@@ -20,6 +21,7 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
 import AddedToCartPopup from "./AddedToCartPopup";
 import { AccountCircle } from "@mui/icons-material";
+import AddressDisplay from "./AddressDisplay";
 
 export default function Header() {
   const [products, setProducts] = useState<IProduct[] | null>(null);
@@ -30,8 +32,8 @@ export default function Header() {
 
   const { user, logoutUser, hasCheckedToken, addedToCart } =
     useContext(UserContext);
-  
-  const theme = useTheme()
+
+  const theme = useTheme();
 
   const navigate = useNavigate();
 
@@ -138,9 +140,12 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{
-        bgcolor: theme.palette.background.paper
-      }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          bgcolor: theme.palette.background.paper,
+        }}
+      >
         <Toolbar
           sx={{
             display: { xs: "flex" },
@@ -154,9 +159,8 @@ export default function Header() {
           <Link to={"/"} style={{ display: "flex", alignItems: "center" }}>
             <HeaderLogo />
           </Link>
-          <Box sx={{ flexGrow: 1 }} />
           <SearchBar products={products} />
-          <Box sx={{ flexGrow: 1 }} />
+          <AddressDisplay/>
           <Box
             sx={{
               display: { xs: "none", lg: "flex" },
@@ -191,17 +195,21 @@ export default function Header() {
                     position: "relative",
                   }}
                 >
-                  <IconButton
-                    size="large"
-                    aria-label="carrinho"
-                    color="inherit"
-                    href={"/cart"}
-                  >
-                    {/* Ícone de notificação */}
-                    {/* <Badge badgeContent={17} color="error">
+                  <Link to={"cart"} style={{
+                    textDecoration: "none",
+                    color: "inherit"
+                  }}>
+                    <IconButton
+                      size="large"
+                      aria-label="carrinho"
+                      color="inherit"
+                    >
+                      {/* Ícone de notificação */}
+                      {/* <Badge badgeContent={17} color="error">
                 </Badge> */}
-                    <ShoppingCartOutlined />
-                  </IconButton>
+                      <ShoppingCartOutlined />
+                    </IconButton>
+                  </Link>
                   {addedToCart && <AddedToCartPopup />}
                 </Box>
                 <IconButton

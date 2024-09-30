@@ -1,9 +1,9 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { IProduct } from "../interfaces";
-import axiosInstance from "../config/axiosInstance";
+import { IProduct } from "../../../interfaces";
+import axiosInstance from "../../../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import ProductTable from "../components/ProductTable";
+import ProductTable from "../../../components/ProductTable";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
 
 export default function Products() {
@@ -60,10 +60,12 @@ export default function Products() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "100%",
+        width: "65rem",
+        overflow: "hidden",
         paddingInline: 3,
         textAlign: "left",
         gap: "1rem",
+        alignSelf: "flex-start",
       }}
     >
       <Typography variant="h4" component={"h1"}>

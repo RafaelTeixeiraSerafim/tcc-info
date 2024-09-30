@@ -1,28 +1,31 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UserHome from "./pages/UserHome";
+import Home from "./pages/Home";
 import { Suspense } from "react";
 import LoadingFallback from "./components/LoadingFallback";
-import CreateProduct from "./pages/CreateProduct";
-import UpdateProduct from "./pages/UpdateProduct";
+import CreateProduct from "./pages/admin/products/CreateProduct";
+import UpdateProduct from "./pages/admin/products/UpdateProduct";
 import { UserProvider } from "./contexts/UserContext";
 import UserLayout from "./layouts/UserLayout";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminRequired from "./routeWrappers/AdminRequired";
 import LogoutRequired from "./routeWrappers/LogoutRequired";
 import { ThemeProviderWrapper } from "./contexts/ThemeContext";
-import Products from "./pages/Products";
-import Categories from "./pages/Categories";
-import UpdateCategory from "./pages/UpdateCategory";
-import CreateCategory from "./pages/CreateCategory";
-import Product from "./pages/ProductDetails";
+import Products from "./pages/admin/products/Products";
+import Categories from "./pages/admin/categories/Categories";
+import UpdateCategory from "./pages/admin/categories/UpdateCategory";
+import CreateCategory from "./pages/admin/categories/CreateCategory";
+import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
-import Orders from "./pages/Orders";
-import OrderDetails from "./pages/OrderDetails";
-import Users from "./pages/Users";
+import Orders from "./pages/admin/orders/Orders";
+import OrderDetails from "./pages/admin/orders/OrderDetails";
+import Users from "./pages/admin/users/Users";
 import NoPage from "./pages/NoPage";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ScrollToTop from "./components/ScrollToTop";
+import AddressOptions from "./pages/checkout/AddressOptions";
+import LoginRequired from "./routeWrappers/LoginRequired";
 
 function App() {
   return (
@@ -30,11 +33,15 @@ function App() {
       <UserProvider>
         <Suspense fallback={<LoadingFallback />}>
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<UserLayout />}>
-                <Route index element={<UserHome />} />
-                <Route path="product/:productId" element={<Product />} />
-                <Route path="cart/" element={<Cart />} />
+                <Route index element={<Home />} />
+                <Route path="product/:productId" element={<ProductDetails />} />
+                <Route path="cart" element={<Cart />} />
+                <Route path="checkout" element={<LoginRequired />}>
+                  <Route path="address-options" element={<AddressOptions />} />
+                </Route>
                 <Route element={<LogoutRequired />}>
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<Signup />} />
@@ -53,7 +60,10 @@ function App() {
                   </Route>
                   <Route path="products" element={<Products />} />
                   <Route path="products/new" element={<CreateProduct />} />
-                  <Route path="products/:productId/update" element={<UpdateProduct/>}/>
+                  <Route
+                    path="products/:productId/update"
+                    element={<UpdateProduct />}
+                  />
                 </Route>
               </Route>
               <Route path="*" element={<NoPage />} />

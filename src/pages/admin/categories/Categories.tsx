@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../config/axiosInstance";
-import { ICategory } from "../interfaces";
+import axiosInstance from "../../../config/axiosInstance";
+import { ICategory } from "../../../interfaces";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import CategoryTable from "../components/CategoryTable";
+import CategoryTable from "../../../components/CategoryTable";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
 
 export default function Categories() {
@@ -35,7 +35,9 @@ export default function Categories() {
         }
       );
       console.log(response);
-      setCategories(categories.filter((category) => !selectionModel.includes(category.id!)))
+      setCategories(
+        categories.filter((category) => !selectionModel.includes(category.id!))
+      );
       alert("Categorias deletadas com sucesso!");
     } catch (error) {
       console.error("Error deleting categories:", error);
@@ -87,7 +89,11 @@ export default function Categories() {
               </Button>
             </Box>
           </Box>
-          <CategoryTable categories={categories} selectionModel={selectionModel} setSelectionModel={setSelectionModel} />
+          <CategoryTable
+            categories={categories}
+            selectionModel={selectionModel}
+            setSelectionModel={setSelectionModel}
+          />
         </Box>
       )}
     </>

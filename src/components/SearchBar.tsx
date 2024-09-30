@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { Autocomplete, TextField, alpha, styled } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  Autocomplete,
+  TextField,
+  alpha,
+  styled,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { IProduct } from "../interfaces";
 
 const Search = styled("div")(({ theme }) => ({
@@ -14,7 +19,7 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor:
       theme.palette.mode === "light"
-        ? alpha(theme.palette.common.black, 0.10)
+        ? alpha(theme.palette.common.black, 0.1)
         : alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
@@ -89,7 +94,6 @@ interface SearchBarProps {
 
 export default function SearchBar({ products }: SearchBarProps) {
   const [inputValue, setInputValue] = useState("");
-  // const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -98,13 +102,9 @@ export default function SearchBar({ products }: SearchBarProps) {
     newValue: unknown
   ) => {
     if (newValue && typeof newValue === "object" && "id" in newValue) {
-      navigate(`/product/${(newValue as { id: string }).id}`); // Navigate using the product's id
+      navigate(`/product/${(newValue as { id: string }).id}`, {state: newValue}); // Navigate using the product's id
     }
   };
-
-  // useEffect(() => {
-  //   setInputValue(""); // Reset the input value
-  // }, [location.pathname]);
 
   return (
     <Search>
@@ -119,16 +119,15 @@ export default function SearchBar({ products }: SearchBarProps) {
           typeof option === "string" ? option : (option as IProduct).name
         }
         inputValue={inputValue}
-        onInputChange={(e, value) => setInputValue(value)}
+        onInputChange={(_, value) => setInputValue(value)}
         onChange={handleChange}
         renderInput={(params) => (
           <StyledTextField
             {...params}
-            placeholder="Search..."
+            placeholder="O que você procura?"
             InputProps={{
               ...params.InputProps,
               type: "search",
-              endAdornment: null,
             }}
           />
         )}
