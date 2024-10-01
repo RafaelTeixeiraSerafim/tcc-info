@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import { Suspense } from "react";
 import LoadingFallback from "./components/LoadingFallback";
@@ -32,7 +32,7 @@ function App() {
     <ThemeProviderWrapper>
       <UserProvider>
         <Suspense fallback={<LoadingFallback />}>
-          <BrowserRouter>
+          <BrowserRouter basename="/tcc-info">
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<UserLayout />}>
