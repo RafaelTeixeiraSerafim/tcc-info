@@ -28,7 +28,7 @@ export default function Signup() {
     e.preventDefault();
 
     axiosInstance
-      .post("api/v1/auth/signup", signupUser)
+      .post("/api/v1/auth/signup", signupUser)
       .then((response) => {
         console.log(response);
         setUser(response.data);

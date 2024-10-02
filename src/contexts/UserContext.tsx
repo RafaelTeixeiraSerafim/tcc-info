@@ -24,7 +24,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const authenticate = async () => {
     try {
-      const response = await axiosInstance.post("api/v1/auth/check-token");
+      const response = await axiosInstance.post("/api/v1/auth/check-token");
 
       console.log(response);
       setUser(response.data);
@@ -36,7 +36,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
   const logoutUser = async () => {
     try {
-      const response = await axiosInstance.post("api/v1/auth/logout");
+      const response = await axiosInstance.post("/api/v1/auth/logout");
 
       console.log(response);
       setUser(null);
@@ -65,7 +65,7 @@ export function UserProvider({ children }: UserProviderProps) {
         setAddedToCart,
         hasErrorCart,
         setHasErrorCart,
-        translateStatus
+        translateStatus,
       }}
     >
       {children}

@@ -42,7 +42,7 @@ export default function AddressModal({
 
     try {
       let request = axiosInstance.post;
-      let url = "api/v1/addresses";
+      let url = "/api/v1/addresses";
 
       if (isUpdating) {
         request = axiosInstance.put;
@@ -71,7 +71,7 @@ export default function AddressModal({
     }
     if (hasDefaultValues) {
       setAddress(emptyFormAddress);
-      setNewAddressDefaultValues?.(null)
+      setNewAddressDefaultValues?.(null);
     }
     setIsOpen(false);
   };

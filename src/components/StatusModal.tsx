@@ -23,7 +23,7 @@ export default function StatusModal({
 
   const getStatusList = () => {
     axiosInstance
-      .get("api/v1/orders/status")
+      .get("/api/v1/orders/status")
       .then((response) => {
         console.log(response);
         setStatusList(
@@ -39,7 +39,7 @@ export default function StatusModal({
     e.preventDefault();
 
     axiosInstance
-      .patch(`api/v1/orders/${order.id}`, {
+      .patch(`/api/v1/orders/${order.id}`, {
         status: selectedStatus,
       })
       .then((response) => {

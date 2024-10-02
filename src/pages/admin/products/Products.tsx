@@ -17,7 +17,7 @@ export default function Products() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get("api/v1/products");
+      const response = await axiosInstance.get("/api/v1/products");
       console.log(response);
 
       setProducts(response.data);
@@ -30,7 +30,7 @@ export default function Products() {
     try {
       if (!products) return;
       const response = await axiosInstance.delete(
-        "api/v1/products/batch-delete",
+        "/api/v1/products/batch-delete",
         {
           data: selectionModel,
         }

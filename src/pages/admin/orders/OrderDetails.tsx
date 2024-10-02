@@ -33,7 +33,7 @@ export default function OrderDetails() {
 
   const getOrder = () => {
     axiosInstance
-      .get(`api/v1/orders/${orderId}`)
+      .get(`/api/v1/orders/${orderId}`)
       .then((response) => {
         console.log(response);
         setOrder(response.data);

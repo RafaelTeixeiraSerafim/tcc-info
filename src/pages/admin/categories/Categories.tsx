@@ -16,7 +16,7 @@ export default function Categories() {
 
   const getCategories = async () => {
     try {
-      const response = await axiosInstance.get("api/v1/categories");
+      const response = await axiosInstance.get("/api/v1/categories");
       console.log(response);
 
       setCategories(response.data);
@@ -29,7 +29,7 @@ export default function Categories() {
     try {
       if (!categories) return;
       const response = await axiosInstance.delete(
-        "api/v1/categories/batch-delete",
+        "/api/v1/categories/batch-delete",
         {
           data: selectionModel,
         }

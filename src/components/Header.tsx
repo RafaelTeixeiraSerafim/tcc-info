@@ -55,7 +55,7 @@ export default function Header() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get("api/v1/products");
+      const response = await axiosInstance.get("/api/v1/products");
       console.log(response);
 
       setProducts(response.data);
@@ -160,7 +160,7 @@ export default function Header() {
             <HeaderLogo />
           </Link>
           <SearchBar products={products} />
-          <AddressDisplay/>
+          <AddressDisplay />
           <Box
             sx={{
               display: { xs: "none", lg: "flex" },
@@ -195,10 +195,13 @@ export default function Header() {
                     position: "relative",
                   }}
                 >
-                  <Link to={"cart"} style={{
-                    textDecoration: "none",
-                    color: "inherit"
-                  }}>
+                  <Link
+                    to={"cart"}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
                     <IconButton
                       size="large"
                       aria-label="carrinho"

@@ -39,7 +39,7 @@ export default function AddressSelectModal({
 
     try {
       const response = await axiosInstance.get(
-        "api/v1/addresses?userId=" + user.id
+        "/api/v1/addresses?userId=" + user.id
       );
       console.log(response);
       setAddresses(response.data);

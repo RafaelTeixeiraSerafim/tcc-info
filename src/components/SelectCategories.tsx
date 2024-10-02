@@ -31,7 +31,7 @@ export default function SelectCategories({
 
   useEffect(() => {
     axiosInstance
-      .get("api/v1/categories")
+      .get("/api/v1/categories")
       .then((response) => {
         console.log(response);
         setCategories(response.data);

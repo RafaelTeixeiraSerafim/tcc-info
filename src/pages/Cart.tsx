@@ -33,7 +33,7 @@ export default function Cart() {
     if (!user) return;
 
     axiosInstance
-      .get(`api/v1/orders/user/${user.id}`)
+      .get(`/api/v1/orders/user/${user.id}`)
       .then((response) => {
         console.log(response);
         setOrder(response.data);
@@ -47,7 +47,7 @@ export default function Cart() {
     if (!order) return;
 
     axiosInstance
-      .put(`api/v1/orders/place-order/${order.id}`, {
+      .put(`/api/v1/orders/place-order/${order.id}`, {
         datePlaced: Date.now(),
         status: "PENDING",
       })
@@ -106,7 +106,9 @@ export default function Cart() {
               </Typography>
               <Button
                 variant="contained"
-                onClick={() => navigate(`/checkout/address-options`, {state: order})}
+                onClick={() =>
+                  navigate(`/checkout/address-options`, { state: order })
+                }
               >
                 Finalizar Compra
               </Button>

@@ -15,7 +15,7 @@ export default function CartCard({ cartItem, setOrder }: CartCardProps) {
     cartItemId: number
   ) => {
     axiosInstance
-      .delete(`api/v1/order-items/${cartItemId}`)
+      .delete(`/api/v1/order-items/${cartItemId}`)
       .then((response) => {
         console.log(response);
         setOrder((prevOrder) => {

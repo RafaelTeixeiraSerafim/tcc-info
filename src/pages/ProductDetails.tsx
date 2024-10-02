@@ -30,7 +30,7 @@ export default function ProductDetails() {
 
   const getProduct = () => {
     axiosInstance
-      .get(`api/v1/products/${productId}`)
+      .get(`/api/v1/products/${productId}`)
       .then((response) => {
         console.log(response);
         setProduct(response.data);
@@ -53,7 +53,7 @@ export default function ProductDetails() {
     };
 
     axiosInstance
-      .post("api/v1/order-items", data)
+      .post("/api/v1/order-items", data)
       .then((response) => {
         console.log(response);
         setAddedToCart(true);
@@ -67,7 +67,7 @@ export default function ProductDetails() {
   const getBoughtProduct = () => {
     axiosInstance
       .get(
-        `api/v1/bought-products?userId=${user?.id}&&productId=${product?.id}`
+        `/api/v1/bought-products?userId=${user?.id}&&productId=${product?.id}`
       )
       .then((response) => {
         console.log(response);
