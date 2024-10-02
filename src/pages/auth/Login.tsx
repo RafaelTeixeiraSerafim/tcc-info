@@ -26,7 +26,7 @@ export default function Login() {
     e.preventDefault();
 
     axiosInstance
-      .post("api/v1/auth/login", loginUser)
+      .post("/api/v1/auth/login", loginUser)
       .then((response) => {
         console.log(response);
         setUser(response.data);

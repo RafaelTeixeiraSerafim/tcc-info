@@ -13,7 +13,9 @@ export default function AddressDisplay() {
 
   const getAddress = async (addressId: string) => {
     try {
-      const response = await axiosInstance.get(`api/v1/addresses/${addressId}`);
+      const response = await axiosInstance.get(
+        `/api/v1/addresses/${addressId}`
+      );
       console.log(response);
       setSelectedAddress(response.data);
       setIncompleteAddress(null);
@@ -25,7 +27,7 @@ export default function AddressDisplay() {
   const getAddressByPostalCode = async (postalCode: string) => {
     try {
       const response = await axiosInstance.get(
-        `api/v1/addresses/postal/${postalCode}`
+        `/api/v1/addresses/postal/${postalCode}`
       );
       console.log(response);
       setIncompleteAddress({

@@ -13,7 +13,7 @@ export default function UpdateProduct() {
 
   const getProduct = () => {
     axiosInstance
-      .get(`api/v1/products/${productId}`)
+      .get(`/api/v1/products/${productId}`)
       .then((response) => {
         console.log(response);
         setProduct(response.data);

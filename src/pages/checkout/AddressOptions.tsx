@@ -22,7 +22,7 @@ export default function AddressOptions() {
     if (!user) return;
 
     axiosInstance
-      .get(`api/v1/orders/user/${user.id}`)
+      .get(`/api/v1/orders/user/${user.id}`)
       .then((response) => {
         console.log(response);
         setOrder(response.data);
@@ -37,7 +37,7 @@ export default function AddressOptions() {
 
     try {
       const response = await axiosInstance.get(
-        "api/v1/addresses?userId=" + user.id
+        "/api/v1/addresses?userId=" + user.id
       );
       console.log(response);
       setAddresses(response.data);

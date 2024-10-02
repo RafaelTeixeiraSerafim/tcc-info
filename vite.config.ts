@@ -7,8 +7,8 @@ export default defineConfig({
   base: "/tcc-info/",
   server: {
     proxy: {
-      "api/": {
-        target: "http://tcc-info-backend.sa-east-1.elasticbeanstalk.com/",
+      "/api": {
+        target: "http://tcc-info-backend.sa-east-1.elasticbeanstalk.com",
         changeOrigin: true,
       },
     },

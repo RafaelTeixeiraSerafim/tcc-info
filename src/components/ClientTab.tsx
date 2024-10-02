@@ -9,7 +9,7 @@ export default function ClientTab() {
 
   const getClients = () => {
     axiosInstance
-      .get("api/v1/users/clients")
+      .get("/api/v1/users/clients")
       .then((response) => {
         console.log(response);
         setClients(response.data);

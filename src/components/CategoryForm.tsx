@@ -22,7 +22,7 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let url = "api/v1/categories";
+    let url = "/api/v1/categories";
     let request = axiosInstance.post;
 
     if (isUpdating) {

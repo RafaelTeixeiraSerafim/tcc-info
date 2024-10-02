@@ -13,7 +13,7 @@ export default function Home() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get<IProduct[]>("api/v1/products");
+      const response = await axiosInstance.get<IProduct[]>("/api/v1/products");
       console.log(response);
 
       setProducts(response.data);
@@ -24,7 +24,7 @@ export default function Home() {
 
   // const getCategories = async () => {
   //   try {
-  //     const response = await axiosInstance.get("api/v1/categories");
+  //     const response = await axiosInstance.get("/api/v1/categories");
   //     console.log(response);
   //     setCategories(response.data);
   //   } catch (error) {

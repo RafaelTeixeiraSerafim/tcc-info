@@ -23,7 +23,7 @@ export default function AddressList({
   const handleDelete = async (addressId: number) => {
     try {
       const response = await axiosInstance.delete(
-        `api/v1/addresses/${addressId}`
+        `/api/v1/addresses/${addressId}`
       );
       console.log(response);
       setAddresses(addresses.filter((address) => address.id !== addressId));
@@ -38,14 +38,21 @@ export default function AddressList({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAddressId(parseInt(e.target.value))
-  }
+    setSelectedAddressId(parseInt(e.target.value));
+  };
 
   return (
     <>
       {addresses.map((address) => (
         <Box>
-          <input type="radio" name="address" key={address.id} value={address.id} onChange={handleChange} checked={selectedAddressId === address.id}/>
+          <input
+            type="radio"
+            name="address"
+            key={address.id}
+            value={address.id}
+            onChange={handleChange}
+            checked={selectedAddressId === address.id}
+          />
           <Typography>{address.fullName}</Typography>
           <Typography>{address.city}</Typography>
           <Button onClick={() => handleDelete(address.id)}>Excluir</Button>

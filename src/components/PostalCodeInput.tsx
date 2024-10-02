@@ -24,7 +24,7 @@ export default function PostalCodeInput({
   const getAddress = async (postalCode: string) => {
     try {
       const response = await axiosInstance.get(
-        `api/v1/addresses/postal/${postalCode}`
+        `/api/v1/addresses/postal/${postalCode}`
       );
       console.log(response);
       setAddress({

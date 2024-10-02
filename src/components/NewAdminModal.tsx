@@ -33,7 +33,7 @@ export default function NewAdminModal({
     e.preventDefault();
 
     axiosInstance
-      .post("api/v1/auth/signup", admin)
+      .post("/api/v1/auth/signup", admin)
       .then((response) => {
         console.log(response);
         getAdmins();

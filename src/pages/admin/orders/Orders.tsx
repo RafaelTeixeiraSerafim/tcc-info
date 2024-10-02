@@ -44,7 +44,7 @@ export default function Orders() {
 
   const getOrders = () => {
     axiosInstance
-      .get("api/v1/orders")
+      .get("/api/v1/orders")
       .then((response) => {
         console.log(response);
         setOrders(response.data);

@@ -36,7 +36,7 @@ export default function AddedToCartPopup() {
     if (!user?.id) return;
 
     axiosInstance
-      .get<IOrderItem[]>(`api/v1/order-items/${user.id}`)
+      .get<IOrderItem[]>(`/api/v1/order-items/${user.id}`)
       .then((response) => {
         console.log(response);
         setCartItems(response.data);
@@ -51,7 +51,7 @@ export default function AddedToCartPopup() {
     cartItemId: number
   ) => {
     axiosInstance
-      .delete(`api/v1/order-items/${cartItemId}`)
+      .delete(`/api/v1/order-items/${cartItemId}`)
       .then((response) => {
         console.log(response);
         setCartItems(
@@ -77,7 +77,7 @@ export default function AddedToCartPopup() {
     <>
       {cartItems && (
         <Paper
-        elevation={5}
+          elevation={5}
           sx={{
             position: "absolute",
             display: "flex",
@@ -106,7 +106,7 @@ export default function AddedToCartPopup() {
                     position: "relative",
                     display: "grid",
                     gridTemplateColumns: "35% 65%",
-                    gap: "0.5rem"
+                    gap: "0.5rem",
                   }}
                 >
                   <Box
@@ -115,15 +115,16 @@ export default function AddedToCartPopup() {
                     width={"100%"}
                   />
                   <Box>
-                    <Box sx={{
-                      width: "80%",
-                      height: "3rem",
-                      overflow: "scroll"
-                    }}>
-
-                    <Typography fontWeight={"bold"}>
-                      {cartItem.product.name}
-                    </Typography>
+                    <Box
+                      sx={{
+                        width: "80%",
+                        height: "3rem",
+                        overflow: "scroll",
+                      }}
+                    >
+                      <Typography fontWeight={"bold"}>
+                        {cartItem.product.name}
+                      </Typography>
                     </Box>
                     <Typography>
                       {new Intl.NumberFormat("pt-BR", {

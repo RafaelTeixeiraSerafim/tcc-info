@@ -102,7 +102,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       },
     };
 
-    let url = "api/v1/products";
+    let url = "/api/v1/products";
     let request = axiosInstance.post;
 
     if (isUpdating) {
