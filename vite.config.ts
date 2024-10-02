@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       "api/": {
-        target: process.env.VITE_API_URL,
+        target: "http://tcc-info-backend.sa-east-1.elasticbeanstalk.com/",
         changeOrigin: true,
       },
     },
