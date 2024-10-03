@@ -1,13 +1,16 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
+from dotenv import load_dotenv
+# basedir = os.path.abspath(os.path.dirname(__file__))
 
+load_dotenv(".flaskenv.prod")
+load_dotenv(".env.prod")
 
 class Config(object):
     DEBUG = False
     TESTING = False
     # CSRF_ENABLED = True
     # SECRET_KEY = 'this-really-needs-to-be-changed'
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_CONNECTION']
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     FLASK_RUN_PORT = os.environ['FLASK_RUN_PORT']
 
 
