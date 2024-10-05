@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="856d6474-034d-43e1-b057-68820352048c" name="Changes" comment="Diversas mudanças">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/back-end-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/back-end-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/AuthController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,7 +242,7 @@
       <workItem from="1727546362096" duration="7656000" />
       <workItem from="1727576601634" duration="2923000" />
       <workItem from="1727642345610" duration="17550000" />
-      <workItem from="1728149236846" duration="13644000" />
+      <workItem from="1728149236846" duration="14607000" />
     </task>
     <task id="LOCAL-00001" summary="Novas funcionalidades">
       <option name="closed" value="true" />

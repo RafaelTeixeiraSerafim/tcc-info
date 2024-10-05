@@ -41,7 +41,7 @@ public class AuthController {
     @Autowired
     private OrderService orderService;
 
-    @Value("${IS_HTTPS")
+    @Value("${IS_HTTPS}")
     private boolean isHttps;
 
     @PostMapping("/signup")
