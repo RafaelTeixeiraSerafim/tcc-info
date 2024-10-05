@@ -11,7 +11,7 @@ class Config(object):
     # CSRF_ENABLED = True
     # SECRET_KEY = 'this-really-needs-to-be-changed'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-    FLASK_RUN_PORT = os.environ['FLASK_RUN_PORT']
+    FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 8080)
 
 
 class ProductionConfig(Config):
