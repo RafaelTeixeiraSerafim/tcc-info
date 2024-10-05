@@ -13,6 +13,7 @@ import com.rafaelteixeiraserafim.tcc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -40,6 +41,8 @@ public class AuthController {
     @Autowired
     private OrderService orderService;
 
+    @Value("${IS_HTTPS")
+    private boolean isHttps;
 
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Valid SignUpDto data) {
@@ -80,7 +83,7 @@ public class AuthController {
         // Create an empty cookie with the same name and set maxAge to 0 to delete it
         ResponseCookie deleteCookie = ResponseCookie.from("token", "")
                 .httpOnly(true)
-                .secure(true) // TODO - Set to true in prod
+                .secure(isHttps) // TODO - Set to true in prod
                 .path("/")
                 .maxAge(0)     // Immediately expires the cookie
                 .sameSite("None")  // If using cross-origin requests
@@ -100,7 +103,7 @@ public class AuthController {
             System.out.println(accessToken);
             return ResponseCookie.from("token", accessToken)
                     .httpOnly(true)
-                    .secure(false) // Ensure it's sent over HTTPS
+                    .secure(isHttps) // Ensure it's sent over HTTPS
                     .path("/")
                     .maxAge(7 * 24 * 60 * 60) // 7 days
                     .sameSite("None") // CSRF protection

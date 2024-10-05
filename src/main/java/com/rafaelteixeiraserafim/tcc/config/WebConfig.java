@@ -23,9 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("*")
+                .allowedOrigins(frontendBaseUrl)
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "PATCH", "OPTIONS")
-                .allowCredentials(false)
+                .allowCredentials(true)
                 .allowedHeaders("*"); // TODO - Add maxAge in prod
     }
 

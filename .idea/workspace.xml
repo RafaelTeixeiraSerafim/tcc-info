@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="856d6474-034d-43e1-b057-68820352048c" name="Changes" comment="Diversas mudanças" />
+    <list default="true" id="856d6474-034d-43e1-b057-68820352048c" name="Changes" comment="Diversas mudanças">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/back-end-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/back-end-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,6 +73,10 @@
     "HTTP Request.All in generated-requests.executor": "Run",
     "HTTP Request.generated-requests | #3.executor": "Run",
     "Maven.back-end [clean,package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.TccApplication.executor": "Debug",
     "git-widget-placeholder": "back-end",
@@ -236,7 +243,7 @@
       <workItem from="1727546362096" duration="7656000" />
       <workItem from="1727576601634" duration="2923000" />
       <workItem from="1727642345610" duration="17550000" />
-      <workItem from="1728149236846" duration="12385000" />
+      <workItem from="1728149236846" duration="13644000" />
     </task>
     <task id="LOCAL-00001" summary="Novas funcionalidades">
       <option name="closed" value="true" />
