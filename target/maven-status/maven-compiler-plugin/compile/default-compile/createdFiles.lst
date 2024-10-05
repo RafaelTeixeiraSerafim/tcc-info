@@ -26,6 +26,7 @@ com\rafaelteixeiraserafim\tcc\service\UserService.class
 com\rafaelteixeiraserafim\tcc\controller\BoughtProductController.class
 com\rafaelteixeiraserafim\tcc\controller\CategoryController.class
 com\rafaelteixeiraserafim\tcc\dto\ImageDto.class
+com\rafaelteixeiraserafim\tcc\config\AwsS3Config.class
 com\rafaelteixeiraserafim\tcc\service\ReviewService.class
 com\rafaelteixeiraserafim\tcc\dto\OrderItemRequest.class
 com\rafaelteixeiraserafim\tcc\model\Order.class
