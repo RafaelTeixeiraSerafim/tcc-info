@@ -11,7 +11,7 @@ import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import type { Router, Navigation } from "@toolpad/core";
 import Logo from "../assets/images/logo.png";
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import { dashboardTheme } from "../themes";
 
@@ -83,13 +83,7 @@ const NAVIGATION: Navigation = [
   },
 ];
 
-interface AdminDashboardLayoutProps {
-  outlet: React.ReactElement;
-}
-
-export default function AdminDashboardLayout({
-  outlet,
-}: AdminDashboardLayoutProps) {
+export default function AdminDashboardLayout() {
   const [pathname, setPathname] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -108,8 +102,8 @@ export default function AdminDashboardLayout({
   }, [pathname]);
 
   useEffect(() => {
-    setPathname(String(location.pathname))
-  }, [location.pathname])
+    setPathname(String(location.pathname));
+  }, [location.pathname]);
 
   return (
     <AppProvider
@@ -131,7 +125,7 @@ export default function AdminDashboardLayout({
             textAlign: "center",
           }}
         >
-          {outlet}
+          <Outlet />
         </Box>
       </DashboardLayout>
     </AppProvider>

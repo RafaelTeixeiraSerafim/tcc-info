@@ -26,6 +26,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import AddressOptions from "./pages/checkout/AddressOptions";
 import LoginRequired from "./routeWrappers/LoginRequired";
+import AdminDashboardLayout from "./components/AdminDashboardLayout";
 
 function App() {
   return (
@@ -48,7 +49,7 @@ function App() {
                 </Route>
               </Route>
               <Route element={<AdminRequired />}>
-                <Route path="admin" element={<AdminLayout />}>
+                <Route path="admin" element={<AdminDashboardLayout />}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="users" element={<Users />} />
                   <Route path="orders" element={<Orders />} />
