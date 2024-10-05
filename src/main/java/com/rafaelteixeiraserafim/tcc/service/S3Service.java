@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -11,8 +12,13 @@ import java.time.Instant;
 
 @Service
 public class S3Service {
-    S3Client s3 = S3Client.create();
+    private final S3Client s3Client;
     private final String bucketName = "tcc-info-backend";
+
+    @Autowired
+    public S3Service(S3Client s3Client) {
+        this.s3Client = s3Client;
+    }
 
     private void uploadFile(String key, byte[] bytes) {
         try {
@@ -21,7 +27,7 @@ public class S3Service {
                     .key(key)
                     .build();
 
-            s3.putObject(putObjectRequest, RequestBody.fromBytes(bytes));
+            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(bytes));
             System.out.println("File upload successful");
         } catch (S3Exception e) {
             System.err.println(e.getMessage());
@@ -42,7 +48,7 @@ public class S3Service {
                     .delete(delete)
                     .build();
 
-            s3.deleteObjects(multiObjectDeleteRequest);
+            s3Client.deleteObjects(multiObjectDeleteRequest);
             System.out.println("Objects deletion successful");
         } catch (S3Exception e) {
             System.err.println(e.getMessage());
