@@ -7,5 +7,5 @@ dist/
 htmlcov/
 .tox/
 docs/_build/
-.env.local
-.flaskenv.local
+.env.*
+.flaskenv.*
