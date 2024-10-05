@@ -14,12 +14,15 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/orders")
 public class OrderController {
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private BoughtProductService boughtProductService;
+    private final OrderService orderService;
+    private final UserService userService;
+    private final BoughtProductService boughtProductService;
+
+    public OrderController(OrderService orderService, UserService userService, BoughtProductService boughtProductService) {
+        this.orderService = orderService;
+        this.userService = userService;
+        this.boughtProductService = boughtProductService;
+    }
 
     @GetMapping()
     public List<Order> getOrders() {
@@ -29,6 +32,11 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public Order getOrder(@PathVariable Long orderId) {
         return orderService.getOrderById(orderId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public Order getOrderByUserId(@PathVariable Long userId) {
+        return orderService.getOrderByUserId(userId);
     }
 
     @GetMapping("/status")

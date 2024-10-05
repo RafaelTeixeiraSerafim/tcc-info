@@ -20,7 +20,7 @@ import java.util.Date;
 public class WishlistItem {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
     @ManyToOne

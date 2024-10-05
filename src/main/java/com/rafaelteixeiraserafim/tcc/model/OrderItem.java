@@ -19,7 +19,7 @@ import java.util.Date;
 public class OrderItem {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
     @JsonIgnore

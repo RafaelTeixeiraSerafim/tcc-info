@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageDto {
+    private Long id;
     private String url;
     private MultipartFile file;
 }

@@ -3,6 +3,7 @@ package com.rafaelteixeiraserafim.tcc.service;
 import com.rafaelteixeiraserafim.tcc.dto.ImageDto;
 import com.rafaelteixeiraserafim.tcc.dto.ProductDto;
 import com.rafaelteixeiraserafim.tcc.model.Category;
+import com.rafaelteixeiraserafim.tcc.model.Image;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,19 @@ public class ProductService {
     }
 
     public void deleteProductById(Long productId) {
-        Optional<Product> product = productRepository.findById(productId);
+        Optional<Product> optionalProduct = productRepository.findById(productId);
 
-        if (product.isEmpty()) {
+        if (optionalProduct.isEmpty()) {
             throw new IllegalStateException("product with id " + productId + " does not exist");
         }
 
-        productRepository.delete(product.get());
+        Product product = optionalProduct.get();
+
+        for (Image image : product.getImages()) {
+            imageService.handleDeleteImage(image);
+        }
+
+        productRepository.delete(product);
     }
 
     @Transactional
@@ -90,7 +97,8 @@ public class ProductService {
             if (imageUrl.isEmpty()) {
                 imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), product);
             } else if (imageFile != null) {
-                imageService.handleImageUpdate(imageUrl, imageFile);
+                Image image = imageService.getImageById(images.get(i).getId());
+                imageService.handleImageUpdate(image, imageFile);
             }
         }
     }

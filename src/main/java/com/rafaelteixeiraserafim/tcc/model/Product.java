@@ -31,6 +31,7 @@ public class Product {
     private Category category;
     private String name;
     private String about;
+    @Column(length = 2000)
     private String description;
     @Column(precision = 10, scale = 2)
     private BigDecimal origPrice;

@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/order-items")
 public class OrderItemController {
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private OrderItemService orderItemService;
+    private final OrderService orderService;
+    private final OrderItemService orderItemService;
+
+    public OrderItemController(OrderService orderService, OrderItemService orderItemService) {
+        this.orderService = orderService;
+        this.orderItemService = orderItemService;
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getOrderItemsByUserId(@PathVariable Long userId) {
@@ -41,6 +44,6 @@ public class OrderItemController {
     public String createOrderItem(@PathVariable Long orderItemId) {
         orderItemService.deleteOrderItem(orderItemId);
 
-        return "OrderItem create successfully";
+        return "OrderItem created successfully";
     }
 }

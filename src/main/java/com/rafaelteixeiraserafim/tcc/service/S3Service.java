@@ -1,22 +1,12 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-import software.amazon.awssdk.transfer.s3.S3TransferManager;
-import software.amazon.awssdk.transfer.s3.model.CompletedFileUpload;
-import software.amazon.awssdk.transfer.s3.model.FileUpload;
-import software.amazon.awssdk.transfer.s3.model.UploadFileRequest;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.Paths;
 import java.time.Instant;
 
 @Service
@@ -60,12 +50,22 @@ public class S3Service {
         }
     }
 
-    public String getImageKey(Instant timestamp, String name) {
+    public String createImageKey(Instant timestamp, String name) {
         return "images/" + timestamp + "/" + name + ".png";
     }
 
+    public String getImageKeyFromUrl(String url) {
+        return url.split("com/")[1];
+    }
+
     public String getImageUrl(Instant timestamp, String name) {
-        String key = getImageKey(timestamp, name);
+        String key = createImageKey(timestamp, name);
+        String s3Url = "https://tcc-info-backend.s3.amazonaws.com/";
+
+        return s3Url + key;
+    }
+
+    public String getImageUrl(String key) {
         String s3Url = "https://tcc-info-backend.s3.amazonaws.com/";
 
         return s3Url + key;
@@ -73,7 +73,7 @@ public class S3Service {
 
     public void uploadNewFile(Instant timestamp, String name, MultipartFile imageFile) {
         try {
-            String key = getImageKey(timestamp, name);
+            String key = createImageKey(timestamp, name);
 
             uploadFile(key, imageFile.getBytes());
         } catch (IOException e) {

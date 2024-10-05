@@ -25,4 +25,7 @@ replay_pid*
 
 # property files
 application-dev.properties
-application-prod.properties
+application-prod.
+
+# env files
+.env*

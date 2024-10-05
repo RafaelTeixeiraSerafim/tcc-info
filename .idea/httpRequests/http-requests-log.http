@@ -1,0 +1,62 @@
+GET http://localhost:8080/api/v1/addresses/postal/88801650
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/v1/addresses/postal/88801650
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/v1/addresses/postal/88801650
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/v1/orders/1
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/v1/orders/status
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-09-17T210449.200.json
+
+###
+
+GET http://localhost:8080/api/v1/orders/status
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-09-17T210407.200.json
+
+###
+
+GET http://localhost:8080/api/v1/orders/status
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-09-17T210237.200.json
+
+###
+

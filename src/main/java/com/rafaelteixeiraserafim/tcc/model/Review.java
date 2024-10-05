@@ -21,7 +21,7 @@ import java.util.Date;
 public class Review {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.IDENTITY
     )
     private Long id;
     @ManyToOne

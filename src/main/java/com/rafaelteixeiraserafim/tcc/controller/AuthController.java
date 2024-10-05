@@ -63,15 +63,16 @@ public class AuthController {
     @PostMapping("/check-token")
     public ResponseEntity<?> checkToken(HttpServletRequest request) {
         String token = securityFilter.recoverToken(request);
-        String email = tokenProvider.validateToken(token);
-        User user = userService.getUserByEmail(email);
-
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("User not found");
+        if (token != null) {
+            String email = tokenProvider.validateToken(token);
+            User user = userService.getUserByEmail(email);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            }
         }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("User not found");
     }
 
     @PostMapping("/logout")
@@ -79,7 +80,7 @@ public class AuthController {
         // Create an empty cookie with the same name and set maxAge to 0 to delete it
         ResponseCookie deleteCookie = ResponseCookie.from("token", "")
                 .httpOnly(true)
-                .secure(false) // TODO - Set to true in prod
+                .secure(true) // TODO - Set to true in prod
                 .path("/")
                 .maxAge(0)     // Immediately expires the cookie
                 .sameSite("None")  // If using cross-origin requests
@@ -104,7 +105,7 @@ public class AuthController {
                     .maxAge(7 * 24 * 60 * 60) // 7 days
                     .sameSite("None") // CSRF protection
                     .build();
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Exception: " + e);
             throw new RuntimeException("Authentication failed", e);
         }
