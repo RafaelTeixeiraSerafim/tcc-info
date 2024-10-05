@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins("*")
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "PATCH", "OPTIONS")
-                .allowCredentials(true)
+                .allowCredentials(false)
                 .allowedHeaders("*"); // TODO - Add maxAge in prod
     }
 
