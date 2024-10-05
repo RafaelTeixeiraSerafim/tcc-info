@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="856d6474-034d-43e1-b057-68820352048c" name="Changes" comment="Diversas mudanças">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/AuthConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/AuthConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/controller/OrderItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ImageDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/dto/ImageDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Address.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/BoughtProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/BoughtProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Image.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/Review.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/WishlistItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/model/WishlistItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/S3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rafaelteixeiraserafim/tcc/service/S3Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,8 +17,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -95,16 +71,18 @@
     "Application.TccApplication.executor": "Debug",
     "HTTP Request.All in generated-requests.executor": "Run",
     "HTTP Request.generated-requests | #3.executor": "Run",
+    "Maven.back-end [clean,package].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.TccApplication.executor": "Debug",
     "git-widget-placeholder": "back-end",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/rafae/OneDrive/Desktop/demo",
+    "last_opened_file_path": "C:/Users/rafae/OneDrive/Documents/Fase 4/tcc-info/back-end",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propCompiler",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -119,8 +97,11 @@
       <recent name="C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.TccApplication">
+  <component name="RunManager" selected="Spring Boot.TccApplication">
     <configuration name="TccApplication" type="Application" factoryName="Application">
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/.env" />
+      </option>
       <option name="MAIN_CLASS_NAME" value="com.rafaelteixeiraserafim.tcc.TccApplication" />
       <module name="back-end" />
       <method v="2">
@@ -146,14 +127,80 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="back-end [clean,package]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="delegateBuildToMaven" value="false" />
+            <option name="environmentProperties">
+              <map>
+                <entry key="DATABASE_URL" value="postgresql://postgres:qxqWfFRywvzKOvdppILcqMzXfQuNuawS@postgres.railway.internal:5432/railway" />
+                <entry key="PGPASSWORD" value="qxqWfFRywvzKOvdppILcqMzXfQuNuawS" />
+                <entry key="PGUSER" value="postgres" />
+              </map>
+            </option>
+            <option name="jreName" value="#USE_PROJECT_JDK" />
+            <option name="mavenProperties">
+              <map />
+            </option>
+            <option name="passParentEnv" value="true" />
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="false" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="package" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map>
+                <entry key="prod" value="true" />
+              </map>
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
     <configuration name="TccApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" value="dev" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/.env.dev" />
+      </option>
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="back-end" />
+      <selectedOptions>
+        <option name="environmentVariables" />
+      </selectedOptions>
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.rafaelteixeiraserafim.tcc.TccApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.TccApplication" />
+      <item itemvalue="HTTP Request.All in generated-requests" />
+      <item itemvalue="HTTP Request.generated-requests | #3" />
+      <item itemvalue="Maven.back-end [clean,package]" />
+      <item itemvalue="Spring Boot.TccApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="HTTP Request.generated-requests | #3" />
@@ -191,6 +238,7 @@
       <workItem from="1727546362096" duration="7656000" />
       <workItem from="1727576601634" duration="2923000" />
       <workItem from="1727642345610" duration="17550000" />
+      <workItem from="1728149236846" duration="11413000" />
     </task>
     <task id="LOCAL-00001" summary="Novas funcionalidades">
       <option name="closed" value="true" />
