@@ -49,7 +49,7 @@ public class AddressController {
     @GetMapping("/postal/{postalCode}")
     public AddressFromPostal getAddressFromPostal(@PathVariable("postalCode") String postalCode) {
         validatePostalCode(postalCode);
-        System.out.println("hey");
+        System.out.println(apiBaseUrl + "/postal/" + postalCode);
         return restTemplate.getForObject(apiBaseUrl + "/postal/" + postalCode, AddressFromPostal.class);
     }
 

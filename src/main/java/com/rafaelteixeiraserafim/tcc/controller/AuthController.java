@@ -65,6 +65,7 @@ public class AuthController {
 
     @PostMapping("/check-token")
     public ResponseEntity<?> checkToken(HttpServletRequest request) {
+        System.out.println(isHttps);
         String token = securityFilter.recoverToken(request);
         if (token != null) {
             String email = tokenProvider.validateToken(token);
