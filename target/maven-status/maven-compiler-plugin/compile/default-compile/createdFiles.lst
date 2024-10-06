@@ -1,4 +1,5 @@
 com\rafaelteixeiraserafim\tcc\dto\AddressDto.class
+com\rafaelteixeiraserafim\tcc\service\AddressService.class
 com\rafaelteixeiraserafim\tcc\model\BoughtProduct.class
 com\rafaelteixeiraserafim\tcc\repository\OrderRepository.class
 com\rafaelteixeiraserafim\tcc\controller\UserController.class
@@ -31,7 +32,6 @@ com\rafaelteixeiraserafim\tcc\service\ReviewService.class
 com\rafaelteixeiraserafim\tcc\dto\OrderItemRequest.class
 com\rafaelteixeiraserafim\tcc\model\Order.class
 com\rafaelteixeiraserafim\tcc\model\User.class
-com\rafaelteixeiraserafim\tcc\controller\AddressController$1.class
 com\rafaelteixeiraserafim\tcc\repository\OrderItemRepository.class
 com\rafaelteixeiraserafim\tcc\repository\ImageRepository.class
 com\rafaelteixeiraserafim\tcc\repository\ReviewRepository.class
@@ -42,6 +42,7 @@ com\rafaelteixeiraserafim\tcc\service\OrderService.class
 com\rafaelteixeiraserafim\tcc\repository\CategoryRepository.class
 com\rafaelteixeiraserafim\tcc\service\BoughtProductService.class
 com\rafaelteixeiraserafim\tcc\enums\OrderStatus.class
+com\rafaelteixeiraserafim\tcc\service\AddressService$1.class
 com\rafaelteixeiraserafim\tcc\repository\UserRepository.class
 com\rafaelteixeiraserafim\tcc\service\AuthService.class
 com\rafaelteixeiraserafim\tcc\dto\OrderRequest.class

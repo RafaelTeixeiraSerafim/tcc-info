@@ -41,9 +41,6 @@ public class AuthController {
     @Autowired
     private OrderService orderService;
 
-    @Value("${IS_HTTPS}")
-    private boolean isHttps;
-
     @PostMapping("/signup")
     public ResponseEntity<User> signUp(@RequestBody @Valid SignUpDto data) {
         User user = authService.signUp(data);
@@ -65,7 +62,6 @@ public class AuthController {
 
     @PostMapping("/check-token")
     public ResponseEntity<?> checkToken(HttpServletRequest request) {
-        System.out.println(isHttps);
         String token = securityFilter.recoverToken(request);
         if (token != null) {
             String email = tokenProvider.validateToken(token);
@@ -82,13 +78,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         // Create an empty cookie with the same name and set maxAge to 0 to delete it
-        ResponseCookie deleteCookie = ResponseCookie.from("token", "")
-                .httpOnly(true)
-                .secure(isHttps) // TODO - Set to true in prod
-                .path("/")
-                .maxAge(0)     // Immediately expires the cookie
-                .sameSite("None")  // If using cross-origin requests
-                .build();
+        ResponseCookie deleteCookie = authService.deleteCookie();
 
         // Respond with the Set-Cookie header to delete the token
         return ResponseEntity.ok()
@@ -100,15 +90,9 @@ public class AuthController {
         try {
             var emailPassword = new UsernamePasswordAuthenticationToken(email, password);
             var authUser = authenticationManager.authenticate(emailPassword);
-            var accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
+            String accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
             System.out.println(accessToken);
-            return ResponseCookie.from("token", accessToken)
-                    .httpOnly(true)
-                    .secure(isHttps) // Ensure it's sent over HTTPS
-                    .path("/")
-                    .maxAge(7 * 24 * 60 * 60) // 7 days
-                    .sameSite("None") // CSRF protection
-                    .build();
+            return authService.createCookie(accessToken);
         } catch (Exception e) {
             System.out.println("Exception: " + e);
             throw new RuntimeException("Authentication failed", e);
