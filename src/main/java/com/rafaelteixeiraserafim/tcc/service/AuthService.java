@@ -31,6 +31,7 @@ public class AuthService implements UserDetailsService {
     }
 
     public User signUp(SignUpDto data) throws ResponseStatusException {
+        System.out.println(isHttps);
         if (userRepository.findByEmail(data.getEmail()) != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use");
         }
