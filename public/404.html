@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0; url=/" />
     <title>Redirecionando...</title>
   </head>
-  <body>
-  </body>
+    <body>
+      <script type="text/javascript">
+          // Redirect all requests to index.html for client-side routing
+          const redirectTo = window.location.pathname
+          ? window.location.pathname.substring(1)
+          : '';
+          window.location.href = `/${redirectTo}`;
+      </script>
+    </body>
 </html>
