@@ -8,7 +8,6 @@ import { UserProvider } from "./contexts/UserContext";
 import UserLayout from "./layouts/UserLayout";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
-import AdminLayout from "./layouts/AdminLayout";
 import AdminRequired from "./routeWrappers/AdminRequired";
 import LogoutRequired from "./routeWrappers/LogoutRequired";
 import { ThemeProviderWrapper } from "./contexts/ThemeContext";
