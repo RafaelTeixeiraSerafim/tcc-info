@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import { Suspense } from "react";
 import LoadingFallback from "./components/LoadingFallback";
@@ -32,7 +32,7 @@ function App() {
     <ThemeProviderWrapper>
       <UserProvider>
         <Suspense fallback={<LoadingFallback />}>
-          <BrowserRouter basename="/tcc-info">
+          <HashRouter basename="/tcc-info">
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<UserLayout />}>
@@ -96,7 +96,7 @@ function App() {
                 <Route path="*" element={<NoPage />} />
               </Route> */}
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </Suspense>
       </UserProvider>
     </ThemeProviderWrapper>
