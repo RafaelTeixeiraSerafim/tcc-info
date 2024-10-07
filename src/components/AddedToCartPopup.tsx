@@ -1,36 +1,16 @@
-import {
-  Box,
-  Button,
-  Icon,
-  IconButton,
-  Paper,
-  Typography,
-} from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, IconButton, Paper, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
 import { IOrderItem } from "../interfaces";
-import UserContext from "../contexts/UserContext";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useUserContext } from "../hooks";
+import useTotal from "../hooks/useTotal";
 
 export default function AddedToCartPopup() {
   const [cartItems, setCartItems] = useState<IOrderItem[] | null>(null);
-  const [total, setTotal] = useState(0);
 
-  const { hasErrorCart, user } = useContext(UserContext);
-
-  const getTotal = () => {
-    let sum = 0;
-    cartItems?.forEach((cartItem) => {
-      let price = 0;
-      price =
-        cartItem.qty *
-        (parseFloat(cartItem.product.salePrice) ||
-          parseFloat(cartItem.product.origPrice));
-      sum += price;
-    });
-
-    setTotal(sum);
-  };
+  const { hasErrorCart, user } = useUserContext();
+  const { total } = useTotal(cartItems);
 
   const getCartItems = () => {
     if (!user?.id) return;
@@ -66,12 +46,6 @@ export default function AddedToCartPopup() {
   useEffect(() => {
     getCartItems();
   }, [user?.id]);
-
-  useEffect(() => {
-    if (!cartItems?.length) return;
-
-    getTotal();
-  }, [cartItems?.length]);
 
   return (
     <>

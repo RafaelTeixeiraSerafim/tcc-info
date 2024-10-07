@@ -2,17 +2,14 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   IconButton,
   Menu,
   MenuItem,
-  TextField,
   Toolbar,
   useTheme,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
 import { IProduct } from "../interfaces";
 import axiosInstance from "../config/axiosInstance";
 import HeaderLogo from "./HeaderLogo";
@@ -22,6 +19,7 @@ import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
 import AddedToCartPopup from "./AddedToCartPopup";
 import { AccountCircle } from "@mui/icons-material";
 import AddressDisplay from "./AddressDisplay";
+import { useUserContext } from "../hooks";
 
 export default function Header() {
   const [products, setProducts] = useState<IProduct[] | null>(null);
@@ -31,7 +29,7 @@ export default function Header() {
     useState<null | HTMLElement>(null);
 
   const { user, logoutUser, hasCheckedToken, addedToCart } =
-    useContext(UserContext);
+    useUserContext();
 
   const theme = useTheme();
 

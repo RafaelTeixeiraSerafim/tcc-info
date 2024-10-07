@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
 import { IOrder } from "../interfaces";
-import FormModal from "./FormModal";
-import StatusInputs from "./StatusInputs";
+import Modal from "./Modal";
+import { InputLabel, MenuItem, Select } from "@mui/material";
+import SubmitButton from "./SubmitButton";
+import translateStatus from "../utils/funcs/statusTranslator";
 
 interface StatusModalProps {
   isOpen: boolean;
@@ -64,17 +66,27 @@ export default function StatusModal({
   }, []);
 
   return (
-    <FormModal
-      handleClose={handleClose}
-      handleSubmit={handleSubmit}
-      isOpen={isOpen}
-    >
-      <StatusInputs
-        selectedStatus={selectedStatus}
-        setIsOpen={setIsOpen}
-        setSelectedStatus={setSelectedStatus}
-        statusList={statusList}
-      />
-    </FormModal>
+      <Modal handleClose={handleClose} isOpen={isOpen}>
+      <Modal.Title>Alterar Inputs</Modal.Title>
+        <Modal.Form handleSubmit={handleSubmit}>
+          <InputLabel id="status-select-label">Status</InputLabel>
+          <Select
+            labelId="status-select-label"
+            label="status"
+            id="status-select"
+            value={selectedStatus}
+            placeholder="Status"
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            {statusList?.map((status) => (
+              <MenuItem value={status}>{translateStatus(status)}</MenuItem>
+            ))}
+          </Select>
+          <Modal.Actions>
+            <Modal.Cancel />
+            <SubmitButton>Alterar</SubmitButton>
+          </Modal.Actions>
+        </Modal.Form>
+      </Modal>
   );
 }

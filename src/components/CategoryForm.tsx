@@ -1,9 +1,11 @@
 import React from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useState } from "react";
 import { ICategory } from "../interfaces";
 import axiosInstance from "../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import Form from "./Form";
+import SubmitButton from "./SubmitButton";
 
 interface CategoryFormProps {
   origCategory?: ICategory;
@@ -48,20 +50,8 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
   };
 
   return (
-    <Box
-      component={"form"}
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "2rem",
-        width: "40%",
-        alignItems: "center",
-      }}
-    >
-      <Typography variant="h4" component={"h1"}>
-        {isUpdating ? "Alterar" : "Nova"} Categoria
-      </Typography>
+    <Form handleSubmit={handleSubmit} style={{width: "60%"}}>
+      <Form.Title>{isUpdating ? "Alterar" : "Nova"} Categoria</Form.Title>
       <TextField
         type="text"
         name="name"
@@ -79,32 +69,15 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
         onChange={handleChange}
         fullWidth
       />
-      <Box
-        sx={{
-          display: "flex",
-          gap: "2rem",
-          width: "100%",
-        }}
-      >
-        <Button
-          onClick={() => navigate("/admin/categories")}
+      <Form.Actions>
+        <Form.Action
+          handleClick={() => navigate("/admin/categories")}
           variant="outlined"
-          sx={{
-            flex: 1,
-          }}
         >
           Cancelar
-        </Button>
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{
-            flex: 1,
-          }}
-        >
-          {isUpdating ? "Alterar" : "Criar"}
-        </Button>
-      </Box>
-    </Box>
+        </Form.Action>
+        <SubmitButton>{isUpdating ? "Alterar" : "Criar"}</SubmitButton>
+      </Form.Actions>
+    </Form>
   );
 }

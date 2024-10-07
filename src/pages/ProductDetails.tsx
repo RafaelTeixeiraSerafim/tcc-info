@@ -12,8 +12,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IBoughtProduct, IProduct } from "../interfaces";
 import ProductImagesDisplay from "../components/ProductImagesDisplay";
 import axiosInstance from "../config/axiosInstance";
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../contexts/UserContext";
+import { useEffect, useState } from "react";
+import { useUserContext } from "../hooks";
 
 export default function ProductDetails() {
   const productState: IProduct = useLocation().state;
@@ -26,7 +26,7 @@ export default function ProductDetails() {
   const { productId } = useParams();
   const navigate = useNavigate();
 
-  const { user, setAddedToCart, setHasErrorCart } = useContext(UserContext);
+  const { user, setAddedToCart, setHasErrorCart } = useUserContext();
 
   const getProduct = () => {
     axiosInstance
@@ -171,7 +171,7 @@ export default function ProductDetails() {
                     { length: parseInt(product.stockQty) },
                     (_, i) => i + 1
                   ).map((qty) => (
-                    <MenuItem value={qty}>{qty}</MenuItem>
+                    <MenuItem value={qty} key={qty}>{qty}</MenuItem>
                   ))}
                 </Select>
                 <Button

@@ -58,6 +58,7 @@ export default function ProductImagesDisplay({ images }: ProductImagesDisplay) {
                 onMouseLeave={handleHoverLeave}
                 onClick={handleClick}
                 data-id={image.id}
+                key={image.id}
                 width={"100%"}
                 sx={{
                   cursor: "pointer",

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import UserContext from "../contexts/UserContext";
+import React from "react";
 import { Box } from "@mui/material";
+import { useUserContext } from "../hooks";
 
 export default function AddedToCartBackdrop() {
-  const { addedToCart, setAddedToCart } = useContext(UserContext);
+  const { addedToCart, setAddedToCart } = useUserContext();
 
   return (
     <>

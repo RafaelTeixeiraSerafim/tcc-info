@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IOrder, IOrderTableRow } from "../../../interfaces";
 import axiosInstance from "../../../config/axiosInstance";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../../contexts/UserContext";
+import translateStatus from "../../../utils/funcs/statusTranslator";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", flex: 1 },
@@ -39,7 +39,6 @@ export default function Orders() {
   const [orders, setOrders] = useState<IOrder[] | null>(null);
   const [rows, setRows] = useState<IOrderTableRow[] | null>(null);
 
-  const { translateStatus } = useContext(UserContext);
   const navigate = useNavigate();
 
   const getOrders = () => {

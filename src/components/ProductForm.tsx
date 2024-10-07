@@ -14,6 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import PriceInput from "./PriceInput";
+import Form from "./Form";
+import SubmitButton from "./SubmitButton";
 
 interface ProductFormProps {
   origProduct?: IProduct | undefined;
@@ -130,171 +132,127 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
   };
 
   return (
-    <Box
-      component={"form"}
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "2rem",
-        width: "50%",
-      }}
-    >
-      <Typography variant="h3" component={"h1"}>
+    <Form handleSubmit={handleSubmit}>
+      <Form.Title>
         {isUpdating ? "Alterar produto" : "Criar produto"}
-      </Typography>
-      <FormControl
+      </Form.Title>
+      <TextField
+        type="text"
+        name="name"
+        label="Nome"
+        value={formProduct.name}
+        required
+        onChange={handleChange}
+      />
+      <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
+          justifyContent: "space-between",
+          gap: 2,
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            textAlign: "left",
+          }}
+        >
+          <SelectCategories
+            setFormProduct={setFormProduct}
+            formProduct={formProduct}
+          />
+        </Box>
         <TextField
-          type="text"
-          name="name"
-          label="Nome"
-          value={formProduct.name}
+          type="number"
+          name="stockQty"
+          label="Qtde em estoque"
+          value={formProduct.stockQty}
           required
           onChange={handleChange}
+          sx={{
+            flex: 1,
+          }}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 5,
+        }}
+      >
+        <PriceInput
+          formProduct={formProduct}
+          setFormProduct={setFormProduct}
+          label="Preço original"
+          name="origPrice"
+          required
         />
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            gap: 2,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-              textAlign: "left",
-            }}
-          >
-            <SelectCategories
-              setFormProduct={setFormProduct}
-              formProduct={formProduct}
-            />
-          </Box>
-          <TextField
-            type="number"
-            name="stockQty"
-            label="Qtde em estoque"
-            value={formProduct.stockQty}
-            required
-            onChange={handleChange}
-            sx={{
-              flex: 1,
-            }}
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={sale}
+                onChange={(e) => setSale(e.target.checked)}
+              />
+            }
+            label="Oferta"
           />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 5,
-          }}
-        >
           <PriceInput
             formProduct={formProduct}
             setFormProduct={setFormProduct}
-            label="Preço original"
-            name="origPrice"
-            required
+            label="Preço de oferta"
+            name="salePrice"
+            disabled={!sale}
           />
-          <Box
-            sx={{
-              display: "flex",
-            }}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={sale}
-                  onChange={(e) => setSale(e.target.checked)}
-                />
-              }
-              label="Oferta"
-            />
-            <PriceInput
-              formProduct={formProduct}
-              setFormProduct={setFormProduct}
-              label="Preço de oferta"
-              name="salePrice"
-              disabled={!sale}
-            />
-          </Box>
         </Box>
-        {/* <TextField
-          multiline
-          minRows={5}
-          name="about"
-          label="Sobre"
-          value={formProduct.about}
-          required
-          onChange={handleChange}
-        /> */}
-        <TextField
-          multiline
-          minRows={10}
-          maxRows={20}
-          name="description"
-          label="Descrição"
-          value={formProduct.description}
-          required
-          onChange={handleChange}
-        />
-        <Box
-          sx={{
-            display: "flex",
-            gap: "1rem",
-            justifyContent: "center",
-          }}
-        >
-          {[0, 1, 2].map((index) => {
-            const image = formProduct.images[index] || {};
+      </Box>
+      <TextField
+        multiline
+        minRows={10}
+        maxRows={20}
+        name="description"
+        label="Descrição"
+        value={formProduct.description}
+        required
+        onChange={handleChange}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          gap: "1rem",
+          justifyContent: "center",
+          mb: "1rem"
+        }}
+      >
+        {[0, 1, 2].map((index) => {
+          const image = formProduct.images[index] || {};
 
-            return (
-              <ImageInput
-                defaultImage={image.url ? image.url : ""}
-                imageId={image.id}
-                setFormProduct={setFormProduct}
-                key={image.id || index + 1}
-                label={"Imagem " + (index + 1)}
-              />
-            );
-          })}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            mt: "2rem",
-            width: "100%",
-            gap: "2rem",
-          }}
+          return (
+            <ImageInput
+              defaultImage={image.url ? image.url : ""}
+              imageId={image.id}
+              setFormProduct={setFormProduct}
+              key={image.id || index + 1}
+              label={"Imagem " + (index + 1)}
+            />
+          );
+        })}
+      </Box>
+      <Form.Actions>
+        <Form.Action
+          variant="outlined"
+          handleClick={() => navigate("/admin/products")}
         >
-          <Button
-            type="submit"
-            variant="outlined"
-            onClick={() => navigate("/admin/products")}
-            sx={{
-              flex: 1,
-            }}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              flex: 1,
-            }}
-          >
-            {isUpdating ? "Alterar" : "Criar"}
-          </Button>
-        </Box>
-      </FormControl>
-    </Box>
+          Cancelar
+        </Form.Action>
+        <SubmitButton>{isUpdating ? "Alterar" : "Criar"}</SubmitButton>
+      </Form.Actions>
+    </Form>
   );
 }

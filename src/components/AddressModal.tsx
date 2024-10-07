@@ -1,39 +1,41 @@
-import { Button, FormControl, TextField, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import FormModal from "./FormModal";
+import { TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
 import { IAddress, IFormAddress } from "../interfaces";
-import UserContext from "../contexts/UserContext";
 import PostalCodeInput from "./PostalCodeInput";
 import { emptyFormAddress } from "../utils/emptyInterfaces";
+import Modal from "./Modal";
+import SubmitButton from "./SubmitButton";
+import { useUserContext } from "../hooks";
 
 interface AddressModalProps {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: (
+    isUpdating: boolean,
+    hasDefaultValues: boolean,
+    clearAddress: () => void
+  ) => void;
   onUpdateAddresses: () => void;
   addressToUpdate?: IAddress;
-  setAddressToUpdate?: React.Dispatch<React.SetStateAction<IAddress | null>>;
   newAddressDefaultValues?: IFormAddress;
-  setNewAddressDefaultValues?: React.Dispatch<
-    React.SetStateAction<IFormAddress | null>
-  >;
 }
 
 export default function AddressModal({
   isOpen,
-  setIsOpen,
+  onClose,
   onUpdateAddresses,
   addressToUpdate,
-  setAddressToUpdate,
   newAddressDefaultValues,
-  setNewAddressDefaultValues,
 }: AddressModalProps) {
   const [address, setAddress] = useState<IFormAddress>(emptyFormAddress);
 
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
 
   const isUpdating = Boolean(addressToUpdate);
   const hasDefaultValues = Boolean(newAddressDefaultValues);
+
+  const clearAddress = () => setAddress(emptyFormAddress);
+  const handleClose = () => onClose(isUpdating, hasDefaultValues, clearAddress);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,18 +66,6 @@ export default function AddressModal({
     }
   };
 
-  const handleClose = () => {
-    if (isUpdating) {
-      setAddressToUpdate?.(null);
-      setAddress(emptyFormAddress);
-    }
-    if (hasDefaultValues) {
-      setAddress(emptyFormAddress);
-      setNewAddressDefaultValues?.(null);
-    }
-    setIsOpen(false);
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -93,13 +83,9 @@ export default function AddressModal({
   }, [hasDefaultValues]);
 
   return (
-    <FormModal
-      handleClose={handleClose}
-      handleSubmit={handleSubmit}
-      isOpen={isOpen}
-    >
-      <FormControl>
-        <Typography>Adicionar Endereço</Typography>
+    <Modal handleClose={handleClose} isOpen={isOpen}>
+      <Modal.Title>Adicionar Endereço</Modal.Title>
+      <Modal.Form handleSubmit={handleSubmit}>
         <TextField
           label="Nome Completo"
           required
@@ -107,7 +93,10 @@ export default function AddressModal({
           value={address.fullName}
           onChange={handleChange}
         />
-        <PostalCodeInput address={address} setAddress={setAddress} />
+        <PostalCodeInput
+          postalCode={address.postalCode}
+          setAddress={setAddress}
+        />
         <TextField
           label="Estado"
           required
@@ -156,11 +145,11 @@ export default function AddressModal({
           value={address.contactPhone}
           onChange={handleChange}
         />
-
-        <Button type="submit" variant="contained">
-          {isUpdating ? "Alterar" : "Criar"}
-        </Button>
-      </FormControl>
-    </FormModal>
+        <Modal.Actions>
+          <Modal.Cancel />
+          <SubmitButton>{isUpdating ? "Alterar" : "Criar"}</SubmitButton>
+        </Modal.Actions>
+      </Modal.Form>
+    </Modal>
   );
 }

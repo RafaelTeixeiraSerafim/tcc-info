@@ -1,22 +1,27 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
-import { IUser, IUserContextInterface } from "../interfaces";
+import { IUser } from "../interfaces";
 
 interface UserProviderProps {
   children: React.ReactElement;
 }
 
-const UserContext = createContext<IUserContextInterface>({});
+interface IUserContextInterface {
+  user: IUser | null;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  authenticate: () => Promise<void>;
+  logoutUser: () => void;
+  hasCheckedToken: boolean;
+  addedToCart: boolean;
+  setAddedToCart: React.Dispatch<React.SetStateAction<boolean>>;
+  hasErrorCart: boolean;
+  setHasErrorCart: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const statusMap: { [key: string]: string } = {
-  IN_PROGRESS: "Em andamento",
-  PENDING: "Pendente",
-  SHIPPED: "Enviado",
-  DELIVERED: "Entregue",
-};
+const UserContext = createContext<IUserContextInterface | null>(null);
 
-export function UserProvider({ children }: UserProviderProps) {
+function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [hasCheckedToken, setHasCheckedToken] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -45,10 +50,6 @@ export function UserProvider({ children }: UserProviderProps) {
     }
   };
 
-  const translateStatus = (status: string): string => {
-    return statusMap[status] || status; // Retorna a tradução ou o status original se não houver mapeamento
-  };
-
   useEffect(() => {
     authenticate();
   }, []);
@@ -65,7 +66,6 @@ export function UserProvider({ children }: UserProviderProps) {
         setAddedToCart,
         hasErrorCart,
         setHasErrorCart,
-        translateStatus,
       }}
     >
       {children}
@@ -74,3 +74,4 @@ export function UserProvider({ children }: UserProviderProps) {
 }
 
 export default UserContext;
+export { UserProvider };
