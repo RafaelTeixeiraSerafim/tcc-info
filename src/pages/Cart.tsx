@@ -1,33 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
 import { IOrder } from "../interfaces";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import UserContext from "../contexts/UserContext";
 import CartCard from "../components/CartCard";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../hooks";
+import useTotal from "../hooks/useTotal";
 
 export default function Cart() {
   const [order, setOrder] = useState<IOrder | null>(null);
-  const [total, setTotal] = useState(0);
 
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
   const navigate = useNavigate();
-
-  const getTotal = () => {
-    if (!order) return;
-
-    let sum = 0;
-    order.orderItems.forEach((orderItem) => {
-      let price = 0;
-      price =
-        orderItem.qty *
-        (parseFloat(orderItem.product.salePrice) ||
-          parseFloat(orderItem.product.origPrice));
-      sum += price;
-    });
-
-    setTotal(sum);
-  };
+  const { total } = useTotal(order?.orderItems || null);
 
   const getOrder = () => {
     if (!user) return;
@@ -64,10 +49,6 @@ export default function Cart() {
   useEffect(() => {
     getOrder();
   }, [user?.id]);
-
-  useEffect(() => {
-    getTotal();
-  }, [order?.orderItems.length]);
 
   return (
     <>

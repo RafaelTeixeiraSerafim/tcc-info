@@ -25,54 +25,62 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ScrollToTop from "./components/ScrollToTop";
 import AddressOptions from "./pages/checkout/AddressOptions";
 import LoginRequired from "./routeWrappers/LoginRequired";
-import AdminDashboardLayout from "./components/AdminDashboardLayout";
+import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
+import { AddressProvider } from "./contexts/AddressContext";
 
 function App() {
   return (
-    <ThemeProviderWrapper>
-      <UserProvider>
-        <Suspense fallback={<LoadingFallback />}>
-          <BrowserRouter basename="/tcc-info">
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<UserLayout />}>
-                <Route index element={<Home />} />
-                <Route path="product/:productId" element={<ProductDetails />} />
-                <Route path="cart" element={<Cart />} />
-                <Route path="checkout" element={<LoginRequired />}>
-                  <Route path="address-options" element={<AddressOptions />} />
-                </Route>
-                <Route element={<LogoutRequired />}>
-                  <Route path="login" element={<Login />} />
-                  <Route path="signup" element={<Signup />} />
-                </Route>
-              </Route>
-              <Route element={<AdminRequired />}>
-                <Route path="admin" element={<AdminDashboardLayout />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="users" element={<Users />} />
-                  <Route path="orders" element={<Orders />} />
-                  <Route path="orders/:orderId" element={<OrderDetails />} />
-                  <Route path="categories" element={<Categories />} />
-                  <Route path="categories/new" element={<CreateCategory />} />
-                  <Route path="categories/:categoryId">
-                    <Route path="update" element={<UpdateCategory />} />
-                  </Route>
-                  <Route path="products" element={<Products />} />
-                  <Route path="products/new" element={<CreateProduct />} />
+    <AddressProvider>
+      <ThemeProviderWrapper>
+        <UserProvider>
+          <Suspense fallback={<LoadingFallback />}>
+            <BrowserRouter basename="/tcc-info">
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<UserLayout />}>
+                  <Route index element={<Home />} />
                   <Route
-                    path="products/:productId/update"
-                    element={<UpdateProduct />}
+                    path="product/:productId"
+                    element={<ProductDetails />}
                   />
+                  <Route path="cart" element={<Cart />} />
+                  <Route path="checkout" element={<LoginRequired />}>
+                    <Route
+                      path="address-options"
+                      element={<AddressOptions />}
+                    />
+                  </Route>
+                  <Route element={<LogoutRequired />}>
+                    <Route path="login" element={<Login />} />
+                    <Route path="signup" element={<Signup />} />
+                  </Route>
                 </Route>
-              </Route>
-              <Route path="*" element={<NoPage />} />
-              {/* <Route path="user/:username" element={<UserProfile />} />
+                <Route element={<AdminRequired />}>
+                  <Route path="admin" element={<AdminDashboardLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="users" element={<Users />} />
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="orders/:orderId" element={<OrderDetails />} />
+                    <Route path="categories" element={<Categories />} />
+                    <Route path="categories/new" element={<CreateCategory />} />
+                    <Route path="categories/:categoryId">
+                      <Route path="update" element={<UpdateCategory />} />
+                    </Route>
+                    <Route path="products" element={<Products />} />
+                    <Route path="products/new" element={<CreateProduct />} />
+                    <Route
+                      path="products/:productId/update"
+                      element={<UpdateProduct />}
+                    />
+                  </Route>
+                </Route>
+                <Route path="*" element={<NoPage />} />
+                {/* <Route path="user/:username" element={<UserProfile />} />
                 <Route path="game/:title" element={<GameRouteWrapper />}>
                   <Route index element={<Game />} /> */}
-              {/* </Route> */}
+                {/* </Route> */}
 
-              {/* <Route element={<LoginRequired />}>
+                {/* <Route element={<LoginRequired />}>
                   <Route
                     path="partner/:username"
                     element={<PartnerProfile />}
@@ -95,11 +103,12 @@ function App() {
               <Route path="/" element={<ErrorLayout />}>
                 <Route path="*" element={<NoPage />} />
               </Route> */}
-            </Routes>
-          </BrowserRouter>
-        </Suspense>
-      </UserProvider>
-    </ThemeProviderWrapper>
+              </Routes>
+            </BrowserRouter>
+          </Suspense>
+        </UserProvider>
+      </ThemeProviderWrapper>
+    </AddressProvider>
   );
 }
 

@@ -1,11 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { IAddress, IOrder } from "../../interfaces";
-import UserContext from "../../contexts/UserContext";
 import axiosInstance from "../../config/axiosInstance";
 import AddressModal from "../../components/AddressModal";
 import AddressList from "../../components/AddressList";
+import { useUserContext } from "../../hooks";
+import useAddressContext from "../../hooks/useAddressContext";
 
 export default function AddressOptions() {
   const orderState = useLocation().state;
@@ -16,7 +17,8 @@ export default function AddressOptions() {
   const [addressToUpdate, setAddressToUpdate] = useState<IAddress | null>(null);
   const [selectedAddressId, setSelectedAddressId] = useState(0);
 
-  const { user } = useContext(UserContext);
+  const { user } = useUserContext();
+  const { selectedAddress } = useAddressContext();
 
   const getOrder = () => {
     if (!user) return;
@@ -46,10 +48,49 @@ export default function AddressOptions() {
     }
   };
 
+  const handleClose = (
+    isUpdating: boolean,
+    hasDefaultValues: boolean,
+    clearAddress: () => void
+  ) => {
+    if (isUpdating) {
+      setAddressToUpdate?.(null);
+      clearAddress();
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleUpdate = (addressToUpdate: IAddress) => {
+    setAddressToUpdate(addressToUpdate);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (addressId: number) => {
+    try {
+      const response = await axiosInstance.delete(
+        `/api/v1/addresses/${addressId}`
+      );
+      console.log(response);
+      setAddresses(addresses.filter((address) => address.id !== addressId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedAddressId(parseInt(e.target.value));
+  };
+
   useEffect(() => {
     getOrder();
     getAddresses();
   }, [user?.id]);
+
+  useEffect(() => {
+    if (!selectedAddress) return;
+
+    setSelectedAddressId(selectedAddress.id);
+  }, [selectedAddress?.id]);
 
   return (
     <>
@@ -70,11 +111,10 @@ export default function AddressOptions() {
           <Typography>Escolha seu endereço de entrega</Typography>
           <AddressList
             addresses={addresses}
-            setAddresses={setAddresses}
-            setAddressToUpdate={setAddressToUpdate}
-            setIsModalOpen={setIsModalOpen}
             selectedAddressId={selectedAddressId}
-            setSelectedAddressId={setSelectedAddressId}
+            onChange={handleChange}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
           />
           <Box>
             <Button variant="outlined" onClick={() => setIsModalOpen(true)}>
@@ -86,10 +126,9 @@ export default function AddressOptions() {
       )}
       <AddressModal
         isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
+        onClose={handleClose}
         onUpdateAddresses={getAddresses}
         addressToUpdate={addressToUpdate ? addressToUpdate : undefined}
-        setAddressToUpdate={setAddressToUpdate}
       />
     </>
   );

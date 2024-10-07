@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { IOrder } from "../../../interfaces";
 import axiosInstance from "../../../config/axiosInstance";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import StatusModal from "../../../components/StatusModal";
-import UserContext from "../../../contexts/UserContext";
+import translateStatus from "../../../utils/funcs/statusTranslator";
+import getOrderItemPrice from "../../../utils/funcs/orderItemPriceCalculator";
+import useTotal from "../../../hooks/useTotal";
 
 export default function OrderDetails() {
   const location = useLocation();
@@ -12,24 +14,9 @@ export default function OrderDetails() {
 
   const [order, setOrder] = useState<IOrder | null>(orderState || null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [total, setTotal] = useState(0);
 
-  const { translateStatus } = useContext(UserContext);
   const { orderId } = useParams();
-
-  const getTotal = () => {
-    let sum = 0;
-    order?.orderItems?.forEach((orderItem) => {
-      let price = 0;
-      price =
-        orderItem.qty *
-        (parseFloat(orderItem.product.salePrice) ||
-          parseFloat(orderItem.product.origPrice));
-      sum += price;
-    });
-
-    setTotal(sum);
-  };
+  const { total } = useTotal(order?.orderItems || null);
 
   const getOrder = () => {
     axiosInstance
@@ -42,12 +29,6 @@ export default function OrderDetails() {
         console.error(error);
       });
   };
-
-  useEffect(() => {
-    if (!order?.orderItems?.length) return;
-
-    getTotal();
-  }, [order?.orderItems?.length]);
 
   useEffect(() => {
     getOrder();
@@ -95,6 +76,13 @@ export default function OrderDetails() {
             <Typography>
               <strong>Data do pedido:</strong>{" "}
               {new Date(order?.datePlaced).toLocaleString()}
+            </Typography>
+            <Typography>
+              <strong>Total:</strong>{" "}
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(total)}
             </Typography>
             <Typography>
               <strong>Nome do usuário:</strong> {order?.user.username}
@@ -163,7 +151,7 @@ export default function OrderDetails() {
                     {new Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    }).format(total)}
+                    }).format(getOrderItemPrice(orderItem))}
                   </Typography>
                 </Box>
               </Paper>

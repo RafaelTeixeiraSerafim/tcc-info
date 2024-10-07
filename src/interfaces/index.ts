@@ -49,24 +49,6 @@ export interface IUser {
   updatedAt: string;
 }
 
-export interface IUserContextInterface {
-  user: IUser | null;
-  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-  authenticate: () => Promise<void>;
-  logoutUser: () => void;
-  hasCheckedToken: boolean;
-  addedToCart: boolean;
-  setAddedToCart: React.Dispatch<React.SetStateAction<boolean>>;
-  hasErrorCart: boolean;
-  setHasErrorCart: React.Dispatch<React.SetStateAction<boolean>>;
-  translateStatus: (status: string) => string;
-}
-
-export interface IThemeContextInterface {
-  darkMode: boolean;
-  toggleTheme: () => void;
-}
-
 export interface IOrder {
   id: number;
   user: IUser;

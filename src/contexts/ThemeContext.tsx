@@ -1,12 +1,13 @@
 import React, { createContext, useState, useEffect } from "react";
 import { darkTheme, lightTheme } from "../themes";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { IThemeContextInterface } from "../interfaces";
 
-const ThemeContext = createContext<IThemeContextInterface>({
-  darkMode: false,
-  toggleTheme: () => undefined,
-});
+interface IThemeContextInterface {
+  darkMode: boolean;
+  toggleTheme: () => void;
+}
+
+const ThemeContext = createContext<IThemeContextInterface | null>(null);
 
 interface ThemeProviderWrapperProps {
   children: React.ReactElement;

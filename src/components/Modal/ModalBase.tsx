@@ -2,14 +2,12 @@ import { Box, Modal } from "@mui/material";
 import React from "react";
 
 interface FormModalProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isOpen: boolean;
   handleClose: () => void;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
-export default function FormModal({
-  handleSubmit,
+export default function ModalBase({
   isOpen,
   handleClose,
   children,
@@ -22,7 +20,6 @@ export default function FormModal({
       aria-describedby="modal-modal-description"
     >
       <Box
-        component={"form"}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -32,13 +29,14 @@ export default function FormModal({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 400,
+          width: "25rem",
+          maxHeight: "90vh",
           bgcolor: "background.paper",
           border: "2px solid #000",
           boxShadow: 24,
           p: 4,
+          overflowY: "scroll",
         }}
-        onSubmit={handleSubmit}
       >
         {children}
       </Box>
