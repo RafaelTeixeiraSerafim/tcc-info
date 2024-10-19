@@ -65,7 +65,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void createProductRequest(ProductDto productDTO) {
+    public Long createProductRequest(ProductDto productDTO) {
         Product newProduct = new Product();
         Product product = populateProductFromDto(productDTO, newProduct);
 
@@ -73,13 +73,17 @@ public class ProductService {
 
         List<ImageDto> images = productDTO.getImages();
 
-        Instant currentTimestamp = Instant.now();
-
-        for (int i = 0; i < images.size(); i++) {
-            if (images.get(i).getFile() != null) {
-                imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), product);
+        if (images != null) {
+            Instant currentTimestamp = Instant.now();
+            for (int i = 0; i < images.size(); i++) {
+                MultipartFile file = images.get(i).getFile();
+                if (file != null) {
+                    imageService.handleImageCreation(currentTimestamp, file, String.valueOf(i), product);
+                }
             }
         }
+
+        return product.getId();
     }
 
     @Transactional
@@ -89,17 +93,17 @@ public class ProductService {
 
         List<ImageDto> images = productDTO.getImages();
 
-        Instant currentTimestamp = Instant.now();
+        if (images == null) return;
 
+        Instant currentTimestamp = Instant.now();
         for (int i = 0; i < images.size(); i++) {
             String imageUrl = images.get(i).getUrl();
             MultipartFile imageFile = images.get(i).getFile();
 
             if (imageUrl.isEmpty()) {
-                imageService.handleImageCreation(currentTimestamp, images.get(i).getFile(), String.valueOf(i), product);
+                imageService.handleImageCreation(currentTimestamp, imageFile, String.valueOf(i), product);
             } else if (imageFile != null) {
-                Image image = imageService.getImageById(images.get(i).getId());
-                imageService.handleImageUpdate(image, imageFile);
+                imageService.handleImageUpdate(imageUrl, imageFile);
             }
         }
     }
@@ -114,6 +118,10 @@ public class ProductService {
         product.setOrigPrice(productDTO.getOrigPrice());
         product.setSalePrice(productDTO.getSalePrice());
         product.setStockQty(productDTO.getStockQty());
+        product.setLength(productDTO.getLength());
+        product.setHeight(productDTO.getHeight());
+        product.setWidth(productDTO.getWidth());
+        product.setWeight(productDTO.getWeight());
 
         return product;
     }

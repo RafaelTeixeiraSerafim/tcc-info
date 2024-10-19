@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/bought-products")
 public class BoughtProductController {
+    private final BoughtProductService boughtProductService;
+
     @Autowired
-    private BoughtProductService boughtProductService;
+    public BoughtProductController(BoughtProductService boughtProductService) {
+        this.boughtProductService = boughtProductService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getBoughtProducts(@RequestParam Long userId, @RequestParam Long productId) {
@@ -22,6 +26,6 @@ public class BoughtProductController {
             }
             return ResponseEntity.ok(boughtProductService.getBoughtProducts(userId));
         }
-        return ResponseEntity.badRequest().body("No request parameters sent");
+        return ResponseEntity.badRequest().body("Missing required request parameters");
     }
 }

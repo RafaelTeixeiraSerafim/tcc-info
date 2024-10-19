@@ -1,6 +1,7 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,21 +27,49 @@ public class Product {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @NotNull
     private String name;
+
     private String about;
+
+    @NotNull
     @Column(length = 2000)
     private String description;
+
+    @NotNull
     @Column(precision = 10, scale = 2)
     private BigDecimal origPrice;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal salePrice;
+
+    @NotNull
     private int stockQty;
+
+    @NotNull
+    private BigDecimal length; // cm
+
+    @NotNull
+    private BigDecimal width;  // cm
+
+    @NotNull
+    private BigDecimal height; // cm
+
+    @NotNull
+    private BigDecimal weight; // kg
+
+    @NotNull
     @CreatedDate
     @Column(updatable = false)
     private Date createdAt;
+
+    @NotNull
     @LastModifiedDate
     private Date updatedAt;
 
@@ -53,8 +82,7 @@ public class Product {
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<BoughtProduct> boughtProducts;
 
-
-    public Product(Category category, String name, String about, String description, BigDecimal origPrice, BigDecimal salePrice, int stockQty) {
+    public Product(Category category, String name, String about, String description, BigDecimal origPrice, BigDecimal salePrice, int stockQty, BigDecimal length, BigDecimal width, BigDecimal height, BigDecimal weight) {
         this.category = category;
         this.name = name;
         this.about = about;
@@ -62,5 +90,9 @@ public class Product {
         this.origPrice = origPrice;
         this.salePrice = salePrice;
         this.stockQty = stockQty;
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.weight = weight;
     }
 }

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rafaelteixeiraserafim</groupId>
-    <artifactId>back-end</artifactId>
+    <artifactId>main-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tcc</name>
+    <name>tcc-info</name>
     <description>E-commerce de mel e derivados</description>
     <url/>
     <licenses>
@@ -92,6 +92,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
         </dependency>
 
         <dependency>

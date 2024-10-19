@@ -5,6 +5,7 @@ import com.rafaelteixeiraserafim.tcc.config.auth.TokenProvider;
 import com.rafaelteixeiraserafim.tcc.dto.LoginDto;
 import com.rafaelteixeiraserafim.tcc.dto.SignUpDto;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
+import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.service.AuthService;
@@ -20,44 +21,64 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SecurityFilter securityFilter;
-    @Autowired
-    private TokenProvider tokenProvider;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private OrderService orderService;
+    private final AuthService authService;
+    private final UserService userService;
+    private final SecurityFilter securityFilter;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
+    private final OrderService orderService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody @Valid SignUpDto data) {
-        User user = authService.signUp(data);
-        ResponseCookie jwtCookie = this.generateJwtCookie(data.getEmail(), data.getPassword());
-        orderService.createOrder(new Order(user, OrderStatus.IN_PROGRESS));
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(user);
+    @Autowired
+    public AuthController(AuthService authService, UserService userService, SecurityFilter securityFilter, TokenProvider tokenProvider, AuthenticationManager authenticationManager, OrderService orderService) {
+        this.authService = authService;
+        this.userService = userService;
+        this.securityFilter = securityFilter;
+        this.tokenProvider = tokenProvider;
+        this.authenticationManager = authenticationManager;
+        this.orderService = orderService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid LoginDto data) {
-        ResponseCookie jwtCookie = this.generateJwtCookie(data.getEmail(), data.getPassword());
-        User user = userService.getUserByEmail(data.getEmail());
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(user);
+    @PostMapping("/signup/{role}")
+    public ResponseEntity<User> signUpUser(@RequestBody @Valid SignUpDto data, @PathVariable("role") String role) {
+        System.out.println("entered");
+        for (UserRole userRole : UserRole.values()) {
+            if (Objects.equals(userRole.getRole(), role)) {
+                User user = authService.signUpByRole(data, userRole);
+                ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
+
+                if (Objects.equals(role, UserRole.USER.getRole())) {
+                    orderService.createOrder(new Order(user, OrderStatus.IN_PROGRESS));
+                }
+
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                        .body(user);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    @PostMapping("/login/{role}")
+    public ResponseEntity<User> loginUser(@RequestBody @Valid LoginDto data, @PathVariable("role") String role) {
+        for (UserRole userRole : UserRole.values()) {
+            if (Objects.equals(userRole.getRole(), role)) {
+                ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
+                User user = userService.getUserByEmailAndRole(data.email(), userRole);
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                        .body(user);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PostMapping("/check-token")
@@ -91,7 +112,6 @@ public class AuthController {
             var emailPassword = new UsernamePasswordAuthenticationToken(email, password);
             var authUser = authenticationManager.authenticate(emailPassword);
             String accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
-            System.out.println(accessToken);
             return authService.createCookie(accessToken);
         } catch (Exception e) {
             System.out.println("Exception: " + e);

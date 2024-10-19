@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ImageDto {
     private Long id;
     private String url;

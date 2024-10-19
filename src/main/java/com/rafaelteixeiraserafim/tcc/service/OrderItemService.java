@@ -17,49 +17,64 @@ import java.util.Optional;
 
 @Service
 public class OrderItemService {
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private ProductService productService;
+    private final OrderItemRepository orderItemRepository;
+    private final OrderService orderService;
+    private final ProductService productService;
 
-//    public List<OrderItem> getOrderItems() {
+    public OrderItemService(OrderItemRepository orderItemRepository, OrderService orderService, ProductService productService) {
+        this.orderItemRepository = orderItemRepository;
+        this.orderService = orderService;
+        this.productService = productService;
+    }
+
+    //    public List<OrderItem> getOrderItems() {
 //        return orderItemRepository.findAll();
 //    }
 
-    public List<OrderItemResponse> getOrderItemsByOrder(Order order) throws IllegalArgumentException {
-        Optional<List<OrderItem>> optionalOrderItems = orderItemRepository.findOrderItemsByOrder(order);
+    public List<OrderItem> getOrderItemsByOrder(Order order) throws IllegalArgumentException {
+        List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrder(order);
 
-        if (optionalOrderItems.isEmpty()) {
-            throw new IllegalArgumentException("OrderItems with orderId " + order.getId() + " not found");
-        }
+//        if (orderItems.isEmpty()) {
+//            throw new IllegalArgumentException("OrderItems from userId " + order.getUser().getId() + " not found");
+//        }
 
+        return orderItems;
+    }
+
+    public List<OrderItemResponse> createOrderItemResponsesFromOrderItems(List<OrderItem> orderItems) {
         List<OrderItemResponse> orderItemResponses = new ArrayList<>();
 
-        for (OrderItem orderItem : optionalOrderItems.get()) {
-            OrderResponse orderResponse = new OrderResponse(order.getId(), order.getDatePlaced(), order.getStatus());
+        for (OrderItem orderItem : orderItems) {
+            OrderResponse orderResponse = new OrderResponse(orderItem.getOrder().getId(), orderItem.getOrder().getDatePlaced(), orderItem.getOrder().getStatus());
             orderItemResponses.add(new OrderItemResponse(orderItem.getId(), orderResponse, orderItem.getProduct(), orderItem.getQty(), orderItem.getCreatedAt()));
         }
 
         return orderItemResponses;
     }
 
+    public List<OrderItem> getOrderItemsByUserId(Long userId) throws IllegalArgumentException {
+        Order order = orderService.getOrderByUserId(userId);
+
+        return this.getOrderItemsByOrder(order);
+    }
+
     @Transactional
-    public void createOrderItem(OrderItemRequest orderItemRequest) throws IllegalArgumentException {
-        OrderItem orderItem = this.getOrderItemByUserIdAndProductId(orderItemRequest.getUserId(), orderItemRequest.getProductId());
-        Product product = productService.getProductById(orderItemRequest.getProductId());
+    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) throws IllegalArgumentException {
+        OrderItem orderItem = this.getOrderItemByUserIdAndProductId(orderItemRequest.userId(), orderItemRequest.productId());
+        Product product = productService.getProductById(orderItemRequest.productId());
         if (orderItem != null) {
-            if (orderItem.getQty() + orderItemRequest.getQty() > product.getStockQty()) {
+            if (orderItem.getQty() + orderItemRequest.qty() > product.getStockQty()) {
                 throw new IllegalArgumentException("OrderItem qty is greater than product stock");
             }
-            orderItem.setQty(orderItem.getQty() + orderItemRequest.getQty());
+            orderItem.setQty(orderItem.getQty() + orderItemRequest.qty());
+            return orderItem;
         } else {
-            Order order = orderService.getOrderByUserId(orderItemRequest.getUserId());
+            Order order = orderService.getOrderByUserId(orderItemRequest.userId());
 
-            OrderItem newOrderItem = new OrderItem(order, product, orderItemRequest.getQty());
+            OrderItem newOrderItem = new OrderItem(order, product, orderItemRequest.qty());
 
             orderItemRepository.save(newOrderItem);
+            return newOrderItem;
         }
     }
 

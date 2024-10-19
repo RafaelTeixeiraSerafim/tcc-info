@@ -1,18 +1,13 @@
 package com.rafaelteixeiraserafim.tcc.dto;
 
-import com.rafaelteixeiraserafim.tcc.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SignUpDto {
-    private String username;
-    private String email;
-    private String password;
-    private UserRole role;
+public record SignUpDto(
+        @NotNull
+        String username,
+        @NotNull
+        String email,
+        @NotNull
+        String password
+) {
 }

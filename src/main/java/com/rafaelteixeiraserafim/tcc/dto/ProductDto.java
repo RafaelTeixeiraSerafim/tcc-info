@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,15 +11,28 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductDto {
+    @NotNull
     private String name;
     private String about;
+    @NotNull
     private String description;
+    @NotNull
     private Long categoryId;
+    @NotNull
     private BigDecimal origPrice;
     private BigDecimal salePrice;
+    @NotNull
     private int stockQty;
+    @NotNull
+    private BigDecimal length;
+    @NotNull
+    private BigDecimal width;
+    @NotNull
+    private BigDecimal height;
+    @NotNull
+    private BigDecimal weight;
     private List<ImageDto> images;
 }

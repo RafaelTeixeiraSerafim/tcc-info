@@ -11,10 +11,14 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-//    public List<User> getUsers() {
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    //    public List<User> getUsers() {
 //        return userRepository.findAll();
 //    }
 
@@ -27,7 +31,23 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("User with email " + email + " not found");
+        }
+
+        return optionalUser.get();
+    }
+
+    public User getUserByEmailAndRole(String email, UserRole role) {
+        Optional<User> optionalUser = userRepository.findByEmailAndRole(email, role);
+
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("User with email " + email + " and role " + role + " not found");
+        }
+
+        return optionalUser.get();
     }
 
     public User getUserById(Long userId) {

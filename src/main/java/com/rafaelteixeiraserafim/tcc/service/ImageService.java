@@ -48,12 +48,11 @@ public class ImageService {
         createImage(image);
     }
 
-    public void handleImageUpdate(Image image, MultipartFile file) {
-        String key = s3Service.getImageKeyFromUrl(image.getUrl());
+    public void handleImageUpdate(String url, MultipartFile file) {
+        String key = s3Service.getImageKeyFromUrl(url);
 
         s3Service.deleteFile(key);
         s3Service.uploadNewFile(key, file);
-        image.setUrl(s3Service.getImageUrl(key));
     }
 
     public void deleteImage(Image image) {

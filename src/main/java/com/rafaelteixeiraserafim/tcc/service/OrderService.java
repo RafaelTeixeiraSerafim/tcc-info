@@ -23,7 +23,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Order getOrderById(Long orderId) {
+    public Order getOrderById(Long orderId) throws IllegalArgumentException {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
         if (optionalOrder.isEmpty()) {
@@ -33,7 +33,7 @@ public class OrderService {
         return optionalOrder.get();
     }
 
-    public Order getOrderByUserId(Long userId) {
+    public Order getOrderByUserId(Long userId) throws IllegalArgumentException {
         Optional<Order> optionalOrder = orderRepository.findOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
 
         if (optionalOrder.isEmpty()) {
@@ -44,15 +44,15 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateOrderById(Long orderId, OrderRequest orderRequest) {
+    public void updateOrderById(Long orderId, OrderRequest orderRequest) throws IllegalArgumentException {
         Order order = this.getOrderById(orderId);
         OrderStatus prevStatus = order.getStatus();
 
-        if (orderRequest.getStatus() != null) {
-            order.setStatus(orderRequest.getStatus());
+        if (orderRequest.status() != null) {
+            order.setStatus(orderRequest.status());
         }
-        if (orderRequest.getDatePlaced() != null) {
-            order.setDatePlaced(orderRequest.getDatePlaced());
+        if (orderRequest.datePlaced() != null) {
+            order.setDatePlaced(orderRequest.datePlaced());
         }
 
         if (prevStatus == OrderStatus.IN_PROGRESS && order.getStatus() == OrderStatus.PENDING) {

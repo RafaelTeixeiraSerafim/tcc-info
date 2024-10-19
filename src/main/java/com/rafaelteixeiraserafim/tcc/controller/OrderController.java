@@ -6,7 +6,7 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.service.BoughtProductService;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
 import com.rafaelteixeiraserafim.tcc.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,13 +51,13 @@ public class OrderController {
         return "Order updated successfully";
     }
 
-    @PutMapping(path = "/place-order/{orderId}")
-    public String placeOrder(@PathVariable Long orderId, @RequestBody OrderRequest orderRequest) {
-        Order order = orderService.getOrderById(orderId);
-        orderService.updateOrderById(orderId, orderRequest);
+    @PutMapping(path = "/place-order/{userId}")
+    public ResponseEntity<String> placeOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
+        Order order = orderService.getOrderByUserId(userId);
+        orderService.updateOrderById(order.getId(), orderRequest);
         orderService.createOrder(new Order(userService.getUserById(order.getUser().getId()), OrderStatus.IN_PROGRESS));
         boughtProductService.createBoughtProductsWithOrderItems(order.getOrderItems());
 
-        return "Order updated successfully";
+        return ResponseEntity.ok("Order placed successfully");
     }
 }
