@@ -1,5 +1,6 @@
 from app.models.address import Address
 from app.database import db
+import requests
 
 def get_addresses(user_id: int) -> list[dict]:
     data: list[Address] = Address.query.filter(Address.user_id == user_id).all()
@@ -56,3 +57,18 @@ def delete_address(address_id: int):
 
     db.session.delete(address)
     db.session.commit()
+
+def get_address_by_postal_code(postal_code):
+    response = requests.get(f'https://viacep.com.br/ws/{postal_code}/json/')
+    data = response.json()
+
+    if data.get("erro"):
+        raise Exception("Postal code not found")
+
+    return {
+        "postalCode": data.get("cep"),
+        "state": data.get("estado"),
+        "city": data.get("localidade"),
+        "neighbourhood": data.get("bairro"),
+        "street": data.get("logradouro"),
+    }
