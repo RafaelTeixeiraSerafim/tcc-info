@@ -21,15 +21,15 @@ public class ImageService {
         this.s3Service = s3Service;
     }
 
-    public Image getImageById(Long id) {
-        Image image = imageRepository.findById(id).orElse(null);
-
-        if (image == null) {
-            throw new IllegalArgumentException("Image not found");
-        }
-
-        return image;
-    }
+//    public Image getImageById(Long id) {
+//        Image image = imageRepository.findById(id).orElse(null);
+//
+//        if (image == null) {
+//            throw new IllegalArgumentException("Image not found");
+//        }
+//
+//        return image;
+//    }
 
     public void createImage(Image image) {
         imageRepository.save(image);

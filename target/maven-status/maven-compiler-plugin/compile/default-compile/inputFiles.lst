@@ -1,3 +1,4 @@
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\config\AppConfig.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\config\auth\SecurityFilter.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\config\auth\TokenProvider.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\config\AuthConfig.java
@@ -10,6 +11,7 @@ C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\raf
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\controller\OrderController.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\controller\OrderItemController.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\controller\ProductController.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\controller\ShippingController.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\controller\UserController.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\AddressDto.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\AddressFromPostal.java
@@ -21,9 +23,16 @@ C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\raf
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\OrderRequest.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\OrderResponse.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\ProductDto.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\ShippingFromToDto.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\ShippingOptionDto.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\ShippingOptionRequestProduct.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\ShippingOptionsRequest.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\ShippingOptionsResponseDto.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\SignUpDto.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\dto\UserAddresses.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\enums\OrderStatus.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\enums\UserRole.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\exception\GlobalExceptionHandler.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\model\BoughtProduct.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\model\Category.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\model\Image.java
@@ -51,5 +60,6 @@ C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\raf
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\service\ProductService.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\service\ReviewService.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\service\S3Service.java
+C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\service\ShippingService.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\service\UserService.java
 C:\Users\rafae\OneDrive\Documents\Fase 4\tcc-info\back-end\src\main\java\com\rafaelteixeiraserafim\tcc\TccApplication.java

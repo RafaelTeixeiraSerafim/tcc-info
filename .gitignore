@@ -25,7 +25,10 @@ replay_pid*
 
 # property files
 application-dev.properties
-application-prod.
+application-prod.properties
 
 # env files
 .env*
+
+# idea folder
+.idea

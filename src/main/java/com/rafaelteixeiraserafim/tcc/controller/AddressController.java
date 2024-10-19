@@ -2,12 +2,11 @@ package com.rafaelteixeiraserafim.tcc.controller;
 
 import com.rafaelteixeiraserafim.tcc.dto.AddressDto;
 import com.rafaelteixeiraserafim.tcc.dto.AddressFromPostal;
+import com.rafaelteixeiraserafim.tcc.dto.UserAddresses;
 import com.rafaelteixeiraserafim.tcc.service.AddressService;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/addresses")
@@ -30,7 +29,7 @@ public class AddressController {
     }
 
     @GetMapping()
-    public List<AddressDto> getUserAddresses(@RequestParam(required = true) Long userId) {
+    public UserAddresses getUserAddresses(@RequestParam Long userId) {
         return addressService.getUserAddresses(userId);
     }
 

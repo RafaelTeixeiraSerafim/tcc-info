@@ -27,8 +27,11 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>dev</spring.profiles.active>
+                <env>dev</env>
             </properties>
+            <build>
+                <finalName>tcc-info-dev</finalName>
+            </build>
         </profile>
         <profile>
             <id>prod</id>
@@ -36,8 +39,11 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>prod</spring.profiles.active>
+                <env>prod</env>
             </properties>
+            <build>
+                <finalName>tcc-info-prod</finalName>
+            </build>
         </profile>
     </profiles>
     <scm>

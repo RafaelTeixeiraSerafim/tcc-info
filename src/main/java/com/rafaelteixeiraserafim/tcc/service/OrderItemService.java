@@ -7,7 +7,6 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.repository.OrderItemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,14 +30,8 @@ public class OrderItemService {
 //        return orderItemRepository.findAll();
 //    }
 
-    public List<OrderItem> getOrderItemsByOrder(Order order) throws IllegalArgumentException {
-        List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrder(order);
-
-//        if (orderItems.isEmpty()) {
-//            throw new IllegalArgumentException("OrderItems from userId " + order.getUser().getId() + " not found");
-//        }
-
-        return orderItems;
+    public List<OrderItem> getOrderItemsByOrder(Order order) {
+        return orderItemRepository.findOrderItemsByOrder(order);
     }
 
     public List<OrderItemResponse> createOrderItemResponsesFromOrderItems(List<OrderItem> orderItems) {
