@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../config/axiosInstance";
 import { IOrder } from "../interfaces";
 import Modal from "./Modal";
-import { InputLabel, MenuItem, Select } from "@mui/material";
-import SubmitButton from "./SubmitButton";
-import translateStatus from "../utils/funcs/statusTranslator";
+import { InputLabel } from "@mui/material";
+import Form from "./Form";
+import StatusSelect from "./StatusSelect";
+import { fetchStatusList, updateOrder } from "../service/api";
+import { AxiosError } from "axios";
 
 interface StatusModalProps {
   isOpen: boolean;
@@ -19,74 +20,55 @@ export default function StatusModal({
   order,
   setOrder,
 }: StatusModalProps) {
-  const [statusList, setStatusList] = useState<string[] | null>(null);
+  const [statusList, setStatusList] = useState<string[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<string>(order.status);
+
   const handleClose = () => setIsOpen(false);
 
-  const getStatusList = () => {
-    axiosInstance
-      .get("/api/v1/orders/status")
-      .then((response) => {
-        console.log(response);
-        setStatusList(
-          response.data.filter((status: string) => status !== "IN_PROGRESS")
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const getStatusList = async () => {
+    try {
+      const statusList = await fetchStatusList();
+      setStatusList(
+        statusList.filter((status: string) => status !== "IN_PROGRESS")
+      );
+    } catch (error) {
+      alert(`Erro ao pegar os status: ${(error as AxiosError).message}`);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axiosInstance
-      .patch(`/api/v1/orders/${order.id}`, {
+    try {
+      await updateOrder(order.id, selectedStatus);
+      setOrder({
+        ...order,
         status: selectedStatus,
-      })
-      .then((response) => {
-        console.log(response);
-        setOrder({
-          ...order,
-          status: selectedStatus,
-        });
-        handleClose();
-      })
-      .catch((error) => {
-        console.error(error);
       });
+      handleClose();
+    } catch (error) {
+      alert(`Erro ao alterar o pedido: ${(error as AxiosError).message}`);
+    }
   };
-
-  useEffect(() => {
-    setIsOpen(isOpen);
-  }, [isOpen]);
 
   useEffect(() => {
     getStatusList();
   }, []);
 
   return (
-      <Modal handleClose={handleClose} isOpen={isOpen}>
+    <Modal handleClose={handleClose} isOpen={isOpen}>
       <Modal.Title>Alterar Inputs</Modal.Title>
-        <Modal.Form handleSubmit={handleSubmit}>
-          <InputLabel id="status-select-label">Status</InputLabel>
-          <Select
-            labelId="status-select-label"
-            label="status"
-            id="status-select"
-            value={selectedStatus}
-            placeholder="Status"
-            onChange={(e) => setSelectedStatus(e.target.value)}
-          >
-            {statusList?.map((status) => (
-              <MenuItem value={status}>{translateStatus(status)}</MenuItem>
-            ))}
-          </Select>
-          <Modal.Actions>
-            <Modal.Cancel />
-            <SubmitButton>Alterar</SubmitButton>
-          </Modal.Actions>
-        </Modal.Form>
-      </Modal>
+      <Form handleSubmit={handleSubmit}>
+        <StatusSelect
+          selectedStatus={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
+          statusList={statusList}
+        />
+        <Form.Actions>
+          <Modal.CancelButton />
+          <Form.SubmitButton>Alterar</Form.SubmitButton>
+        </Form.Actions>
+      </Form>
+    </Modal>
   );
 }

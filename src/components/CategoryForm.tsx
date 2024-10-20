@@ -1,56 +1,47 @@
 import React from "react";
 import { TextField } from "@mui/material";
 import { useState } from "react";
-import { ICategory } from "../interfaces";
-import axiosInstance from "../config/axiosInstance";
+import { ICategory, IFormCategory } from "../interfaces";
 import { useNavigate } from "react-router-dom";
 import Form from "./Form";
-import SubmitButton from "./SubmitButton";
+import useForm from "../hooks/useForm";
+import { createCategory, updateCategory } from "../service/api";
+import { AxiosError } from "axios";
 
 interface CategoryFormProps {
   origCategory?: ICategory;
 }
 
 export default function CategoryForm({ origCategory }: CategoryFormProps) {
-  const [formCategory, setFormCategory] = useState<ICategory>({
+  const [formCategory, setFormCategory] = useState<IFormCategory>({
     name: origCategory?.name || "",
     description: origCategory?.description || "",
   });
+  const { handleTextInputChange } = useForm<IFormCategory>();
+  const navigate = useNavigate();
 
   const isUpdating = Boolean(origCategory);
 
-  const navigate = useNavigate();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let url = "/api/v1/categories";
-    let request = axiosInstance.post;
+    try {
+      if (isUpdating) await updateCategory(origCategory!.id, formCategory);
+      else await createCategory(formCategory);
 
-    if (isUpdating) {
-      url += `/${origCategory!.id}`;
-      request = axiosInstance.put;
+      navigate("/admin/categories");
+    } catch (error) {
+      alert(
+        `Erro ao ${isUpdating ? "alterar" : "criar"} a categoria: ${(error as AxiosError).message}`
+      );
     }
-
-    request(url, formCategory)
-      .then((response) => {
-        console.log(response);
-        navigate("/admin/categories");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormCategory({
-      ...formCategory,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    handleTextInputChange(e, setFormCategory);
 
   return (
-    <Form handleSubmit={handleSubmit} style={{width: "60%"}}>
+    <Form handleSubmit={handleSubmit} style={{ width: "60%" }}>
       <Form.Title>{isUpdating ? "Alterar" : "Nova"} Categoria</Form.Title>
       <TextField
         type="text"
@@ -76,7 +67,9 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
         >
           Cancelar
         </Form.Action>
-        <SubmitButton>{isUpdating ? "Alterar" : "Criar"}</SubmitButton>
+        <Form.SubmitButton>
+          {isUpdating ? "Alterar" : "Criar"}
+        </Form.SubmitButton>
       </Form.Actions>
     </Form>
   );

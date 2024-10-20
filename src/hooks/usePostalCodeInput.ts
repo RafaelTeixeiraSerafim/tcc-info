@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react'
-import { IFormAddress } from '../interfaces';
-import axiosInstance from '../config/axiosInstance';
+import React, { useEffect } from "react";
+import { IFormAddress } from "../interfaces";
+import axiosInstance from "../config/axiosInstance";
 
-export default function usePostalCodeInput(postalCode: string, setAddress: React.Dispatch<React.SetStateAction<IFormAddress>>) {
+export default function usePostalCodeInput(
+  postalCode: string,
+  setAddress: React.Dispatch<React.SetStateAction<IFormAddress>>
+) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -17,7 +20,7 @@ export default function usePostalCodeInput(postalCode: string, setAddress: React
   const getAddress = async (postalCode: string) => {
     try {
       const response = await axiosInstance.get(
-        `/api/v1/addresses/postal/${postalCode}`
+        `/addresses/postal-code/${postalCode}`
       );
       console.log(response);
       setAddress((prevAddress) => {
@@ -40,5 +43,5 @@ export default function usePostalCodeInput(postalCode: string, setAddress: React
     getAddress(postalCode);
   }, [postalCode]);
 
-  return {handleChange}
+  return { handleChange };
 }

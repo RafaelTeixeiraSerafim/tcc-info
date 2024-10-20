@@ -1,74 +1,45 @@
 import {
   Box,
-  Button,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   SelectChangeEvent,
-  Typography,
+  Typography
 } from "@mui/material";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { IBoughtProduct, IProduct } from "../interfaces";
-import ProductImagesDisplay from "../components/ProductImagesDisplay";
-import axiosInstance from "../config/axiosInstance";
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import AddToCartButton from "../components/AddToCartButton";
+import PriceDisplay from "../components/PriceDisplay";
+import ProductImagesDisplay from "../components/ProductImagesDisplay/ProductImagesDisplay";
+import SelectProductQty from "../components/SelectProductQty";
+import axiosInstance from "../config/axiosInstance";
 import { useUserContext } from "../hooks";
+import { IBoughtProduct, IProduct } from "../interfaces";
+import { fetchProduct } from "../service/api";
 
 export default function ProductDetails() {
   const productState: IProduct = useLocation().state;
 
   const [product, setProduct] = useState<IProduct | null>(productState || null);
-  const [qty, setQty] = useState<string | number>(1);
+  const [qty, setQty] = useState<number>(1);
   const [boughtProduct, setBoughtProduct] = useState<IBoughtProduct | null>(
     null
   );
   const { productId } = useParams();
-  const navigate = useNavigate();
 
-  const { user, setAddedToCart, setHasErrorCart } = useUserContext();
+  const { user } = useUserContext();
 
-  const getProduct = () => {
-    axiosInstance
-      .get(`/api/v1/products/${productId}`)
-      .then((response) => {
-        console.log(response);
-        setProduct(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const handleBuy = () => {
-    if (!user) {
-      navigate("/login");
+  const getProduct = async (productId: number) => {
+    try {
+      const product = await fetchProduct(productId);
+      setProduct(product);
+    } catch (error) {
+      alert(`Erro ao pegar o produto: ${(error as AxiosError).message}`);
     }
-    if (!product) return;
-
-    const data = {
-      userId: user?.id,
-      productId: product?.id,
-      qty,
-    };
-
-    axiosInstance
-      .post("/api/v1/order-items", data)
-      .then((response) => {
-        console.log(response);
-        setAddedToCart(true);
-      })
-      .catch((error) => {
-        console.error(error);
-        setHasErrorCart(true);
-      });
   };
 
-  const getBoughtProduct = () => {
+  const getBoughtProduct = (userId: number, productId: number) => {
     axiosInstance
-      .get(
-        `/api/v1/bought-products?userId=${user?.id}&&productId=${product?.id}`
-      )
+      .get(`/bought-products?userId=${userId}&&productId=${productId}`)
       .then((response) => {
         console.log(response);
         setBoughtProduct(response.data);
@@ -79,17 +50,19 @@ export default function ProductDetails() {
   };
 
   const handleQtyChange = (e: SelectChangeEvent<number>) => {
-    setQty(e.target.value);
+    setQty(e.target.value as number);
   };
 
   useEffect(() => {
-    getProduct();
+    if (!productId) return;
+
+    getProduct(parseInt(productId));
   }, [productId]);
 
   useEffect(() => {
-    if (!product?.id || !user?.id) return;
-    getBoughtProduct();
-  }, [product?.id, user?.id]);
+    if (!product || !user) return;
+    getBoughtProduct(product.id, user.id);
+  }, [product, user]);
 
   return (
     <>
@@ -119,37 +92,10 @@ export default function ProductDetails() {
               }}
             >
               <Typography variant="h4">{product.name}</Typography>
-              {product.salePrice ? (
-                <Box>
-                  <Typography
-                    component={"s"}
-                    variant="subtitle1"
-                    sx={{ color: "#666" }}
-                  >
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(parseFloat(product.origPrice))}
-                  </Typography>
-                  <Typography variant="h4" fontWeight={"bold"}>
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(parseFloat(product.salePrice))}
-                  </Typography>
-                </Box>
-              ) : (
-                <Typography variant="h4" fontWeight={"bold"}>
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(parseFloat(product.origPrice))}
-                </Typography>
-              )}
-              {/* <Box>
-                <Typography>Sobre</Typography>
-                <Typography>{product.about}</Typography>
-              </Box> */}
+              <PriceDisplay
+                salePrice={product.salePrice}
+                origPrice={product.origPrice}
+              />
               <FormControl
                 sx={{
                   display: "flex",
@@ -157,32 +103,12 @@ export default function ProductDetails() {
                   maxWidth: "15rem",
                 }}
               >
-                <InputLabel id="qty-select-label">Qtde</InputLabel>
-                <Select
-                  labelId="qty-select-label"
-                  label="Qtde"
-                  sx={{
-                    display: "inline",
-                  }}
+                <SelectProductQty
+                  qty={qty}
                   onChange={handleQtyChange}
-                  value={qty as number}
-                >
-                  {Array.from(
-                    { length: parseInt(product.stockQty) },
-                    (_, i) => i + 1
-                  ).map((qty) => (
-                    <MenuItem value={qty} key={qty}>{qty}</MenuItem>
-                  ))}
-                </Select>
-                <Button
-                  variant="contained"
-                  onClick={handleBuy}
-                  sx={{
-                    display: "inline",
-                  }}
-                >
-                  Comprar
-                </Button>
+                  stockQty={parseInt(product.stockQty)}
+                />
+                <AddToCartButton productId={product.id} productQty={qty} />
               </FormControl>
             </Box>
           </Box>

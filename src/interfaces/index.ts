@@ -9,10 +9,14 @@ export interface IProduct {
   name: string;
   about: string;
   description: string;
-  category: string | ICategory;
+  category: ICategory;
   origPrice: string;
   salePrice: string;
   stockQty: string;
+  length: string;
+  width: string;
+  height: string;
+  weight: string;
   images: IImage[];
   createdAt: string;
   updatedAt: string;
@@ -26,15 +30,22 @@ export interface IFormProduct {
   origPrice: string;
   salePrice: string;
   stockQty: string;
+  length: string;
+  width: string;
+  height: string;
+  weight: string;
   images: IImage[];
   createdAt: string;
   updatedAt: string;
 }
 
-export interface ICategory {
-  id?: number;
+export interface IFormCategory {
   name: string;
   description: string;
+}
+
+export interface ICategory extends IFormCategory {
+  id: number;
 }
 
 export interface IUser {
@@ -47,6 +58,17 @@ export interface IUser {
   role: "USER" | "ADMIN";
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ILoginUser {
+  email: string;
+  password: string;
+}
+
+export interface ISignupUser {
+  username: string;
+  email: string;
+  password: string;
 }
 
 export interface IOrder {
@@ -76,6 +98,12 @@ export interface IOrderItem {
   product: IProduct;
   qty: number;
   createdAt: string;
+}
+
+export interface IRequestOrderItem {
+  userId: number;
+  productId: number;
+  qty: number;
 }
 
 export interface IBoughtProduct {
@@ -131,4 +159,15 @@ export interface IFormAddress {
 
 export interface IAddress extends IFormAddress {
   id: number;
+}
+
+export interface IShippingOptions {
+  options: IShippingOption[]
+}
+
+export interface IShippingOption {
+  id: number;
+  name: string;
+  price: string;
+  deliveryTime: number;
 }

@@ -4,7 +4,7 @@ import axiosInstance from "../../../config/axiosInstance";
 import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import translateStatus from "../../../utils/funcs/statusTranslator";
+import { translateStatus } from "../../../utils/helpers";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", flex: 1 },
@@ -43,7 +43,7 @@ export default function Orders() {
 
   const getOrders = () => {
     axiosInstance
-      .get("/api/v1/orders")
+      .get("/orders")
       .then((response) => {
         console.log(response);
         setOrders(response.data);
@@ -79,7 +79,7 @@ export default function Orders() {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        width: "100%",
+        width: "90%",
         paddingInline: 3,
         textAlign: "left",
       }}

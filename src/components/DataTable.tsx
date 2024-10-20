@@ -1,27 +1,15 @@
-import * as React from "react";
 import { DataGrid, GridColDef, GridValidRowModel } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { Box, Typography } from "@mui/material";
+import NoRowsOverlay from "./NoRowsOverlay";
 
 interface DataTableProps {
   rows: GridValidRowModel[];
   columns: GridColDef[];
 }
 
-function NoRowsOverlay() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography>Nenhum usuário encontrado</Typography>
-    </Box>
-  );
-}
+const noRowsOverlay = () => (
+  <NoRowsOverlay>Nenhum usuário encontrado</NoRowsOverlay>
+);
 
 const paginationModel = { page: 0, pageSize: 5 };
 
@@ -35,7 +23,7 @@ export default function DataTable({ rows, columns }: DataTableProps) {
         pageSizeOptions={[5, 10]}
         sx={{ border: 0 }}
         slots={{
-          noRowsOverlay: NoRowsOverlay,
+          noRowsOverlay: noRowsOverlay,
         }}
       />
     </Paper>

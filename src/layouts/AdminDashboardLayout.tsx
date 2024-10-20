@@ -1,19 +1,19 @@
 import Box from "@mui/material/Box";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
-import LayersIcon from "@mui/icons-material/Layers";
+// import BarChartIcon from "@mui/icons-material/BarChart";
+// import DescriptionIcon from "@mui/icons-material/Description";
+// import LayersIcon from "@mui/icons-material/Layers";
 import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import type { Router, Navigation } from "@toolpad/core";
+import type { Navigation } from "@toolpad/core";
 import Logo from "../assets/images/logo.png";
-import { useEffect, useMemo, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import GroupIcon from "@mui/icons-material/Group";
 import { dashboardTheme } from "../themes";
+import useDashboardLayout from "../hooks/useDashboardLayout";
 
 const NAVIGATION: Navigation = [
   {
@@ -21,7 +21,7 @@ const NAVIGATION: Navigation = [
     title: "Geral",
   },
   {
-    segment: "admin",
+    segment: "admin/dashboard",
     title: "Painel",
     icon: <DashboardIcon />,
   },
@@ -29,6 +29,7 @@ const NAVIGATION: Navigation = [
     segment: "admin/orders",
     title: "Pedidos",
     icon: <ShoppingCartIcon />,
+    pattern: "admin/orders{/:segment}*",
   },
   {
     segment: "admin/users",
@@ -75,41 +76,26 @@ const NAVIGATION: Navigation = [
     segment: "admin/products",
     title: "Produtos",
     icon: <InventoryIcon />,
+    pattern: "admin/products{/:segment}*",
   },
   {
     segment: "admin/categories",
     title: "Categorias",
     icon: <CategoryIcon />,
+    pattern: "admin/categories{/:segment}*",
   },
 ];
 
 export default function AdminDashboardLayout() {
-  const [pathname, setPathname] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const router = useMemo<Router>(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path) => setPathname(String(path)),
-    };
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!pathname) return;
-    navigate(pathname);
-  }, [pathname]);
-
-  useEffect(() => {
-    setPathname(String(location.pathname));
-  }, [location.pathname]);
+  const { router, authentication, session } = useDashboardLayout();
 
   return (
     <AppProvider
       navigation={NAVIGATION}
       router={router}
       theme={dashboardTheme}
+      authentication={authentication}
+      session={session}
       branding={{
         logo: <img src={Logo} alt="logo" />,
         title: "Apiários Azuis",
@@ -123,6 +109,7 @@ export default function AdminDashboardLayout() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
+            maxWidth: "100%",
           }}
         >
           <Outlet />

@@ -16,20 +16,20 @@ import HeaderLogo from "./HeaderLogo";
 import SearchBar from "./SearchBar";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
-import AddedToCartPopup from "./AddedToCartPopup";
+import AddedToCartPopup from "./AddedToCartPopup/AddedToCartPopup";
 import { AccountCircle } from "@mui/icons-material";
 import AddressDisplay from "./AddressDisplay";
-import { useUserContext } from "../hooks";
+import { useCartContext, useUserContext } from "../hooks";
 
 export default function Header() {
-  const [products, setProducts] = useState<IProduct[] | null>(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
 
-  const { user, logoutUser, hasCheckedToken, addedToCart } =
-    useUserContext();
+  const { user, logoutUser, hasCheckedToken } = useUserContext();
+  const { addedToCart } = useCartContext();
 
   const theme = useTheme();
 
@@ -53,7 +53,7 @@ export default function Header() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get("/api/v1/products");
+      const response = await axiosInstance.get("/products");
       console.log(response);
 
       setProducts(response.data);
@@ -69,7 +69,7 @@ export default function Header() {
     } else {
       setIsLoggedIn(false);
     }
-  }, [hasCheckedToken, user?.id]);
+  }, [hasCheckedToken, user]);
 
   useEffect(() => {
     getProducts();
@@ -106,7 +106,7 @@ export default function Header() {
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            navigate(`/admin`);
+            navigate(`/admin/dashboard`);
           }}
           key={"btnAdmin"}
         >
@@ -161,7 +161,8 @@ export default function Header() {
           <AddressDisplay />
           <Box
             sx={{
-              display: { xs: "none", lg: "flex" },
+              // display: { xs: "none", lg: "flex" },
+              display: "flex",
               gap: "1rem",
               alignItems: "center",
             }}

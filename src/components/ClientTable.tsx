@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import { IAccountTableRow, IUser } from "../interfaces";
 import { GridColDef } from "@mui/x-data-grid";
-import axiosInstance from "../config/axiosInstance";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Id", flex: 1 },
@@ -18,7 +17,7 @@ interface ClientTableProps {
 }
 
 export default function ClientTable({ clients }: ClientTableProps) {
-  const [rows, setRows] = useState<IAccountTableRow[] | null>(null);
+  const [rows, setRows] = useState<IAccountTableRow[]>([]);
 
   useEffect(() => {
     setRows(
@@ -33,7 +32,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
         };
       })
     );
-  }, [clients.length]);
+  }, [clients]);
 
-  return <>{rows && <DataTable rows={rows} columns={columns} />}</>;
+  return <DataTable rows={rows} columns={columns} />;
 }

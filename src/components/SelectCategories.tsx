@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ICategory, IFormProduct } from "../interfaces";
-import axiosInstance from "../config/axiosInstance";
 import {
   FormControl,
   InputLabel,
@@ -8,6 +7,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { fetchCategories } from "../service/api";
 
 interface SelectCategoriesProps {
   setFormProduct: React.Dispatch<React.SetStateAction<IFormProduct>>;
@@ -29,16 +29,17 @@ export default function SelectCategories({
     });
   };
 
+  const getCategories = async () => {
+    try {
+      const categories = await fetchCategories();
+      setCategories(categories);
+    } catch (error) {
+      alert(`Erro ao pegar as categorias: ${error}`);
+    }
+  };
+
   useEffect(() => {
-    axiosInstance
-      .get("/api/v1/categories")
-      .then((response) => {
-        console.log(response);
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    getCategories();
   }, []);
 
   return (

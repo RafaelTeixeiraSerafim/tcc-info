@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { Paper } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
   GridRowParams,
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import { IProduct, IProductTableRow } from "../interfaces";
-import { Box, Paper, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { IProduct, IProductTableRow } from "../interfaces";
+import NoRowsOverlay from "./NoRowsOverlay";
+import { formatCurrency } from "../utils/helpers";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "Id", width: 80 },
-  { field: "name", headerName: "Nome", width: 300 },
-  { field: "category", headerName: "Categoria", width: 110 },
-  { field: "stockQty", headerName: "Qtde. em estoque", width: 140 },
-  { field: "origPrice", headerName: "Preço orig.", width: 100 },
-  { field: "salePrice", headerName: "Preço oferta", width: 100 },
-  { field: "createdAt", headerName: "Criado em", width: 180 },
-  { field: "updatedAt", headerName: "Atualizado em", width: 180 },
+  { field: "id", headerName: "Id", flex: 1 },
+  { field: "name", headerName: "Nome", flex: 3.5 },
+  { field: "category", headerName: "Categoria", flex: 1.7 },
+  { field: "stockQty", headerName: "Qtde. em estoque", flex: 1 },
+  { field: "origPrice", headerName: "Preço orig.", flex: 1.5 },
+  { field: "salePrice", headerName: "Preço oferta", flex: 1.5 },
+  { field: "createdAt", headerName: "Criado em", flex: 2.5 },
+  { field: "updatedAt", headerName: "Atualizado em", flex: 2.5 },
 ];
 
 interface ProductTableProps {
@@ -29,22 +31,11 @@ interface ProductTableProps {
   >;
 }
 
-function NoRowsOverlay() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography>Nenhum produto encontrado</Typography>
-    </Box>
-  );
-}
-
 const paginationModel = { page: 0, pageSize: 5 };
+
+const noRowsOverlay = () => (
+  <NoRowsOverlay>Nenhum produto encontrado</NoRowsOverlay>
+);
 
 export default function ProductTable({
   products,
@@ -52,14 +43,14 @@ export default function ProductTable({
   selectionModel,
   setSelectionModel,
 }: ProductTableProps) {
-  const [rows, setRows] = useState<IProductTableRow[] | null>(null);
+  const [rows, setRows] = useState<IProductTableRow[]>([]);
   const navigate = useNavigate();
 
   const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
     setSelectionModel(newSelection);
   };
 
-  const filteredRows = rows?.filter((row) =>
+  const filteredRows = rows.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -73,49 +64,36 @@ export default function ProductTable({
     setRows(
       products.map((product) => {
         return {
-          id: product.id!,
+          id: product.id,
           name: product.name,
-          category:
-            typeof product.category === "string"
-              ? product.category
-              : product.category.name,
-          origPrice: new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(parseFloat(product.origPrice)),
+          category: product.category.name,
+          origPrice: formatCurrency(parseFloat(product.origPrice)),
           salePrice:
             product.salePrice === null
               ? "-"
-              : new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(parseFloat(product.salePrice)),
+              : formatCurrency(parseFloat(product.salePrice)),
           stockQty: product.stockQty,
           createdAt: new Date(product.createdAt).toLocaleString(),
           updatedAt: new Date(product.updatedAt).toLocaleString(),
         };
       })
     );
-  }, [products.length]);
+  }, [products]);
 
   return (
-    <>
-      {rows && (
-        <Paper sx={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={filteredRows}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
-            sx={{ border: 0 }}
-            onRowClick={(params) => handleRowClick(params)}
-            slots={{ noRowsOverlay: NoRowsOverlay }}
-            checkboxSelection
-            onRowSelectionModelChange={handleSelectionChange}
-            rowSelectionModel={selectionModel}
-          />
-        </Paper>
-      )}
-    </>
+    <Paper sx={{ height: 400, width: "100%" }}>
+      <DataGrid
+        rows={filteredRows}
+        columns={columns}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        sx={{ border: 0, width: "100%" }}
+        onRowClick={(params) => handleRowClick(params)}
+        slots={{ noRowsOverlay: noRowsOverlay }}
+        checkboxSelection
+        onRowSelectionModelChange={handleSelectionChange}
+        rowSelectionModel={selectionModel}
+      />
+    </Paper>
   );
 }

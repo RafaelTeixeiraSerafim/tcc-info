@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ICategory, ICategoryTableRow } from "../interfaces";
-import { Box, Paper, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridRowParams, GridRowSelectionModel } from "@mui/x-data-grid";
+import { Paper } from "@mui/material";
+import {
+  DataGrid,
+  GridColDef,
+  GridRowParams,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
+import NoRowsOverlay from "./NoRowsOverlay";
 
 interface CategoryTableProps {
   categories: ICategory[];
@@ -18,25 +24,18 @@ const columns: GridColDef[] = [
   { field: "description", headerName: "Descrição", flex: 7 },
 ];
 
-function NoRowsOverlay() {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography>Nenhuma categoria encontrada</Typography>
-    </Box>
-  );
-}
-
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function CategoryTable({ categories, selectionModel, setSelectionModel }: CategoryTableProps) {
-  const [rows, setRows] = useState<ICategoryTableRow[] | null>(null);
+const noRowsOverlay = () => (
+  <NoRowsOverlay>Nenhuma categoria encontrada</NoRowsOverlay>
+);
+
+export default function CategoryTable({
+  categories,
+  selectionModel,
+  setSelectionModel,
+}: CategoryTableProps) {
+  const [rows, setRows] = useState<ICategoryTableRow[]>([]);
   const navigate = useNavigate();
 
   const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
@@ -50,35 +49,23 @@ export default function CategoryTable({ categories, selectionModel, setSelection
   };
 
   useEffect(() => {
-    setRows(
-      categories.map((category) => {
-        return {
-          id: category.id!,
-          description: category.description,
-          name: category.name,
-        };
-      })
-    );
-  }, [categories.length]);
+    setRows(categories);
+  }, [categories]);
 
   return (
-    <>
-      {rows && (
-        <Paper sx={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
-            sx={{ border: 0, width: "100%" }}
-            onRowClick={(params) => handleRowClick(params)}
-            slots={{ noRowsOverlay: NoRowsOverlay }}
-            checkboxSelection
-            onRowSelectionModelChange={handleSelectionChange}
-            rowSelectionModel={selectionModel}
-          />
-        </Paper>
-      )}
-    </>
+    <Paper sx={{ height: 400, width: "100%" }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        sx={{ border: 0, width: "100%" }}
+        onRowClick={(params) => handleRowClick(params)}
+        slots={{ noRowsOverlay: noRowsOverlay }}
+        checkboxSelection
+        onRowSelectionModelChange={handleSelectionChange}
+        rowSelectionModel={selectionModel}
+      />
+    </Paper>
   );
 }
