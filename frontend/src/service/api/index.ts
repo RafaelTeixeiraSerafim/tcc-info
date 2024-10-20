@@ -10,6 +10,27 @@ import {
   ISignupUser,
 } from "../../interfaces";
 
+export const checkToken = async () => {
+  try {
+    const response = await axiosInstance.post("/auth/check-token");
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await axiosInstance.post("/auth/logout");
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+};
+
 export const createCartItem = async (orderItem: IRequestOrderItem) => {
   try {
     const response = await axiosInstance.post(`/order-items`, orderItem);

@@ -76,9 +76,13 @@ public class OrderItemService {
     }
 
     public void deleteOrderItem(Long orderItemId) {
-        orderItemRepository.findById(orderItemId).ifPresent(orderItemRepository::delete);
+        Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(orderItemId);
 
-        throw new IllegalArgumentException("OrderItem not found");
+        if (optionalOrderItem.isEmpty()) {
+            throw new IllegalArgumentException("OrderItem not found");
+        }
+
+        orderItemRepository.delete(optionalOrderItem.get());
     }
 
     public OrderItem getOrderItemByUserIdAndProductId(Long userId, Long productId) {

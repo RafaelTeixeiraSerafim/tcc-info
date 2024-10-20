@@ -2,15 +2,15 @@ import os
 from dotenv import load_dotenv
 # basedir = os.path.abspath(os.path.dirname(__file__))
 
-load_dotenv(".flaskenv.prod")
-load_dotenv(".env.prod")
+load_dotenv(".flaskenv.local")
+load_dotenv(".env.local")
 
 class Config(object):
     DEBUG = False
     TESTING = False
     # CSRF_ENABLED = True
-    # SECRET_KEY = 'this-really-needs-to-be-changed'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    # EUREKA_URL = os.environ['EUREKA_URL']
     FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 8080)
 
 

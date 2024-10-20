@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AddressService {
-    @Value("${postal_service.base_url}")
-    private String postalBaseUrl;
+    @Value("${postal_service.base_uri}")
+    private String postalBaseUri;
 
     private final RestTemplate restTemplate;
 
@@ -25,7 +25,7 @@ public class AddressService {
 
     public String createAddress(AddressDto addressDto) {
         return restTemplate.postForObject(
-                postalBaseUrl + "api/v1/addresses",
+                postalBaseUri + "/api/v1/addresses",
                 addressDto,
                 String.class
         );
@@ -33,21 +33,21 @@ public class AddressService {
 
     public AddressDto getAddress(@Min(1) Long addressId) {
         return restTemplate.getForObject(
-                postalBaseUrl + "api/v1/addresses/" + addressId.toString(),
+                postalBaseUri + "/api/v1/addresses/" + addressId.toString(),
                 AddressDto.class
         );
     }
 
-    public UserAddresses getUserAddresses(Long userId) {
+    public UserAddresses getUserAddresses(@Min(1) Long userId) {
         return restTemplate.getForObject(
-                postalBaseUrl + "api/v1/addresses?userId=" + userId,
+                postalBaseUri + "/api/v1/addresses?userId=" + userId,
                 UserAddresses.class
         );
     }
 
     public AddressFromPostal getAddressFromPostal(String postalCode) {
         return restTemplate.getForObject(
-                postalBaseUrl + "api/v1/addresses/postal-code/" + postalCode,
+                postalBaseUri + "/api/v1/addresses/postal-code/" + postalCode,
                 AddressFromPostal.class
         );
     }
@@ -62,12 +62,12 @@ public class AddressService {
     }
 
     public void deleteAddress(@Min(1) Long addressId) {
-        restTemplate.delete(postalBaseUrl + "api/v1/addresses/" + addressId.toString());
+        restTemplate.delete(postalBaseUri + "/api/v1/addresses/" + addressId.toString());
     }
 
     public void updateAddress(@Min(1) Long addressId, AddressDto addressDto) {
         restTemplate.put(
-                postalBaseUrl + "api/v1/addresses/" + addressId.toString(),
+                postalBaseUri + "/api/v1/addresses/" + addressId.toString(),
                 addressDto
         );
     }

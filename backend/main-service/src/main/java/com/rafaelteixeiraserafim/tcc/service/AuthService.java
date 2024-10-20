@@ -19,7 +19,7 @@ public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    @Value("${IS_HTTPS}")
+    @Value("${is_https}")
     private boolean isHttps;
 
     @Autowired
