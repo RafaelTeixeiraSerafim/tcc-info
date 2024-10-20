@@ -42,7 +42,7 @@ public class ShippingService {
                     product.getLength(),
                     product.getWeight(),
                     product.getOrigPrice(),
-                    product.getStockQty()
+                    orderItem.getQty()
             ));
         }
 

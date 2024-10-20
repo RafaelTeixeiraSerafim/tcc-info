@@ -13,18 +13,12 @@ import java.util.Optional;
 
 @Service
 public class BoughtProductService {
-    @Autowired
-    private BoughtProductRepository boughtProductRepository;
+    private final BoughtProductRepository boughtProductRepository;
 
-//    public BoughtProduct getBoughtProductByUserAndProduct(User user, Product product) {
-//        Optional<BoughtProduct> optionalBoughtProduct = boughtProductRepository.getBoughtProductByUserAndProduct(user, product);
-//
-//        if (optionalBoughtProduct.isEmpty()) {
-//            throw new IllegalArgumentException("BoughtProduct with userId " + user.getId() + " and productId " + product.getId() + " does not exist");
-//        }
-//
-//        return optionalBoughtProduct.get();
-//    }
+    @Autowired
+    public BoughtProductService(BoughtProductRepository boughtProductRepository) {
+        this.boughtProductRepository = boughtProductRepository;
+    }
 
     public void createBoughtProductsWithOrderItems(List<OrderItem> orderItems) {
         List<BoughtProduct> boughtProducts = new ArrayList<>();
@@ -41,13 +35,13 @@ public class BoughtProductService {
     }
 
     public List<BoughtProduct> getBoughtProducts(Long userId) {
-        Optional<List<BoughtProduct>> optionalBoughtProducts = boughtProductRepository.findBoughtProductsByUserId(userId);
+        List<BoughtProduct> optionalBoughtProducts = boughtProductRepository.findBoughtProductsByUserId(userId);
 
         if (optionalBoughtProducts.isEmpty()) {
             throw new IllegalArgumentException("BoughtProducts with userId " + userId + " does not exist");
         }
 
-        return optionalBoughtProducts.get();
+        return optionalBoughtProducts;
     }
 
     public BoughtProductDto getBoughtProduct(Long userId, Long productId) {
