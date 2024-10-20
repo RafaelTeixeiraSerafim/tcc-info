@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "vite --mode development",
     "prod": "vite --mode production",
+    "predeploy": "vite build --mode production",
+    "deploy": "gh-pages -d dist",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "lint": "eslint .",
