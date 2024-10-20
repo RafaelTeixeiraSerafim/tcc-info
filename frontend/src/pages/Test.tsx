@@ -18,8 +18,9 @@ export default function Test() {
   console.log("rerender");
 
   return (
-    <div>
+    <div style={{marginTop: "7rem"}}>
       <h1>Test</h1>
+      <p>new build</p>
       <h3>Obj</h3>
       <ul>
         <li>{obj.id}</li>
