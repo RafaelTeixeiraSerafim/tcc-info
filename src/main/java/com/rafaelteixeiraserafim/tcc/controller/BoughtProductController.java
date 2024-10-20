@@ -19,13 +19,10 @@ public class BoughtProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getBoughtProducts(@RequestParam Long userId, @RequestParam Long productId) {
-        if (userId != null) {
-            if (productId != null) {
-                return ResponseEntity.ok(boughtProductService.getBoughtProduct(userId, productId));
-            }
-            return ResponseEntity.ok(boughtProductService.getBoughtProducts(userId));
+    public ResponseEntity<?> getBoughtProducts(@RequestParam Long userId, @RequestParam(required = false) Long productId) {
+        if (productId != null) {
+            return ResponseEntity.ok(boughtProductService.getBoughtProduct(userId, productId));
         }
-        return ResponseEntity.badRequest().body("Missing required request parameters");
+        return ResponseEntity.ok(boughtProductService.getBoughtProducts(userId));
     }
 }

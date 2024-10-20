@@ -62,6 +62,10 @@ public class OrderItemService {
             orderItem.setQty(orderItem.getQty() + orderItemRequest.qty());
             return orderItem;
         } else {
+            if (orderItemRequest.qty() > product.getStockQty()) {
+                throw new IllegalArgumentException("OrderItem qty is greater than product stock");
+            }
+
             Order order = orderService.getOrderByUserId(orderItemRequest.userId());
 
             OrderItem newOrderItem = new OrderItem(order, product, orderItemRequest.qty());
@@ -72,7 +76,9 @@ public class OrderItemService {
     }
 
     public void deleteOrderItem(Long orderItemId) {
-        orderItemRepository.deleteById(orderItemId);
+        orderItemRepository.findById(orderItemId).ifPresent(orderItemRepository::delete);
+
+        throw new IllegalArgumentException("OrderItem not found");
     }
 
     public OrderItem getOrderItemByUserIdAndProductId(Long userId, Long productId) {

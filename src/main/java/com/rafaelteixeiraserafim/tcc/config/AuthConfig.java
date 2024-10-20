@@ -19,8 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class AuthConfig {
-    @Autowired
     SecurityFilter securityFilter;
+
+    @Autowired
+    public AuthConfig(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -50,7 +54,7 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/order-items/*").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/api/v1/addresses").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/addresses").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/addresses/postal/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/addresses/postal-code/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/*").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

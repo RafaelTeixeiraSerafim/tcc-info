@@ -32,46 +32,50 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public CommandLineRunner commandLineRunner(CategoryRepository categoryRepository, UserRepository userRepository, ProductRepository productRepository, ImageRepository imageRepository, OrderRepository orderRepository) {
         return args -> {
-            Category category = new Category(
-                    "Comida",
-                    "sopd"
-            );
-            categoryRepository.save(category);
+            if (categoryRepository.findAll().isEmpty()) {
+                Category category = new Category(
+                        "Mel",
+                        "sopd"
+                );
+                categoryRepository.save(category);
 
-            Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(100), new BigDecimal(90), 4, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
-            productRepository.save(product);
+                Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(100), new BigDecimal(90), 4, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
+                productRepository.save(product);
 
-            Image image1 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_1_92e411091a3aa9100c2035d02d45028c.jpg", product);
-            Image image2 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_2_7d0610febf51ce1d31d7b072861a1183.jpg", product);
-            Image image3 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_3_f31fbabb7c47447f416986fbbabe5fe1.jpg", product);
+                Image image1 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_1_92e411091a3aa9100c2035d02d45028c.jpg", product);
+                Image image2 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_2_7d0610febf51ce1d31d7b072861a1183.jpg", product);
+                Image image3 = new Image("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_3_f31fbabb7c47447f416986fbbabe5fe1.jpg", product);
 
-            String adminPassword = "admin";
-            String encryptedAdminPassword = new BCryptPasswordEncoder().encode(adminPassword);
-            User admin = new User(
-                    "admin",
-                    "rafael.teixeiraserafim@gmail.com",
-                    encryptedAdminPassword,
-                    UserRole.ADMIN
-            );
+                imageRepository.save(image1);
+                imageRepository.save(image2);
+                imageRepository.save(image3);
+            }
+            if (userRepository.findAll().isEmpty()) {
+                String adminPassword = "admin";
+                String encryptedAdminPassword = new BCryptPasswordEncoder().encode(adminPassword);
+                User admin = new User(
+                        "admin",
+                        "rafael.teixeiraserafim@gmail.com",
+                        encryptedAdminPassword,
+                        UserRole.ADMIN
+                );
 
-            String password = "123";
-            String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-            User user = new User(
-                    "rafaelT",
-                    "rafael@gmail.com",
-                    encryptedPassword,
-                    UserRole.USER
-            );
+                String password = "123";
+                String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+                User user = new User(
+                        "rafaelT",
+                        "rafael@gmail.com",
+                        encryptedPassword,
+                        UserRole.USER
+                );
 
-            userRepository.save(user);
+                userRepository.save(user);
 
-            Order order = new Order(user, OrderStatus.IN_PROGRESS);
-            
-            orderRepository.save(order);
-            userRepository.save(admin);
-            imageRepository.save(image1);
-            imageRepository.save(image2);
-            imageRepository.save(image3);
+                Order order = new Order(user, OrderStatus.IN_PROGRESS);
+
+                orderRepository.save(order);
+                userRepository.save(admin);
+            }
         };
     }
 }
