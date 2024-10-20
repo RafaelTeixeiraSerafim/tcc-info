@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rafaelteixeiraserafim</groupId>
-    <artifactId>main-backend</artifactId>
+    <artifactId>main-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tcc-info</name>
+    <name>main-service</name>
     <description>E-commerce de mel e derivados</description>
     <url/>
     <licenses>
@@ -76,6 +76,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>4.1.3</version>
         </dependency>
 
         <dependency>

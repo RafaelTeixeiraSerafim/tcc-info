@@ -6,6 +6,7 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.service.OrderItemService;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class OrderItemController {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
 
+    @Autowired
     public OrderItemController(OrderService orderService, OrderItemService orderItemService) {
         this.orderService = orderService;
         this.orderItemService = orderItemService;

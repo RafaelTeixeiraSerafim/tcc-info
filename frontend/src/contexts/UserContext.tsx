@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import { createContext, useState } from "react";
-import axiosInstance from "../config/axiosInstance";
 import { IUser } from "../interfaces";
+import { checkToken, logout } from "../service/api";
+import { AxiosError } from "axios";
 
 interface UserProviderProps {
   children: React.ReactNode;
@@ -22,25 +23,17 @@ function UserProvider({ children }: UserProviderProps) {
   const [hasCheckedToken, setHasCheckedToken] = useState(false);
 
   const authenticate = useCallback(async () => {
-    try {
-      const response = await axiosInstance.post("/auth/check-token");
-
-      console.log(response);
-      setUser(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const user = await checkToken();
+    setUser(user);
     setHasCheckedToken(true);
   }, []);
 
   const logoutUser = useCallback(async () => {
     try {
-      const response = await axiosInstance.post("/auth/logout");
-
-      console.log(response);
+      await logout();
       setUser(null);
     } catch (error) {
-      console.log(error);
+      alert(`Erro ao deslogar o usuário: ${(error as AxiosError).message}`);
     }
   }, []);
 

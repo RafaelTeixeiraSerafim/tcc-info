@@ -15,10 +15,10 @@ import java.util.List;
 
 @Service
 public class ShippingService {
-    @Value("${POSTAL_CODE}")
+    @Value("${owner.postal_code}")
     private String ownerPostalCode;
-    @Value("${postal_service.base_url}")
-    private String postalBaseUrl;
+    @Value("${postal_service.base_uri}")
+    private String postalBaseUri;
 
     private final OrderItemService orderItemService;
     private final RestTemplate restTemplate;
@@ -46,6 +46,6 @@ public class ShippingService {
             ));
         }
 
-        return restTemplate.postForObject(postalBaseUrl + "api/v1/shipping/calculate", new ShippingOptionsRequest(new ShippingFromToDto(ownerPostalCode), new ShippingFromToDto(userPostalCode), shippingOptionRequestProducts), ShippingOptionsResponseDto.class);
+        return restTemplate.postForObject(postalBaseUri + "/api/v1/shipping/calculate", new ShippingOptionsRequest(new ShippingFromToDto(ownerPostalCode), new ShippingFromToDto(userPostalCode), shippingOptionRequestProducts), ShippingOptionsResponseDto.class);
     }
 }

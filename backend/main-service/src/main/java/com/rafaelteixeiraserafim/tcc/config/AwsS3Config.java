@@ -10,13 +10,13 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
 public class AwsS3Config {
-    @Value("${AWS_REGION}")
+    @Value("${aws.region}")
     private String awsRegion;
 
-    @Value("${AWS_ACCESS_KEY_ID}")
+    @Value("${aws.access_key_id}")
     private String awsAccessKeyId;
 
-    @Value("${AWS_SECRET_ACCESS_KEY}")
+    @Value("${aws.secret_access_key}")
     private String awsSecretAccessKey;
 
     @Bean
