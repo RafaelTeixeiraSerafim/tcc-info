@@ -4,14 +4,13 @@ from app.services import address_service
 def get_addresses_controller():
     try:
         user_id = request.args.get("userId", -1, type=int)
-        postal_code = request.args.get("postalCode", "", type=str)
 
         if user_id == -1:
                 return jsonify({"message": "Missing one or more required parameters"}), 400
         
         addresses = address_service.get_addresses(user_id)
         
-        return jsonify(addresses)
+        return jsonify({"addresses": addresses})
     except Exception as e:
         return jsonify({"message": f'{str(e)}'}), 500
 
