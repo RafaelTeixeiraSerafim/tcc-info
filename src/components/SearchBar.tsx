@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  Autocomplete,
-  TextField,
-  alpha,
-  styled,
-} from "@mui/material";
+import { Autocomplete, TextField, alpha, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { IProduct } from "../interfaces";
 
@@ -89,7 +84,7 @@ const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
 }));
 
 interface SearchBarProps {
-  products: IProduct[] | null;
+  products: IProduct[];
 }
 
 export default function SearchBar({ products }: SearchBarProps) {
@@ -102,7 +97,9 @@ export default function SearchBar({ products }: SearchBarProps) {
     newValue: unknown
   ) => {
     if (newValue && typeof newValue === "object" && "id" in newValue) {
-      navigate(`/product/${(newValue as { id: string }).id}`, {state: newValue}); // Navigate using the product's id
+      navigate(`/product/${(newValue as { id: string }).id}`, {
+        state: newValue,
+      }); // Navigate using the product's id
     }
   };
 
@@ -114,10 +111,8 @@ export default function SearchBar({ products }: SearchBarProps) {
       <StyledAutocomplete
         freeSolo
         id="free-solo-2-demo"
-        options={products || []}
-        getOptionLabel={(option) =>
-          typeof option === "string" ? option : (option as IProduct).name
-        }
+        options={products}
+        getOptionLabel={(option) => (option as IProduct).name}
         inputValue={inputValue}
         onInputChange={(_, value) => setInputValue(value)}
         onChange={handleChange}

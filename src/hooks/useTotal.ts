@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { IOrderItem } from "../interfaces";
-import getOrderItemPrice from "../utils/funcs/orderItemPriceCalculator";
+import { getOrderItemPrice } from "../utils/helpers";
 
-export default function useTotal(cartItems: IOrderItem[] | null) {
-  const [total, setTotal] = useState(0);
+export default function useTotal(cartItems: IOrderItem[]) {
+  const [subtotal, setSubtotal] = useState(0);
 
-  const getTotal = () => {
-    if (!cartItems) return;
-
+  const getSubtotal = (cartItems: IOrderItem[]) => {
     let sum = 0;
     cartItems.forEach((cartItem) => {
       let price = 0;
@@ -15,14 +13,14 @@ export default function useTotal(cartItems: IOrderItem[] | null) {
       sum += price;
     });
 
-    setTotal(sum);
+    setSubtotal(sum);
   };
 
   useEffect(() => {
-    if (!cartItems?.length) return;
+    if (!cartItems.length) return;
 
-    getTotal();
-  }, [cartItems?.length]);
+    getSubtotal(cartItems);
+  }, [cartItems]);
 
-  return { total };
+  return { subtotal };
 }

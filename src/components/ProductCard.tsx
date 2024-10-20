@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
 import { IProduct } from "../interfaces";
+import { formatCurrency } from "../utils/helpers";
 
 export interface ProductCardProps {
   product: IProduct;
@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <Box
         component={"img"}
-        src={product.images[0].url}
+        src={product.images[0]?.url || ""}
         alt=""
         height={"13rem"}
         loading="lazy"
@@ -55,24 +55,15 @@ export default function ProductCard({ product }: ProductCardProps) {
                 variant="subtitle2"
                 sx={{ color: "#666" }}
               >
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(parseFloat(product.origPrice))}
+                {formatCurrency(parseFloat(product.origPrice))}
               </Typography>
               <Typography variant="h5" fontWeight={"bold"}>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(parseFloat(product.salePrice))}
+                {formatCurrency(parseFloat(product.salePrice))}
               </Typography>
             </>
           ) : (
             <Typography variant="h5" fontWeight={"bold"}>
-              {new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(parseFloat(product.origPrice))}
+              {formatCurrency(parseFloat(product.origPrice))}
             </Typography>
           )}
         </Box>

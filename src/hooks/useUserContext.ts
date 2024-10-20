@@ -5,7 +5,7 @@ const useUserContext = () => {
   const context = useContext(UserContext);
 
   if (!context) {
-    throw new Error("useModalContext must be used within a Modal");
+    throw new Error("useUserContext must be used within a provider");
   }
   return context;
 };

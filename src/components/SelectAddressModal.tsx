@@ -1,53 +1,40 @@
 import { Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AddressList from "./AddressList";
+import { useAddressContext, useUserContext } from "../hooks";
 import { IAddress, IFormAddress } from "../interfaces";
-import axiosInstance from "../config/axiosInstance";
+import { emptyFormAddress } from "../utils/formDefaults";
+import AddressList from "./AddressList";
 import AddressModal from "./AddressModal";
-import PostalCodeInput from "./PostalCodeInput";
-import { emptyFormAddress } from "../utils/emptyInterfaces";
+import Form from "./Form";
 import Modal from "./Modal";
-import { useUserContext } from "../hooks";
+import PostalCodeInput from "./PostalCodeInput";
 
 interface SelectAddressModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   updateFunction: () => void;
-  selectedAddress?: IAddress;
-  incompleteAddress?: IFormAddress;
 }
 
 export default function SelectAddressModal({
   isOpen,
   setIsOpen,
   updateFunction,
-  selectedAddress,
-  incompleteAddress,
 }: SelectAddressModalProps) {
-  const [addresses, setAddresses] = useState<IAddress[]>([]);
   const [addressToUpdate, setAddressToUpdate] = useState<IAddress | null>(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [formAddress, setFormAddress] =
     useState<IFormAddress>(emptyFormAddress);
   const [newAddressDefaultValues, setNewAddressDefaultValues] =
     useState<IFormAddress | null>(null);
-  const [selectedAddressId, setSelectedAddressId] = useState<number>(0);
 
   const { user } = useUserContext();
-
-  const getAddresses = async () => {
-    if (!user) return;
-
-    try {
-      const response = await axiosInstance.get(
-        "/api/v1/addresses?userId=" + user.id
-      );
-      console.log(response);
-      setAddresses(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const {
+    getAddresses,
+    selectedAddress,
+    incompleteAddress,
+    setSelectedAddressById,
+    clearSelectedAddress,
+  } = useAddressContext();
 
   const handleNewAddress = () => {
     setNewAddressDefaultValues(formAddress);
@@ -55,14 +42,15 @@ export default function SelectAddressModal({
   };
 
   const handleSave = () => {
+    if (!selectedAddress) return;
     localStorage.removeItem("postalCode");
-    localStorage.setItem("selectedAddressId", selectedAddressId.toString());
+    localStorage.setItem("selectedAddressId", selectedAddress.id.toString());
     updateFunction();
     setIsOpen(false);
   };
 
   const handleUseIncompletePostal = () => {
-    setSelectedAddressId(0);
+    clearSelectedAddress();
     localStorage.removeItem("selectedAddressId");
     localStorage.setItem("postalCode", formAddress.postalCode);
     updateFunction();
@@ -90,49 +78,30 @@ export default function SelectAddressModal({
     setIsAddressModalOpen(true);
   };
 
-  const handleDelete = async (addressId: number) => {
-    try {
-      const response = await axiosInstance.delete(
-        `/api/v1/addresses/${addressId}`
-      );
-      console.log(response);
-      setAddresses(addresses.filter((address) => address.id !== addressId));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAddressId(parseInt(e.target.value));
+    setSelectedAddressById(parseInt(e.target.value));
   };
 
-  useEffect(() => {
-    getAddresses();
-  }, [user?.id]);
-
-  useEffect(() => {
-    if (!selectedAddress) return;
-
-    setSelectedAddressId(selectedAddress.id);
-  }, [selectedAddress?.id]);
+  const handleUpdateAddresses = () => {
+    if (!user) return;
+    getAddresses(user.id);
+  };
 
   useEffect(() => {
     if (!incompleteAddress?.postalCode) return;
 
     setFormAddress(incompleteAddress);
-  }, [incompleteAddress?.postalCode]);
+  }, [incompleteAddress]);
 
   return (
     <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
       <Modal.Title>Escolha um endereço</Modal.Title>
       <AddressList
-        addresses={addresses}
-        selectedAddressId={selectedAddressId}
+        selectedAddressId={selectedAddress?.id || 0}
         onChange={handleChange}
         onUpdate={handleUpdate}
-        onDelete={handleDelete}
       />
-      <Box>
+      <Form handleSubmit={handleSave}>
         <Box>
           <PostalCodeInput
             postalCode={formAddress.postalCode}
@@ -148,20 +117,18 @@ export default function SelectAddressModal({
         </Box>
         <Typography>{formAddress.street}</Typography>
         <Typography>{formAddress.city}</Typography>
-        <Modal.Action handleClick={handleNewAddress}>
+        <Form.Action handleClick={handleNewAddress}>
           Adicionar endereço completo
-        </Modal.Action>
-        <Modal.Actions>
-          <Modal.Cancel />
-          <Modal.Action variant="contained" handleClick={handleSave}>
-            Salvar
-          </Modal.Action>
-        </Modal.Actions>
-      </Box>
+        </Form.Action>
+        <Form.Actions>
+          <Modal.CancelButton />
+          <Form.SubmitButton>Salvar</Form.SubmitButton>
+        </Form.Actions>
+      </Form>
       <AddressModal
         isOpen={isAddressModalOpen}
         onClose={handleClose}
-        onUpdateAddresses={getAddresses}
+        onUpdateAddresses={handleUpdateAddresses}
         addressToUpdate={addressToUpdate ? addressToUpdate : undefined}
         newAddressDefaultValues={
           newAddressDefaultValues ? newAddressDefaultValues : undefined

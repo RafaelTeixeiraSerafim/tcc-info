@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useState } from "react";
 import { IFormProduct } from "../interfaces";
 import { alpha, Box, InputLabel, styled } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
@@ -43,7 +43,7 @@ const ImageInput = memo(
   }: ImageInputProps) => {
     const [previewImage, setPreviewImage] = useState<
       string | ArrayBuffer | null
-    >(null);
+    >(defaultImage || null);
     const changeBgImage = (imageFile: File | undefined) => {
       if (!imageFile) return;
 
@@ -75,10 +75,6 @@ const ImageInput = memo(
       changeBgImage(target.files[0]);
     };
 
-    useEffect(() => setPreviewImage(defaultImage), []);
-
-    console.log("rerender img input");
-
     return (
       <Box sx={{ display: "flex", flex: 1 }}>
         <StyledImageInput shrink={false} focused={false}>
@@ -105,12 +101,14 @@ const ImageInput = memo(
               }}
             />
           ) : (
-            <Box sx={{
-              display: "flex",
-              minHeight: "7rem",
-              height: "100%"
-            }}>
-              <AddPhotoAlternateIcon fontSize="large" sx={{ margin: "auto"}}/>
+            <Box
+              sx={{
+                display: "flex",
+                minHeight: "7rem",
+                height: "100%",
+              }}
+            >
+              <AddPhotoAlternateIcon fontSize="large" sx={{ margin: "auto" }} />
             </Box>
           )}
           <input

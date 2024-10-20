@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import ProductForm from "../../../components/ProductForm";
 import axiosInstance from "../../../config/axiosInstance";
@@ -11,9 +11,9 @@ export default function UpdateProduct() {
   const [product, setProduct] = useState<IProduct | null>(productState || null);
   const { productId } = useParams();
 
-  const getProduct = () => {
+  const getProduct = (productId: string) => {
     axiosInstance
-      .get(`/api/v1/products/${productId}`)
+      .get(`/products/${productId}`)
       .then((response) => {
         console.log(response);
         setProduct(response.data);
@@ -24,8 +24,9 @@ export default function UpdateProduct() {
   };
 
   useEffect(() => {
-    getProduct();
-  }, []);
+    if (!productId) return;
+    getProduct(productId);
+  }, [productId]);
 
   return <>{product && <ProductForm origProduct={product} />}</>;
 }

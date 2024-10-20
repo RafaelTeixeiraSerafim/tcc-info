@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { IOrder } from "../../../interfaces";
 import axiosInstance from "../../../config/axiosInstance";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import StatusModal from "../../../components/StatusModal";
-import translateStatus from "../../../utils/funcs/statusTranslator";
-import getOrderItemPrice from "../../../utils/funcs/orderItemPriceCalculator";
+import { formatCurrency, translateStatus } from "../../../utils/helpers";
+import { getOrderItemPrice } from "../../../utils/helpers";
 import useTotal from "../../../hooks/useTotal";
 
 export default function OrderDetails() {
@@ -16,11 +16,11 @@ export default function OrderDetails() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { orderId } = useParams();
-  const { total } = useTotal(order?.orderItems || null);
+  const { subtotal } = useTotal(order?.orderItems || []);
 
-  const getOrder = () => {
+  const getOrder = (orderId: string) => {
     axiosInstance
-      .get(`/api/v1/orders/${orderId}`)
+      .get(`/orders/${orderId}`)
       .then((response) => {
         console.log(response);
         setOrder(response.data);
@@ -31,8 +31,9 @@ export default function OrderDetails() {
   };
 
   useEffect(() => {
-    getOrder();
-  }, []);
+    if (!orderId) return;
+    getOrder(orderId);
+  }, [orderId]);
 
   return (
     <>
@@ -79,10 +80,7 @@ export default function OrderDetails() {
             </Typography>
             <Typography>
               <strong>Total:</strong>{" "}
-              {new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              }).format(total)}
+              {formatCurrency(subtotal)}
             </Typography>
             <Typography>
               <strong>Nome do usuário:</strong> {order?.user.username}
@@ -138,20 +136,14 @@ export default function OrderDetails() {
                   <Typography>Qtde: {orderItem.qty}</Typography>
                   <Typography>
                     Preço unit:{" "}
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(
+                    {formatCurrency(
                       parseFloat(orderItem.product.salePrice) ||
                         parseFloat(orderItem.product.origPrice)
                     )}
                   </Typography>
                   <Typography>
                     Preço total:{" "}
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(getOrderItemPrice(orderItem))}
+                    {formatCurrency(getOrderItemPrice(orderItem))}
                   </Typography>
                 </Box>
               </Paper>

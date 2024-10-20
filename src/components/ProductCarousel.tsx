@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ICategory, IProduct } from "../interfaces";
+import { IProduct } from "../interfaces";
 import { Box, Typography } from "@mui/material";
 import ProductCard from "./ProductCard";
 
@@ -31,24 +31,21 @@ export default function ProductCarousel({
           gap: 2,
         }}
       >
-        {products.map((product, index) => (
+        {products.map((product) => (
           <>
-            {(product.category as ICategory).name === categoryName && (
-              <>
-                {parseInt(product.stockQty) > 0 ? (
-                  <Link
-                    key={index}
-                    to={`product/${product.id}`}
-                    state={product}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <ProductCard product={product} />
-                  </Link>
-                ) : (
-                  <ProductCard product={product} key={index} />
-                )}
-              </>
-            )}
+            {product.category.name === categoryName &&
+              (parseInt(product.stockQty) > 0 ? (
+                <Link
+                  key={product.id}
+                  to={`product/${product.id}`}
+                  state={product}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <ProductCard product={product} />
+                </Link>
+              ) : (
+                <ProductCard product={product} key={product.id} />
+              ))}
           </>
         ))}
       </Box>

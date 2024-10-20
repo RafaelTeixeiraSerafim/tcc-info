@@ -26,15 +26,15 @@ const ThemeProviderWrapper = ({ children }: ThemeProviderWrapperProps) => {
     setHasCheckedLocalStorage(true);
   }, []);
 
+  const toggleTheme = () => {
+    setDarkMode((prevMode) => !prevMode);
+  };
+
   useEffect(() => {
     if (!hasCheckedLocalStorage) return;
 
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode, hasCheckedLocalStorage]);
-
-  const toggleTheme = () => {
-    setDarkMode((prevMode) => !prevMode);
-  };
 
   const theme = darkMode ? darkTheme : lightTheme;
 

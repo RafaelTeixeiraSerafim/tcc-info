@@ -17,7 +17,7 @@ interface AdminTableProps {
 }
 
 export default function AdminTable({ admins }: AdminTableProps) {
-  const [rows, setRows] = useState<IAccountTableRow[] | null>(null);
+  const [rows, setRows] = useState<IAccountTableRow[]>([]);
 
   useEffect(() => {
     setRows(
@@ -32,7 +32,7 @@ export default function AdminTable({ admins }: AdminTableProps) {
         };
       })
     );
-  }, [admins.length]);
+  }, [admins]);
 
-  return <>{rows && <DataTable rows={rows} columns={columns} />}</>;
+  return <DataTable rows={rows} columns={columns} />;
 }

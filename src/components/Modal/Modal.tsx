@@ -1,11 +1,8 @@
 import React from "react";
 import ModalBase from "./ModalBase";
 import { ModalContext } from "./ModalContext";
-import ModalForm from "./ModalForm";
 import ModalTitle from "./ModalTitle";
-import ModalActions from "./ModalActions";
-import ModalAction from "./ModalAction";
-import ModalCancel from "./ModalCancel";
+import ModalCancelButton from "./ModalCancelButton";
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,11 +11,8 @@ interface ModalProps {
 }
 
 type ModalComponents = {
-  Form: typeof ModalForm;
   Title: typeof ModalTitle;
-  Actions: typeof ModalActions;
-  Action: typeof ModalAction;
-  Cancel: typeof ModalCancel;
+  CancelButton: typeof ModalCancelButton
 };
 
 const Modal: React.FC<ModalProps> & ModalComponents = ({
@@ -35,10 +29,7 @@ const Modal: React.FC<ModalProps> & ModalComponents = ({
   );
 };
 
-Modal.Form = ModalForm;
 Modal.Title = ModalTitle;
-Modal.Actions = ModalActions;
-Modal.Action = ModalAction;
-Modal.Cancel = ModalCancel;
+Modal.CancelButton = ModalCancelButton
 
 export default Modal;

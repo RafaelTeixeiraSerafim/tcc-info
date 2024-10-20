@@ -1,26 +1,25 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { IAddress } from "../interfaces";
+import { useAddressContext } from "../hooks";
 
 interface AddressListProps {
-  addresses: IAddress[];
-  onDelete: (addressId: number) => void;
   onUpdate: (addressToUpdate: IAddress) => void;
   selectedAddressId: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function AddressList({
-  addresses,
   selectedAddressId,
   onChange,
   onUpdate,
-  onDelete,
 }: AddressListProps) {
+  const { userAddresses, handleDelete } = useAddressContext();
+
   return (
     <>
-      {addresses.map((address) => (
-        <Box>
+      {userAddresses.map((address) => (
+        <Box key={address.id}>
           <input
             type="radio"
             name="address"
@@ -31,7 +30,7 @@ export default function AddressList({
           />
           <Typography>{address.fullName}</Typography>
           <Typography>{address.city}</Typography>
-          <Button onClick={() => onDelete(address.id)}>Excluir</Button>
+          <Button onClick={() => handleDelete(address.id)}>Excluir</Button>
           <Button onClick={() => onUpdate(address)}>Alterar</Button>
         </Box>
       ))}

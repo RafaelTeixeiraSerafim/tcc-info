@@ -5,15 +5,13 @@ import ProductCarousel from "../components/ProductCarousel";
 import { Box } from "@mui/material";
 
 export default function Home() {
-  const [products, setProducts] = useState<IProduct[] | null>(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
   // const [categories, setCategories] = useState<ICategory[] | null>(null);
-  const [filteredCategories, setFilteredCategories] = useState<
-    ICategory[] | null
-  >(null);
+  const [filteredCategories, setFilteredCategories] = useState<ICategory[]>([]);
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get<IProduct[]>("/api/v1/products");
+      const response = await axiosInstance.get<IProduct[]>("/products");
       console.log(response);
 
       setProducts(response.data);
@@ -24,7 +22,7 @@ export default function Home() {
 
   // const getCategories = async () => {
   //   try {
-  //     const response = await axiosInstance.get("/api/v1/categories");
+  //     const response = await axiosInstance.get("/categories");
   //     console.log(response);
   //     setCategories(response.data);
   //   } catch (error) {
@@ -32,31 +30,26 @@ export default function Home() {
   //   }
   // };
 
-  const filterCategories = () => {
-    if (!products) return;
-    if (products?.length === 0) return;
+  const filterCategories = (products: IProduct[]) => {
     const set = new Set<number>();
-    products?.forEach((product) =>
-      set.add((product.category as ICategory).id!)
-    );
+    products.forEach((product) => set.add(product.category.id));
+
     const ls: ICategory[] = [];
     Array.from(set.values()).forEach((categoryId) => {
       ls.push(
-        products.find(
-          (product) => (product.category as ICategory).id === categoryId
-        )?.category as ICategory
+        products.find((product) => product.category.id === categoryId)!.category
       );
     });
     setFilteredCategories(ls);
   };
 
   useEffect(() => {
-    filterCategories();
-  }, [products?.length]);
+    if (products.length === 0) return;
+    filterCategories(products);
+  }, [products]);
 
   useEffect(() => {
     getProducts();
-    // getCategories();
   }, []);
 
   return (
@@ -69,15 +62,13 @@ export default function Home() {
         gap: "4rem",
       }}
     >
-      {products &&
-        filteredCategories &&
-        filteredCategories.map((category) => (
-          <ProductCarousel
-            categoryName={category.name}
-            products={products}
-            key={category.id}
-          />
-        ))}
+      {filteredCategories.map((category) => (
+        <ProductCarousel
+          categoryName={category.name}
+          products={products}
+          key={category.id}
+        />
+      ))}
     </Box>
   );
 }

@@ -3,6 +3,7 @@ import React, { CSSProperties } from "react";
 import FormTitle from "./FormTitle";
 import FormActions from "./FormActions";
 import FormAction from "./FormAction";
+import FormSubmitButton from "./FormSubmitButton";
 
 interface FormProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ type FormComponents = {
   Title: typeof FormTitle;
   Actions: typeof FormActions;
   Action: typeof FormAction;
+  SubmitButton: typeof FormSubmitButton;
 };
 
 const Form: React.FC<FormProps> & FormComponents = ({
@@ -22,23 +24,15 @@ const Form: React.FC<FormProps> & FormComponents = ({
   style,
 }) => {
   return (
-    <Box
-      component={"form"}
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "2rem",
-        alignItems: "center",
-      }}
-      style={style}
-    >
+    <Box component={"form"} onSubmit={handleSubmit} style={style}>
       <FormControl
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: "1.5rem",
-          width: "inherit",
+          alignItems: "center",
+          gap: "2rem",
+          ...style,
+          width: "100%",
         }}
       >
         {children}
@@ -50,5 +44,6 @@ const Form: React.FC<FormProps> & FormComponents = ({
 Form.Title = FormTitle;
 Form.Actions = FormActions;
 Form.Action = FormAction;
+Form.SubmitButton = FormSubmitButton;
 
 export default Form;

@@ -1,13 +1,13 @@
-import { Typography } from "@mui/material";
+import { Typography, TypographyProps } from "@mui/material";
 import React from "react";
 
-interface FormTitleProps {
-  children: React.ReactNode
+interface FormTitleProps extends TypographyProps {
+  children: React.ReactNode;
 }
 
-export default function FormTitle({ children }: FormTitleProps) {
+export default function FormTitle({ children, ...props }: FormTitleProps) {
   return (
-    <Typography variant="h3" component={"h1"}>
+    <Typography variant="h3" component={"h1"} {...props}>
       {children}
     </Typography>
   );

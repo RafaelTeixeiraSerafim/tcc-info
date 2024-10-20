@@ -7,7 +7,7 @@ import ProductTable from "../../../components/ProductTable";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
 
 export default function Products() {
-  const [products, setProducts] = useState<IProduct[] | null>(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>(
     []
@@ -17,7 +17,7 @@ export default function Products() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get("/api/v1/products");
+      const response = await axiosInstance.get("/products");
       console.log(response);
 
       setProducts(response.data);
@@ -29,15 +29,12 @@ export default function Products() {
   const deleteSelectedProducts = async () => {
     try {
       if (!products) return;
-      const response = await axiosInstance.delete(
-        "/api/v1/products/batch-delete",
-        {
-          data: selectionModel,
-        }
-      );
+      const response = await axiosInstance.delete("/products/batch-delete", {
+        data: selectionModel,
+      });
       console.log(response);
       setProducts(
-        products.filter((product) => !selectionModel.includes(product.id!))
+        products.filter((product) => !selectionModel.includes(product.id))
       );
       alert("Produtos deletados com sucesso!");
     } catch (error) {
@@ -60,61 +57,55 @@ export default function Products() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: "65rem",
-        overflow: "hidden",
+        width: "90%",
         paddingInline: 3,
         textAlign: "left",
         gap: "1rem",
-        alignSelf: "flex-start",
       }}
     >
       <Typography variant="h4" component={"h1"}>
         Produtos
       </Typography>
-      {products && (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <TextField
+          placeholder="Pesquise pelo nome do produto"
+          variant="outlined"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          sx={{
+            width: "40%",
+          }}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+          }}
+        >
+          <Button
+            onClick={deleteSelectedProducts}
+            variant="outlined"
+            color={"error"}
+            disabled={selectionModel.length === 0}
           >
-            <TextField
-              placeholder="Pesquise pelo nome do produto"
-              variant="outlined"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              sx={{
-                width: "40%",
-              }}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                gap: "1rem",
-              }}
-            >
-              <Button
-                onClick={deleteSelectedProducts}
-                variant="outlined"
-                color={"error"}
-                disabled={selectionModel.length === 0}
-              >
-                Deletar
-              </Button>
-              <Button variant="outlined" onClick={() => navigate("new")}>
-                Novo Produto
-              </Button>
-            </Box>
-          </Box>
-          <ProductTable
-            products={products}
-            searchQuery={searchQuery}
-            selectionModel={selectionModel}
-            setSelectionModel={setSelectionModel}
-          />
-        </>
-      )}
+            Deletar
+          </Button>
+          <Button variant="outlined" onClick={() => navigate("new")}>
+            Novo Produto
+          </Button>
+        </Box>
+      </Box>
+      <ProductTable
+        products={products}
+        searchQuery={searchQuery}
+        selectionModel={selectionModel}
+        setSelectionModel={setSelectionModel}
+      />
     </Box>
   );
 }

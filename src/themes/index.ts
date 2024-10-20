@@ -2,10 +2,6 @@ import { createTheme } from "@mui/material/styles";
 import type {} from "@mui/material/themeCssVarsAugmentation";
 import "../styles/index.css";
 
-/* Cores padrões da nossa logo: */
-/* Verde: #29524A */
-/* Roxo: #20275A */
-
 const lightTheme = createTheme({
   palette: {
     mode: "light",

@@ -1,12 +1,14 @@
 import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../config/axiosInstance";
 import { IAddress, IFormAddress } from "../interfaces";
 import PostalCodeInput from "./PostalCodeInput";
-import { emptyFormAddress } from "../utils/emptyInterfaces";
+import { emptyFormAddress } from "../utils/formDefaults";
 import Modal from "./Modal";
-import SubmitButton from "./SubmitButton";
 import { useUserContext } from "../hooks";
+import Form from "./Form";
+import { createAddress, updateAddress } from "../service/api";
+import { AxiosError } from "axios";
+import useForm from "../hooks/useForm";
 
 interface AddressModalProps {
   isOpen: boolean;
@@ -27,9 +29,12 @@ export default function AddressModal({
   addressToUpdate,
   newAddressDefaultValues,
 }: AddressModalProps) {
-  const [address, setAddress] = useState<IFormAddress>(emptyFormAddress);
+  const [address, setAddress] = useState<IFormAddress | IAddress>(
+    addressToUpdate || newAddressDefaultValues || emptyFormAddress
+  );
 
   const { user } = useUserContext();
+  const { handleTextInputChange } = useForm<IFormAddress>();
 
   const isUpdating = Boolean(addressToUpdate);
   const hasDefaultValues = Boolean(newAddressDefaultValues);
@@ -43,49 +48,40 @@ export default function AddressModal({
     if (!user) return;
 
     try {
-      let request = axiosInstance.post;
-      let url = "/api/v1/addresses";
+      if (isUpdating) await updateAddress(address as IAddress);
+      else await createAddress(address, user.id);
 
-      if (isUpdating) {
-        request = axiosInstance.put;
-        url += `/${addressToUpdate?.id}`;
-      }
-
-      const response = await request(url, {
-        ...address,
-        userId: user.id,
-      });
-
-      console.log(response);
       setAddress(emptyFormAddress);
 
       onUpdateAddresses();
       handleClose();
     } catch (error) {
-      console.error(error);
+      alert(
+        `Erro ${isUpdating ? "alterando" : "criando"} o endereço: ${(error as AxiosError).message}`
+      );
     }
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
-  };
+  ) => handleTextInputChange(e, setAddress);
 
   useEffect(() => {
-    if (!isUpdating) return;
-    setAddress(addressToUpdate!);
-  }, [isUpdating]);
+    if (!addressToUpdate) return;
+
+    setAddress(addressToUpdate);
+  }, [addressToUpdate]);
 
   useEffect(() => {
-    if (!hasDefaultValues) return;
-    setAddress(newAddressDefaultValues!);
-  }, [hasDefaultValues]);
+    if (!newAddressDefaultValues) return;
+
+    setAddress(newAddressDefaultValues);
+  }, [newAddressDefaultValues]);
 
   return (
     <Modal handleClose={handleClose} isOpen={isOpen}>
       <Modal.Title>Adicionar Endereço</Modal.Title>
-      <Modal.Form handleSubmit={handleSubmit}>
+      <Form handleSubmit={handleSubmit}>
         <TextField
           label="Nome Completo"
           required
@@ -96,6 +92,7 @@ export default function AddressModal({
         <PostalCodeInput
           postalCode={address.postalCode}
           setAddress={setAddress}
+          required
         />
         <TextField
           label="Estado"
@@ -145,11 +142,13 @@ export default function AddressModal({
           value={address.contactPhone}
           onChange={handleChange}
         />
-        <Modal.Actions>
-          <Modal.Cancel />
-          <SubmitButton>{isUpdating ? "Alterar" : "Criar"}</SubmitButton>
-        </Modal.Actions>
-      </Modal.Form>
+        <Form.Actions>
+          <Modal.CancelButton />
+          <Form.SubmitButton>
+            {isUpdating ? "Alterar" : "Criar"}
+          </Form.SubmitButton>
+        </Form.Actions>
+      </Form>
     </Modal>
   );
 }
