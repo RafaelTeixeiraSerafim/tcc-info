@@ -6,15 +6,19 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.service.OrderItemService;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("api/v1/order-items")
 public class OrderItemController {
@@ -28,7 +32,7 @@ public class OrderItemController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrderItemsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getOrderItemsByUserId(@PathVariable @Min(1) Long userId) {
         try {
             Order order = orderService.getOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
             List<OrderItem> orderItems = orderItemService.getOrderItemsByOrder(order);
@@ -40,7 +44,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) {
+    public ResponseEntity<?> createOrderItem(@RequestBody @Valid OrderItemRequest orderItemRequest) {
         try {
             OrderItem orderItem = orderItemService.createOrderItem(orderItemRequest);
 
@@ -57,7 +61,7 @@ public class OrderItemController {
     }
 
     @DeleteMapping("/{orderItemId}")
-    public ResponseEntity<?> deleteOrderItem(@PathVariable Long orderItemId) {
+    public ResponseEntity<?> deleteOrderItem(@PathVariable @Min(1) Long orderItemId) {
         orderItemService.deleteOrderItem(orderItemId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
