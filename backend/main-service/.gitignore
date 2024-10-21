@@ -10,6 +10,9 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+target/*
+!target/tcc-info-prod.jar
+
 # Package Files #
 #*.jar
 *.war
