@@ -79,9 +79,11 @@ public class OrderItemService {
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(orderItemId);
 
         if (optionalOrderItem.isEmpty()) {
+            System.out.println("Error 0_0");
             throw new IllegalArgumentException("OrderItem not found");
         }
 
+        System.out.println("Deleting yay!");
         orderItemRepository.delete(optionalOrderItem.get());
     }
 
