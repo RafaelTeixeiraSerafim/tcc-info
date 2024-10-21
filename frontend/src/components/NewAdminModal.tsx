@@ -53,6 +53,7 @@ export default function NewAdminModal({
           value={admin.username}
           onChange={handleChange}
           fullWidth
+          required
         />
         <TextField
           label="Email"
@@ -61,6 +62,7 @@ export default function NewAdminModal({
           value={admin.email}
           onChange={handleChange}
           fullWidth
+          required
         />
         <TextField
           label="Senha"
@@ -69,6 +71,7 @@ export default function NewAdminModal({
           value={admin.password}
           onChange={handleChange}
           fullWidth
+          required
         />
         <Form.Actions>
           <Modal.CancelButton />
