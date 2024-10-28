@@ -92,16 +92,15 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <MenuItem
+      <MenuItem
         onClick={() => {
           handleMenuClose();
-          navigate(`/user/${user?.username}`);
+          navigate(`/profile`);
         }}
         key={"btnProfile"}
       >
-        Minha Conta
+        Meu Perfil
       </MenuItem>
-      , */}
       {user?.role === "ADMIN" && (
         <MenuItem
           onClick={() => {

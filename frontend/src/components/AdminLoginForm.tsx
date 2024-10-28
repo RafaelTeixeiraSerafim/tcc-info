@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
 import { useUserContext } from "../hooks";
 import AuthForm from "./AuthForm";
-import SignupPrompt from "./SignupPrompt";
 import { ILoginUser } from "../interfaces";
 import useForm from "../hooks/useForm";
 
@@ -37,7 +36,7 @@ export default function AdminLoginForm() {
   ) => handleTextInputChange(e, setLoginUser);
 
   return (
-    <AuthForm handleSubmit={handleSubmit}>
+    <AuthForm onSubmit={handleSubmit}>
       <AuthForm.Title>Admin</AuthForm.Title>
       <AuthForm.Content>
         <AuthForm.Input
@@ -57,7 +56,6 @@ export default function AdminLoginForm() {
       </AuthForm.Content>
       <AuthForm.Actions>
         <AuthForm.SubmitButton>Entrar</AuthForm.SubmitButton>
-        <SignupPrompt />
       </AuthForm.Actions>
     </AuthForm>
   );

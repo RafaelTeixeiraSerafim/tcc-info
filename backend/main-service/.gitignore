@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 target/*
-!target/tcc-info-prod.jar
 
 # Package Files #
 #*.jar

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class ProductImage {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
@@ -25,7 +25,7 @@ public class Image {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public Image(String url, Product product) {
+    public ProductImage(String url, Product product) {
         this.url = url;
         this.product = product;
     }

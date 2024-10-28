@@ -37,11 +37,13 @@ public class CategoryService {
     }
 
     @Transactional
-    public void updateCategoryById(Long categoryId, Category category) {
+    public Category updateCategoryById(Long categoryId, Category category) {
         Category origCategory = this.getCategoryById(categoryId);
 
         origCategory.setName(category.getName());
         origCategory.setDescription(category.getDescription());
+
+        return origCategory;
     }
 
     public void deleteCategoryById(Long categoryId) {

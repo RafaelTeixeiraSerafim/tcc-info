@@ -17,20 +17,25 @@ import java.io.IOException;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
     TokenProvider tokenService;
-    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    public SecurityFilter(TokenProvider tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+        System.out.println(request.getMethod() + " - " + request.getRequestURI());
         var token = this.recoverToken(request);
         if (token != null) {
             var email = tokenService.validateToken(token);
             var user = userRepository.findByEmail(email);
             if (user.isPresent()) {
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.get().getAuthorities());
+                var authentication = new UsernamePasswordAuthenticationToken(user.get().getEmail(), null, user.get().getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
@@ -41,7 +46,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
+                if (cookie.getName().equals("token")) {
                     return cookie.getValue();
                 }
             }

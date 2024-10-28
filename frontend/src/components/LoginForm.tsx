@@ -19,9 +19,10 @@ export default function LoginForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(loginUser)
 
     axiosInstance
-      .post("/auth/login/user", loginUser)
+      .post("/auth/login/client", loginUser)
       .then((response) => {
         console.log(response);
         setUser(response.data);
@@ -37,7 +38,7 @@ export default function LoginForm() {
   ) => handleTextInputChange(e, setLoginUser);
 
   return (
-    <AuthForm handleSubmit={handleSubmit}>
+    <AuthForm onSubmit={handleSubmit}>
       <AuthForm.Title>Login</AuthForm.Title>
       <AuthForm.Content>
         <AuthForm.Input

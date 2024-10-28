@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AddressService {
-    @Value("${postal_service.base_uri}")
+    @Value("${postal-service.base-uri}")
     private String postalBaseUri;
 
     private final RestTemplate restTemplate;

@@ -23,7 +23,7 @@ export default function SignupForm() {
     e.preventDefault();
 
     try {
-      const user = await createUser(signupUser, "USER");
+      const user = await createUser(signupUser, "CLIENT");
       setUser(user);
       navigate("/");
     } catch (error) {
@@ -35,7 +35,7 @@ export default function SignupForm() {
     handleTextInputChange(e, setSignupUser);
 
   return (
-    <AuthForm handleSubmit={handleSubmit}>
+    <AuthForm onSubmit={handleSubmit}>
       <AuthForm.Title>Signup</AuthForm.Title>
       <AuthForm.Content>
         <AuthForm.Input

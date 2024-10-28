@@ -1,109 +1,98 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import { Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoadingFallback from "./components/LoadingFallback";
-import CreateProduct from "./pages/admin/products/CreateProduct";
-import UpdateProduct from "./pages/admin/products/UpdateProduct";
+import ScrollToTop from "./components/ScrollToTop";
+import { ThemeProviderWrapper } from "./contexts/ThemeContext";
 import { UserProvider } from "./contexts/UserContext";
+import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
 import UserLayout from "./layouts/UserLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Categories from "./pages/admin/categories/Categories";
+import CreateCategory from "./pages/admin/categories/CreateCategory";
+import UpdateCategory from "./pages/admin/categories/UpdateCategory";
+import AdminLogin from "./pages/admin/login/AdminLogin";
+import OrderDetails from "./pages/admin/orders/OrderDetails";
+import Orders from "./pages/admin/orders/Orders";
+import CreateProduct from "./pages/admin/products/CreateProduct";
+import Products from "./pages/admin/products/Products";
+import UpdateProduct from "./pages/admin/products/UpdateProduct";
+import Users from "./pages/admin/users/Users";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
-import AdminRequired from "./route_wrappers/AdminRequired";
-import LogoutRequired from "./route_wrappers/LogoutRequired";
-import { ThemeProviderWrapper } from "./contexts/ThemeContext";
-import Products from "./pages/admin/products/Products";
-import Categories from "./pages/admin/categories/Categories";
-import UpdateCategory from "./pages/admin/categories/UpdateCategory";
-import CreateCategory from "./pages/admin/categories/CreateCategory";
-import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
-import Orders from "./pages/admin/orders/Orders";
-import OrderDetails from "./pages/admin/orders/OrderDetails";
-import Users from "./pages/admin/users/Users";
-import NoPage from "./pages/NoPage";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import ScrollToTop from "./components/ScrollToTop";
 import AddressOptions from "./pages/checkout/AddressOptions";
-import LoginRequired from "./route_wrappers/LoginRequired";
-import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
-import { AddressProvider } from "./contexts/AddressContext";
-import Test from "./pages/Test";
-import AdminLogin from "./pages/admin/login/AdminLogin";
-import { CartProvider } from "./contexts/CartContext";
 import ShippingOptions from "./pages/checkout/ShippingOptions";
+import Home from "./pages/Home";
+import NoPage from "./pages/NoPage";
+import ProductDetails from "./pages/ProductDetails";
+import Profile from "./pages/Profile";
+import Test from "./pages/Test";
+import AdminRequired from "./route_wrappers/AdminRequired";
+import LoginRequired from "./route_wrappers/LoginRequired";
+import LogoutRequired from "./route_wrappers/LogoutRequired";
+import ProfileUpdate from "./pages/ProfileUpdate";
+import Success from "./pages/checkout/Success";
+import ReviewOrder from "./pages/checkout/ReviewOrder";
 
 function App() {
   return (
     <ThemeProviderWrapper>
       <UserProvider>
-        <AddressProvider>
-          <CartProvider>
-            <Suspense fallback={<LoadingFallback />}>
-              <BrowserRouter basename="/tcc-info">
-                <ScrollToTop />
-                <Routes>
-                  <Route path="/" element={<UserLayout />}>
-                    <Route index element={<Home />} />
+        <Suspense fallback={<LoadingFallback />}>
+          <BrowserRouter basename="/tcc-info">
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<UserLayout />}>
+                <Route index element={<Home />} />
+                <Route path="product/:productId" element={<ProductDetails />} />
+                <Route path="cart" element={<Cart />} />
+                <Route path="checkout" element={<LoginRequired />}>
+                  <Route path="address-options" element={<AddressOptions />} />
+                  <Route
+                    path="shipping-options"
+                    element={<ShippingOptions />}
+                  />
+                  <Route path="review" element={<ReviewOrder />} />
+                  <Route path="success" element={<Success />} />
+                </Route>
+                <Route path="profile" element={<LoginRequired />}>
+                  <Route index element={<Profile />} />
+                  <Route path="update" element={<ProfileUpdate />} />
+                </Route>
+                <Route element={<LogoutRequired />}>
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<Signup />} />
+                </Route>
+                <Route path="test" element={<Test />} />
+              </Route>
+              <Route path="admin">
+                <Route element={<LogoutRequired />}>
+                  <Route index element={<AdminLogin />} />
+                </Route>
+                <Route element={<AdminRequired />}>
+                  <Route element={<AdminDashboardLayout />}>
+                    <Route path="dashboard" element={<AdminDashboard />} />
+                    <Route path="users" element={<Users />} />
+                    <Route path="orders" element={<Orders />} />
+                    <Route path="orders/:orderId" element={<OrderDetails />} />
+                    <Route path="categories" element={<Categories />} />
+                    <Route path="categories/new" element={<CreateCategory />} />
+                    <Route path="categories/:categoryId">
+                      <Route path="update" element={<UpdateCategory />} />
+                    </Route>
+                    <Route path="products" element={<Products />} />
+                    <Route path="products/new" element={<CreateProduct />} />
                     <Route
-                      path="product/:productId"
-                      element={<ProductDetails />}
+                      path="products/:productId/update"
+                      element={<UpdateProduct />}
                     />
-                    <Route path="cart" element={<Cart />} />
-                    <Route path="checkout" element={<LoginRequired />}>
-                      <Route
-                        path="address-options"
-                        element={<AddressOptions />}
-                      />
-                      <Route
-                        path="shipping-options"
-                        element={<ShippingOptions />}
-                      />
-                    </Route>
-                    <Route element={<LogoutRequired />}>
-                      <Route path="login" element={<Login />} />
-                      <Route path="signup" element={<Signup />} />
-                    </Route>
-                    <Route path="test" element={<Test />} />
                   </Route>
-                  <Route path="admin">
-                    <Route element={<LogoutRequired />}>
-                      <Route index element={<AdminLogin />} />
-                    </Route>
-                    <Route element={<AdminRequired />}>
-                      <Route element={<AdminDashboardLayout />}>
-                        <Route path="dashboard" element={<AdminDashboard />} />
-                        <Route path="users" element={<Users />} />
-                        <Route path="orders" element={<Orders />} />
-                        <Route
-                          path="orders/:orderId"
-                          element={<OrderDetails />}
-                        />
-                        <Route path="categories" element={<Categories />} />
-                        <Route
-                          path="categories/new"
-                          element={<CreateCategory />}
-                        />
-                        <Route path="categories/:categoryId">
-                          <Route path="update" element={<UpdateCategory />} />
-                        </Route>
-                        <Route path="products" element={<Products />} />
-                        <Route
-                          path="products/new"
-                          element={<CreateProduct />}
-                        />
-                        <Route
-                          path="products/:productId/update"
-                          element={<UpdateProduct />}
-                        />
-                      </Route>
-                    </Route>
-                  </Route>
-                  <Route path="*" element={<NoPage />} />
-                </Routes>
-              </BrowserRouter>
-            </Suspense>
-          </CartProvider>
-        </AddressProvider>
+                </Route>
+              </Route>
+              <Route path="*" element={<NoPage />} />
+            </Routes>
+          </BrowserRouter>
+        </Suspense>
       </UserProvider>
     </ThemeProviderWrapper>
   );

@@ -27,7 +27,7 @@ export const logout = async () => {
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error
+    throw error;
   }
 };
 
@@ -77,19 +77,19 @@ export const fetchOrder = async (userId: number) => {
   }
 };
 
-export const placeOrder = async (userId: number) => {
-  try {
-    const response = await axiosInstance.put(`/orders/place-order/${userId}`, {
-      datePlaced: Date.now(),
-      status: "PENDING",
-    });
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const placeOrder = async (userId: number) => {
+//   try {
+//     const response = await axiosInstance.put(`/orders/place-order/${userId}`, {
+//       datePlaced: Date.now(),
+//       status: "PENDING",
+//     });
+//     console.log(response);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
 
 export const fetchAddress = async (addressId: number) => {
   try {
@@ -305,12 +305,26 @@ export const updateProduct = async (productId: number, formData: FormData) => {
   }
 };
 
-export const createUser = async (user: ISignupUser, role: "USER" | "ADMIN") => {
+export const createUser = async (
+  user: ISignupUser,
+  role: "CLIENT" | "ADMIN"
+) => {
   try {
     const response = await axiosInstance.post(
-      `/auth/signup/${role === "USER" ? "user" : "admin"}`,
+      `/auth/signup/${role === "CLIENT" ? "client" : "admin"}`,
       user
     );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateUser = async (user: FormData) => {
+  try {
+    const response = await axiosInstance.put(`/auth/update`, user);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -329,6 +343,27 @@ export const fetchShippingOptions = async (
     );
     console.log(response);
     return response.data.options;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createPreference = async (
+  userId: number,
+  addressId: number,
+  shippingFee: number
+) => {
+  try {
+    const response = await axiosInstance.post(
+      `/payments/preferences`, {
+        userId,
+        addressId,
+        shippingFee
+      }
+    );
+    console.log(response);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;

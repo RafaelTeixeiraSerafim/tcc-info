@@ -7,7 +7,7 @@ import PriceInput from "../PriceInput";
 import Form from "../Form";
 import { defaultFormProduct } from "../../utils/formDefaults";
 import useForm from "../../hooks/useForm";
-import ImageInputs from "../ImageInputs";
+import ProductImageInputs from "../ProductImageInputs";
 import { createProduct, updateProduct } from "../../service/api";
 import {
   formatPriceInputForBackend,
@@ -38,6 +38,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       : defaultFormProduct
   );
   const [sale, setSale] = useState(Boolean(formProduct.salePrice));
+  const [numOfImages, setNumOfImages] = useState(formProduct.images.length);
   const navigate = useNavigate();
 
   const { handleTextInputChange } = useForm<IFormProduct>();
@@ -70,15 +71,23 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     formData.append("height", formProduct.height);
     formData.append("weight", formProduct.weight);
 
-    formProduct.images.forEach((image, index) => {
-      if (isUpdating) {
-        formData.append(`images[${index}].id`, image.id.toString());
-        formData.append(`images[${index}].url`, image.url ? image.url : "");
+    for (let i = 0; i < formProduct.images.length; i++) {
+      const image = formProduct.images[i];
+      if (i + 1 <= numOfImages) {
+        if (typeof image.id === "number") {
+          formData.append(`images[${i}].id`, image.id.toString());
+          formData.append(`images[${i}].url`, image.url ? image.url : "");
+        }
+        if (image.file instanceof File) {
+          formData.append(`images[${i}].file`, image.file);
+        }
+      } else {
+        if (typeof image.id === "number") {
+          formData.append(`images[${i}].id`, image.id.toString());
+          formData.append(`images[${i}].url`, "");
+        }
       }
-      if (image.file instanceof File) {
-        formData.append(`images[${index}].file`, image.file);
-      }
-    });
+    }
 
     try {
       if (isUpdating) await updateProduct(origProduct!.id, formData);
@@ -93,7 +102,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
   };
 
   return (
-    <Form handleSubmit={handleSubmit} style={{ width: "70%" }}>
+    <Form onSubmit={handleSubmit} style={{ width: "70%" }}>
       <Form.Title>
         {isUpdating ? "Alterar produto" : "Criar produto"}
       </Form.Title>
@@ -178,10 +187,6 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
         onChange={handleChange}
         fullWidth
       />
-      <ImageInputs
-        images={formProduct.images}
-        setFormProduct={setFormProduct}
-      />
       <FormRow>
         <TextField
           name="length"
@@ -219,6 +224,15 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
           fullWidth
         />
       </FormRow>
+
+      <Box>
+        <ProductImageInputs
+          images={formProduct.images}
+          setFormProduct={setFormProduct}
+          numOfImages={numOfImages}
+          setNumOfImages={setNumOfImages}
+        />
+      </Box>
 
       <Form.Actions>
         <Form.Action

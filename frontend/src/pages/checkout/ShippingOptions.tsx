@@ -1,16 +1,15 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CartShippingFee from "../../components/CartShippingFee";
 import CartSubtotal from "../../components/CartSubtotal";
 import CartTotal from "../../components/CartTotal";
-import { useCartContext } from "../../hooks";
+import { useAddressContext, useCartContext } from "../../hooks";
 import { formatCurrency } from "../../utils/helpers";
-// import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-
-// initMercadoPago("YOUR_PUBLIC_KEY");
+import CheckoutButton from "../../components/CheckoutButton";
 
 export default function ShippingOptions() {
-  const { shippingOptions, selectedShippingOption, setSelectedShippingOption } =
+  const { shippingOptions } =
     useCartContext();
+  const {selectedShippingOption, changeSelectedShippingOption} = useAddressContext()
 
   return (
     <Box
@@ -34,7 +33,7 @@ export default function ShippingOptions() {
             name="shippingOption"
             key={option.id}
             value={option.id}
-            onChange={() => setSelectedShippingOption(option)}
+            onChange={() => changeSelectedShippingOption(option)}
             checked={selectedShippingOption?.id === option.id}
           />
           <Typography>{option.name}</Typography>
@@ -45,12 +44,7 @@ export default function ShippingOptions() {
       <CartSubtotal />
       <CartShippingFee />
       <CartTotal />
-      <Button variant="contained">Continuar</Button>
-
-      {/* <Wallet
-        initialization={{ preferenceId: "<PREFERENCE_ID>" }}
-        customization={{ texts: { valueProp: "smart_option" } }}
-      /> */}
+      <CheckoutButton/>
     </Box>
   );
 }

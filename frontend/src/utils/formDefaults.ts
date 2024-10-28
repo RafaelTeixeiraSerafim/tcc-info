@@ -1,4 +1,6 @@
-export const emptyFormAddress = {
+import { IFormAddress, IFormProduct } from "../interfaces";
+
+export const emptyFormAddress: IFormAddress = {
   userId: 0,
   fullName: "",
   postalCode: "",
@@ -11,7 +13,7 @@ export const emptyFormAddress = {
   contactPhone: "",
 };
 
-export const defaultFormProduct = {
+export const defaultFormProduct: IFormProduct = {
   name: "",
   about: "",
   description: "",
@@ -25,15 +27,15 @@ export const defaultFormProduct = {
   weight: "",
   images: [
     {
-      id: 1,
+      id: "1",
       file: null,
     },
     {
-      id: 2,
+      id: "2",
       file: null,
     },
     {
-      id: 3,
+      id: "3",
       file: null,
     },
   ],

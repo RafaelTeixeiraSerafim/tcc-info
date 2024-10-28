@@ -3,6 +3,7 @@ package com.rafaelteixeiraserafim.tcc.controller;
 import com.rafaelteixeiraserafim.tcc.model.Category;
 import com.rafaelteixeiraserafim.tcc.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,10 +31,10 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
-    public String updateCategoryById(@PathVariable Long categoryId, @RequestBody Category category) {
-        categoryService.updateCategoryById(categoryId, category);
+    public ResponseEntity<Category> updateCategoryById(@PathVariable Long categoryId, @RequestBody Category newCategory) {
+        Category category = categoryService.updateCategoryById(categoryId, newCategory);
 
-        return "Category altered successfully";
+        return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{categoryId}")

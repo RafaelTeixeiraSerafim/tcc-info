@@ -47,6 +47,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
+        ex.printStackTrace();
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -55,4 +56,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+//    @ExceptionHandler(ResponseStatusException.class)
+//    @ResponseStatus(HttpStatus.CONFLICT)
+//    public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex) {
+//        return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.CONFLICT);
+//    }
 }

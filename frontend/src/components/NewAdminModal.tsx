@@ -45,7 +45,7 @@ export default function NewAdminModal({
 
   return (
     <Modal isOpen={isOpen} handleClose={handleClose}>
-      <Form handleSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Form.Title variant="h4">Novo Admin</Form.Title>
         <TextField
           label="Nome de usuário"

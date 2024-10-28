@@ -1,28 +1,24 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { AxiosError } from "axios";
+import { Box, Paper, Typography } from "@mui/material";
 import CartCard from "../components/CartCard";
 import CartShippingFee from "../components/CartShippingFee";
 import CartSubtotal from "../components/CartSubtotal";
 import CartTotal from "../components/CartTotal";
 import ContinueOrderButton from "../components/ContinueOrderButton";
-import { useCartContext, useUserContext } from "../hooks";
-import { placeOrder } from "../service/api";
+import { useCartContext } from "../hooks";
 
 export default function Cart() {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user } = useUserContext();
   const { cartItems } = useCartContext();
 
-  const handlePurchase = async () => {
-    if (!user) return;
+  // const handlePurchase = async () => {
+  //   if (!user) return;
 
-    try {
-      await placeOrder(user.id);
-      alert("Compra finalizada com sucesso!");
-    } catch (error) {
-      alert(`Erro finalizando a compra: ${(error as AxiosError).message}`);
-    }
-  };
+  //   try {
+  //     await placeOrder(user.id);
+  //     alert("Compra finalizada com sucesso!");
+  //   } catch (error) {
+  //     alert(`Erro finalizando a compra: ${(error as AxiosError).message}`);
+  //   }
+  // };
 
   return (
     <Paper
@@ -30,7 +26,6 @@ export default function Cart() {
         display: "flex",
         flexDirection: "column",
         gap: "1.5rem",
-        mt: "7rem",
         mb: "3rem",
         width: "60%",
         minHeight: "60vh",
@@ -52,24 +47,14 @@ export default function Cart() {
           ))}
           <Box>
             <CartSubtotal variant="h6" />
-            <Box>
-              <CartShippingFee variant="h6" />
-              {/* <Button onClick={() => setIsModalOpen(true)}>
-                Mudar forma de entrega
-              </Button> */}
-            </Box>
+            <CartShippingFee variant="h6" />
             <CartTotal variant="h5" />
           </Box>
           <ContinueOrderButton />
-          <Button onClick={() => handlePurchase()}>Finalizar Compra</Button>
         </Box>
       ) : (
         <Typography>Carrinho vazio</Typography>
       )}
-      {/* <ShippingOptionModal
-        isOpen={isModalOpen}
-        handleClose={() => setIsModalOpen(false)}
-      /> */}
     </Paper>
   );
 }
