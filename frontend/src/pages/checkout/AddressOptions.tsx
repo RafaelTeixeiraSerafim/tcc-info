@@ -2,7 +2,6 @@ import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AddressList from "../../components/AddressList";
 import AddressModal from "../../components/AddressModal";
-import CartShippingFee from "../../components/CartShippingFee";
 import CartSubtotal from "../../components/CartSubtotal";
 import CartTotal from "../../components/CartTotal";
 import { useUserContext } from "../../hooks";
@@ -15,10 +14,10 @@ export default function AddressOptions() {
   const [addressToUpdate, setAddressToUpdate] = useState<IAddress | null>(null);
 
   const { user } = useUserContext();
-  const { selectedAddress, getAddresses, setSelectedAddressById } =
+  const { selectedAddress, getAddresses, changeSelectedAddressById } =
     useAddressContext();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleClose = (
     isUpdating: boolean,
@@ -38,7 +37,7 @@ export default function AddressOptions() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAddressById(parseInt(e.target.value));
+    changeSelectedAddressById(parseInt(e.target.value));
   };
 
   const handleUpdateAddresses = () => {
@@ -68,13 +67,17 @@ export default function AddressOptions() {
           onUpdate={handleUpdate}
         />
         <CartSubtotal />
-        <CartShippingFee />
         <CartTotal />
         <Box>
           <Button variant="outlined" onClick={() => setIsModalOpen(true)}>
             Adicionar endereço
           </Button>
-          <Button variant="contained" onClick={() => navigate("/checkout/shipping-options")}>Continuar</Button>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/checkout/shipping-options")}
+          >
+            Continuar
+          </Button>
         </Box>
       </Box>
       <AddressModal

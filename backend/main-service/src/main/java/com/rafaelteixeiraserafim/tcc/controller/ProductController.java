@@ -6,6 +6,7 @@ import com.rafaelteixeiraserafim.tcc.service.ProductService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -49,17 +50,17 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public String deleteProductById(@PathVariable @Min(1) Long productId) {
+    public ResponseEntity<?> deleteProductById(@PathVariable @Min(1) Long productId) {
         productService.deleteProductById(productId);
 
-        return "Product deleted successfully";
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/batch-delete")
-    public String deleteProductsById(@RequestBody List<Long> productIds) {
+    public ResponseEntity<?> deleteProductsById(@RequestBody List<Long> productIds) {
         productService.deleteProductsById(productIds);
 
-        return "Products deleted successfully";
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{productId}")

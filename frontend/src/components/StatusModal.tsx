@@ -1,11 +1,10 @@
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { IOrder } from "../interfaces";
-import Modal from "./Modal";
-import { InputLabel } from "@mui/material";
-import Form from "./Form";
-import StatusSelect from "./StatusSelect";
 import { fetchStatusList, updateOrder } from "../service/api";
-import { AxiosError } from "axios";
+import Form from "./Form";
+import Modal from "./Modal";
+import StatusSelect from "./StatusSelect";
 
 interface StatusModalProps {
   isOpen: boolean;
@@ -58,7 +57,7 @@ export default function StatusModal({
   return (
     <Modal handleClose={handleClose} isOpen={isOpen}>
       <Modal.Title>Alterar Inputs</Modal.Title>
-      <Form handleSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <StatusSelect
           selectedStatus={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}

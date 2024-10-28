@@ -1,6 +1,9 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
+import com.rafaelteixeiraserafim.tcc.enums.ImageCategory;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -13,7 +16,11 @@ import java.time.Instant;
 @Service
 public class S3Service {
     private final S3Client s3Client;
-    private final String bucketName = "tcc-info-backend";
+    @Value("${aws.bucket-name}")
+    private String bucketName;
+    @Getter
+    @Value("${aws.url}")
+    private String s3Url;
 
     @Autowired
     public S3Service(S3Client s3Client) {
@@ -56,30 +63,27 @@ public class S3Service {
         }
     }
 
-    public String createImageKey(Instant timestamp, String name) {
-        return "images/" + timestamp + "/" + name + ".png";
+    public String createImageKey(Instant timestamp, String name, ImageCategory category) {
+        return "images/" + category.getCategory() + "/" + timestamp + "/" + name + ".png";
     }
 
     public String getImageKeyFromUrl(String url) {
         return url.split("com/")[1];
     }
 
-    public String getImageUrl(Instant timestamp, String name) {
-        String key = createImageKey(timestamp, name);
-        String s3Url = "https://tcc-info-backend.s3.amazonaws.com/";
+    public String getImageUrl(Instant timestamp, String name, ImageCategory category) {
+        String key = createImageKey(timestamp, name, category);
 
         return s3Url + key;
     }
 
     public String getImageUrl(String key) {
-        String s3Url = "https://tcc-info-backend.s3.amazonaws.com/";
-
         return s3Url + key;
     }
 
-    public void uploadNewFile(Instant timestamp, String name, MultipartFile imageFile) {
+    public void uploadNewFile(Instant timestamp, String name, MultipartFile imageFile, ImageCategory category) {
         try {
-            String key = createImageKey(timestamp, name);
+            String key = createImageKey(timestamp, name, category);
 
             uploadFile(key, imageFile.getBytes());
         } catch (IOException e) {
@@ -96,5 +100,4 @@ public class S3Service {
             System.exit(1);
         }
     }
-
 }

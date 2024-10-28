@@ -14,24 +14,30 @@ import java.util.Optional;
 @Service
 public class BoughtProductService {
     private final BoughtProductRepository boughtProductRepository;
+    private final OrderItemService orderItemService;
 
     @Autowired
-    public BoughtProductService(BoughtProductRepository boughtProductRepository) {
+    public BoughtProductService(BoughtProductRepository boughtProductRepository, OrderItemService orderItemService) {
         this.boughtProductRepository = boughtProductRepository;
+        this.orderItemService = orderItemService;
     }
 
-    public void createBoughtProductsWithOrderItems(List<OrderItem> orderItems) {
+    public void createBoughtProducts(List<OrderItem> orderItems) {
         List<BoughtProduct> boughtProducts = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
             Optional<BoughtProduct> optionalBoughtProduct = boughtProductRepository.findBoughtProductByUserAndProduct(orderItem.getOrder().getUser(), orderItem.getProduct());
 
             if (optionalBoughtProduct.isEmpty()) {
-                BoughtProduct boughtProduct = new BoughtProduct(orderItem.getOrder().getUser(), orderItem.getOrder(), orderItem.getProduct(), orderItem);
+                BoughtProduct boughtProduct = new BoughtProduct(orderItem.getOrder().getUser(), orderItem.getOrder(), orderItem.getProduct());
                 boughtProducts.add(boughtProduct);
             }
         }
 
         boughtProductRepository.saveAll(boughtProducts);
+    }
+
+    public void createBoughtProducts(Long userId) {
+        createBoughtProducts(orderItemService.getOrderItemsByUserId(userId));
     }
 
     public List<BoughtProduct> getBoughtProducts(Long userId) {

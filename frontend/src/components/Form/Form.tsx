@@ -7,7 +7,7 @@ import FormSubmitButton from "./FormSubmitButton";
 
 interface FormProps {
   children: React.ReactNode;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   style?: CSSProperties;
 }
 
@@ -20,11 +20,11 @@ type FormComponents = {
 
 const Form: React.FC<FormProps> & FormComponents = ({
   children,
-  handleSubmit,
+  onSubmit,
   style,
 }) => {
   return (
-    <Box component={"form"} onSubmit={handleSubmit} style={style}>
+    <Box component={"form"} onSubmit={onSubmit} style={style}>
       <FormControl
         sx={{
           display: "flex",

@@ -1,14 +1,13 @@
+import { AxiosError } from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import { useAddressContext, useUserContext } from "../hooks";
 import useTotal from "../hooks/useTotal";
 import { IOrderItem, IShippingOption } from "../interfaces";
-import { useAddressContext, useUserContext } from "../hooks";
 import {
   createCartItem,
   deleteCartItem,
-  fetchCartItems,
-  fetchShippingOptions,
+  fetchCartItems
 } from "../service/api";
-import { AxiosError } from "axios";
 
 interface ICartContext {
   cartItems: IOrderItem[];
@@ -21,10 +20,6 @@ interface ICartContext {
   subtotal: number;
   total: number;
   shippingOptions: IShippingOption[];
-  selectedShippingOption: IShippingOption | null;
-  setSelectedShippingOption: React.Dispatch<
-    React.SetStateAction<IShippingOption | null>
-  >;
 }
 
 const CartContext = createContext<ICartContext | null>(null);
@@ -37,14 +32,11 @@ const CartProvider = ({ children }: CartProviderProps) => {
   const [cartItems, setCartItems] = useState<IOrderItem[]>([]);
   const [addedToCart, setAddedToCart] = useState(false);
   const [hasErrorCart, setHasErrorCart] = useState(false);
-  const [shippingOptions, setShippingOptions] = useState<IShippingOption[]>([]);
-  const [selectedShippingOption, setSelectedShippingOption] =
-    useState<IShippingOption | null>(null);
   const [total, setTotal] = useState(0);
 
   const { subtotal } = useTotal(cartItems);
   const { user } = useUserContext();
-  const { postalCode } = useAddressContext();
+  const { postalCode, selectedShippingOption, shippingOptions } = useAddressContext();
 
   const getCartItems = async (userId: number) => {
     try {
@@ -54,31 +46,6 @@ const CartProvider = ({ children }: CartProviderProps) => {
       alert(
         `Erro pegando os itens do carrinho: ${(error as AxiosError).message}`
       );
-    }
-  };
-
-  const getShippingOptions = async (userId: number, postalCode: string) => {
-    try {
-      const shippingOptions = await fetchShippingOptions(userId, postalCode);
-      setShippingOptions(shippingOptions);
-
-      if (shippingOptions.length > 0) {
-        let tempOption = {
-          id: 0,
-          name: "",
-          price: Number.MAX_SAFE_INTEGER.toString(),
-          deliveryTime: 0,
-        };
-
-        shippingOptions.map((option) => {
-          if (parseFloat(option.price) < parseFloat(tempOption.price))
-            tempOption = option;
-        });
-
-        setSelectedShippingOption(tempOption);
-      }
-    } catch (error) {
-      alert(`Erro ao calcular o frete: ${(error as AxiosError).message}`);
     }
   };
 
@@ -95,14 +62,20 @@ const CartProvider = ({ children }: CartProviderProps) => {
 
     try {
       const orderItem = await createCartItem(data);
-      setAddedToCart(true);
-      if (cartItems.length > 0)
+      const exists = Boolean(
+        cartItems.find((cartItem) => cartItem.id === orderItem.id)
+      );
+
+      if (exists) {
         setCartItems(
           cartItems.map((cartItem) =>
             cartItem.id === orderItem.id ? orderItem : cartItem
           )
         );
-      else setCartItems([orderItem]);
+      } else {
+        setCartItems([...cartItems, orderItem]);
+      }
+      setAddedToCart(true);
     } catch (error) {
       alert(
         `Erro ao adicionar item ao carrinho: ${(error as AxiosError).message}`
@@ -129,10 +102,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
     if (!user || !postalCode) return;
     console.log("Getting shipping options");
 
-    getShippingOptions(user.id, postalCode);
   }, [user, cartItems, postalCode]);
-
-  console.log(postalCode);
 
   useEffect(() => {
     setTotal(
@@ -154,8 +124,6 @@ const CartProvider = ({ children }: CartProviderProps) => {
         subtotal,
         total,
         shippingOptions,
-        selectedShippingOption,
-        setSelectedShippingOption,
       }}
     >
       {children}
@@ -165,3 +133,4 @@ const CartProvider = ({ children }: CartProviderProps) => {
 
 export default CartContext;
 export { CartProvider };
+

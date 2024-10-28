@@ -1,5 +1,10 @@
 export interface IImage {
-  id: number;
+  id: number | string;
+  file: File | null | string | ArrayBuffer;
+  url?: string;
+}
+
+export interface IUserImage {
   file: File | null | string | ArrayBuffer;
   url?: string;
 }
@@ -54,10 +59,15 @@ export interface IUser {
   email: string;
   password: string;
   profilePic: string;
-  about: string;
-  role: "USER" | "ADMIN";
+  role: "CLIENT" | "ADMIN";
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IUpdateUser {
+  username: string;
+  email: string;
+  profilePic: IUserImage;
 }
 
 export interface ILoginUser {
@@ -122,7 +132,7 @@ export interface IAccountTableRow {
   id: number;
   username: string;
   email: string;
-  role: "USER" | "ADMIN";
+  role: "CLIENT" | "ADMIN";
   createdAt: string;
   updatedAt: string;
 }
@@ -162,7 +172,7 @@ export interface IAddress extends IFormAddress {
 }
 
 export interface IShippingOptions {
-  options: IShippingOption[]
+  options: IShippingOption[];
 }
 
 export interface IShippingOption {

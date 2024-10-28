@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from "react";
 import { createContext, useState } from "react";
-import { IAddress, IFormAddress } from "../interfaces";
+import { IAddress, IFormAddress, IShippingOption } from "../interfaces";
 import { emptyFormAddress } from "../utils/formDefaults";
 import {
   deleteAddress,
-  fetchAddress,
   fetchAddressByPostalCode,
+  fetchShippingOptions,
   fetchUserAddresses,
 } from "../service/api";
 import { AxiosError } from "axios";
@@ -23,8 +23,11 @@ interface AddressContextInterface {
   userAddresses: IAddress[];
   handleDelete: (addressId: number) => Promise<void>;
   getAddresses: (userId: number) => Promise<void>;
-  setSelectedAddressById: (id: number) => void;
+  changeSelectedAddressById: (id: number) => void;
   clearSelectedAddress: () => void;
+  shippingOptions: IShippingOption[];
+  selectedShippingOption: IShippingOption | null;
+  changeSelectedShippingOption: (shippingOption: IShippingOption) => void;
 }
 
 const AddressContext = createContext<AddressContextInterface | null>(null);
@@ -34,13 +37,14 @@ function AddressProvider({ children }: AddressProviderProps) {
     useState<IFormAddress | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<IAddress | null>(null);
   const [userAddresses, setUserAddresses] = useState<IAddress[]>([]);
+  const [shippingOptions, setShippingOptions] = useState<IShippingOption[]>([]);
+  const [selectedShippingOption, setSelectedShippingOption] =
+    useState<IShippingOption | null>(null);
 
   const { user } = useUserContext();
 
   const postalCode =
     incompleteAddress?.postalCode || selectedAddress?.postalCode || null;
-
-  console.log(postalCode);
 
   const getAddresses = async (userId: number) => {
     try {
@@ -61,16 +65,6 @@ function AddressProvider({ children }: AddressProviderProps) {
       );
     } catch (error) {
       alert(`Erro ao deletar endereço: ${(error as AxiosError).message}`);
-    }
-  };
-
-  const getAddress = async (addressId: number) => {
-    try {
-      const address = await fetchAddress(addressId);
-      setSelectedAddress(address);
-      setIncompleteAddress(null);
-    } catch (error) {
-      alert(`Erro ao pegar endereço: ${(error as AxiosError).message}`);
     }
   };
 
@@ -100,30 +94,82 @@ function AddressProvider({ children }: AddressProviderProps) {
 
       setSelectedAddress(address);
       setIncompleteAddress(null);
+      localStorage.setItem("addressId", address.id.toString());
     },
     [userAddresses]
+  );
+
+  const changeSelectedAddressById = useCallback(
+    (id: number) => {
+      setSelectedAddressById(id);
+      if (selectedShippingOption) localStorage.removeItem("shippingOptionId");
+    },
+    [selectedShippingOption, setSelectedAddressById]
   );
 
   const clearSelectedAddress = useCallback(() => setSelectedAddress(null), []);
 
   const getFromLocalStorage = useCallback(() => {
-    const selectedAddressId = localStorage.getItem("selectedAddressId");
+    const selectedAddressId = localStorage.getItem("addressId");
     if (selectedAddressId) {
-      getAddress(parseInt(selectedAddressId));
+      setSelectedAddressById(parseInt(selectedAddressId));
     } else {
       const postalCode = localStorage.getItem("postalCode");
       if (postalCode) getAddressByPostalCode(postalCode);
     }
-  }, []);
+    const selectedShippingOptionId = localStorage.getItem("shippingOptionId");
+
+    if (selectedShippingOptionId && shippingOptions)
+      setSelectedShippingOption(
+        shippingOptions.find(
+          (option) => option.id === parseInt(selectedShippingOptionId)
+        )!
+      );
+  }, [changeSelectedAddressById, shippingOptions]);
+
+  const getShippingOptions = async (userId: number, postalCode: string) => {
+    try {
+      const shippingOptions = await fetchShippingOptions(userId, postalCode);
+      setShippingOptions(shippingOptions);
+
+      if (shippingOptions.length > 0) {
+        let tempOption = {
+          id: 0,
+          name: "",
+          price: Number.MAX_SAFE_INTEGER.toString(),
+          deliveryTime: 0,
+        };
+
+        shippingOptions.map((option) => {
+          if (parseFloat(option.price) < parseFloat(tempOption.price))
+            tempOption = option;
+        });
+
+        setSelectedShippingOption(tempOption);
+      }
+    } catch (error) {
+      alert(`Erro ao calcular o frete: ${(error as AxiosError).message}`);
+    }
+  };
+
+  const changeSelectedShippingOption = (shippingOption: IShippingOption) => {
+    setSelectedShippingOption(shippingOption);
+    localStorage.setItem("shippingOptionId", shippingOption.id.toString());
+  };
 
   useEffect(() => {
-    getFromLocalStorage();
-  }, [getFromLocalStorage]);
+    if (userAddresses.length > 0) getFromLocalStorage();
+  }, [getFromLocalStorage, userAddresses]);
 
   useEffect(() => {
     if (!user) return;
     getAddresses(user.id);
   }, [user]);
+
+  useEffect(() => {
+    if (!user || !postalCode) return;
+    getShippingOptions(user.id, postalCode);
+  }, [user, postalCode]);
 
   return (
     <AddressContext.Provider
@@ -135,8 +181,11 @@ function AddressProvider({ children }: AddressProviderProps) {
         userAddresses,
         handleDelete,
         getAddresses,
-        setSelectedAddressById,
+        changeSelectedAddressById,
         clearSelectedAddress,
+        shippingOptions,
+        selectedShippingOption,
+        changeSelectedShippingOption,
       }}
     >
       {children}

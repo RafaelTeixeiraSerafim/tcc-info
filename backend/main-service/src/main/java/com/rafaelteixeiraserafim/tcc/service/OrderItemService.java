@@ -46,7 +46,7 @@ public class OrderItemService {
     }
 
     public List<OrderItem> getOrderItemsByUserId(Long userId) throws IllegalArgumentException {
-        Order order = orderService.getOrderByUserId(userId);
+        Order order = orderService.getActiveOrder(userId);
 
         return this.getOrderItemsByOrder(order);
     }
@@ -66,7 +66,7 @@ public class OrderItemService {
                 throw new IllegalArgumentException("OrderItem qty is greater than product stock");
             }
 
-            Order order = orderService.getOrderByUserId(orderItemRequest.userId());
+            Order order = orderService.getActiveOrder(orderItemRequest.userId());
 
             OrderItem newOrderItem = new OrderItem(order, product, orderItemRequest.qty());
 
@@ -88,7 +88,7 @@ public class OrderItemService {
     }
 
     public OrderItem getOrderItemByUserIdAndProductId(Long userId, Long productId) {
-        Order order = orderService.getOrderByUserId(userId);
+        Order order = orderService.getActiveOrder(userId);
         Product product = productService.getProductById(productId);
 
         Optional<OrderItem> optionalOrderItem = orderItemRepository.findByOrderAndProduct(order, product);

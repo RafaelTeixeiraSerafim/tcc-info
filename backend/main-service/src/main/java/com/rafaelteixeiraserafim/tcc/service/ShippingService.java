@@ -15,9 +15,9 @@ import java.util.List;
 
 @Service
 public class ShippingService {
-    @Value("${owner.postal_code}")
+    @Value("${owner.postal-code}")
     private String ownerPostalCode;
-    @Value("${postal_service.base_uri}")
+    @Value("${postal-service.base-uri}")
     private String postalBaseUri;
 
     private final OrderItemService orderItemService;

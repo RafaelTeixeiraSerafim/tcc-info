@@ -32,18 +32,14 @@ public class BoughtProduct {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-    @ManyToOne
-    @JoinColumn(name = "order_item_id")
-    private OrderItem orderItem;
     @CreatedDate
     @Column(updatable = false)
     private Date createdAt;
 
-    public BoughtProduct(User user, Order order, Product product, OrderItem orderItem) {
+    public BoughtProduct(User user, Order order, Product product) {
         this.user = user;
         this.order = order;
         this.product = product;
-        this.orderItem = orderItem;
     }
 
     //    @JsonManagedReference

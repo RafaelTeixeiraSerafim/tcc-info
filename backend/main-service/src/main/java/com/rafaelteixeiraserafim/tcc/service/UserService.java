@@ -23,7 +23,7 @@ public class UserService {
 //    }
 
     public List<User> getClients() {
-        return userRepository.findByRole(UserRole.USER);
+        return userRepository.findByRole(UserRole.CLIENT);
     }
 
     public List<User> getAdmins() {

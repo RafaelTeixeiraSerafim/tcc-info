@@ -8,7 +8,7 @@ import AuthFormSubmitButton from "./AuthFormSubmitButton";
 
 interface AuthFormProps {
   children: React.ReactNode;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 type AuthFormComponents = {
@@ -21,10 +21,10 @@ type AuthFormComponents = {
 
 const AuthForm: React.FC<AuthFormProps> & AuthFormComponents = ({
   children,
-  handleSubmit,
+  onSubmit,
 }: AuthFormProps) => {
   return (
-    <Form handleSubmit={handleSubmit} style={{ gap: "3rem" }}>
+    <Form onSubmit={onSubmit} style={{ gap: "3rem" }}>
       {children}
     </Form>
   );

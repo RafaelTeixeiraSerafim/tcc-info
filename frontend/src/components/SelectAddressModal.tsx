@@ -32,7 +32,7 @@ export default function SelectAddressModal({
     getAddresses,
     selectedAddress,
     incompleteAddress,
-    setSelectedAddressById,
+    changeSelectedAddressById,
     clearSelectedAddress,
   } = useAddressContext();
 
@@ -79,7 +79,7 @@ export default function SelectAddressModal({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAddressById(parseInt(e.target.value));
+    changeSelectedAddressById(parseInt(e.target.value));
   };
 
   const handleUpdateAddresses = () => {
@@ -101,7 +101,7 @@ export default function SelectAddressModal({
         onChange={handleChange}
         onUpdate={handleUpdate}
       />
-      <Form handleSubmit={handleSave}>
+      <Form onSubmit={handleSave}>
         <Box>
           <PostalCodeInput
             postalCode={formAddress.postalCode}

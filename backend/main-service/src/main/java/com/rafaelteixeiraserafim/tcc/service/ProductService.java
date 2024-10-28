@@ -3,7 +3,8 @@ package com.rafaelteixeiraserafim.tcc.service;
 import com.rafaelteixeiraserafim.tcc.dto.ImageDto;
 import com.rafaelteixeiraserafim.tcc.dto.ProductDto;
 import com.rafaelteixeiraserafim.tcc.model.Category;
-import com.rafaelteixeiraserafim.tcc.model.Image;
+import com.rafaelteixeiraserafim.tcc.model.OrderItem;
+import com.rafaelteixeiraserafim.tcc.model.ProductImage;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
-    private final ImageService imageService;
+    private final ProductImageService productImageService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, ImageService imageService) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, ProductImageService productImageService) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
-        this.imageService = imageService;
+        this.productImageService = productImageService;
     }
 
     public List<Product> getProducts() {
@@ -56,8 +57,8 @@ public class ProductService {
 
         Product product = optionalProduct.get();
 
-        for (Image image : product.getImages()) {
-            imageService.handleDeleteImage(image);
+        for (ProductImage productImage : product.getImages()) {
+            productImageService.handleDeleteImage(productImage);
         }
 
         productRepository.delete(product);
@@ -77,7 +78,7 @@ public class ProductService {
             for (int i = 0; i < images.size(); i++) {
                 MultipartFile file = images.get(i).getFile();
                 if (file != null) {
-                    imageService.handleImageCreation(currentTimestamp, file, String.valueOf(i), product);
+                    productImageService.handleCreateImage(currentTimestamp, file, String.valueOf(i), product);
                 }
             }
         }
@@ -96,13 +97,17 @@ public class ProductService {
 
         Instant currentTimestamp = Instant.now();
         for (int i = 0; i < images.size(); i++) {
-            String imageUrl = images.get(i).getUrl();
-            MultipartFile imageFile = images.get(i).getFile();
+            ImageDto imageDto = images.get(i);
+            String imageUrl = imageDto.getUrl();
+            MultipartFile imageFile = imageDto.getFile();
 
-            if (imageUrl.isEmpty()) {
-                imageService.handleImageCreation(currentTimestamp, imageFile, String.valueOf(i), product);
+            if (imageUrl == null) {
+                productImageService.handleCreateImage(currentTimestamp, imageFile, String.valueOf(i), product);
+            } else if (imageUrl.isEmpty()) {
+                ProductImage productImage = productImageService.getImageById(imageDto.getId());
+                productImageService.handleDeleteImage(productImage);
             } else if (imageFile != null) {
-                imageService.handleImageUpdate(imageUrl, imageFile);
+                productImageService.handleUpdateImage(imageUrl, imageFile);
             }
         }
     }
@@ -128,6 +133,19 @@ public class ProductService {
     public void deleteProductsById(List<Long> productIds) {
         for (Long productId : productIds) {
             deleteProductById(productId);
+        }
+    }
+
+    public void updateStockQtys(List<OrderItem> orderItems) {
+        for (OrderItem orderItem : orderItems) {
+            Product product = orderItem.getProduct();
+            int stockQty = product.getStockQty() - orderItem.getQty();
+
+            if (stockQty < 0) {
+                throw new IllegalArgumentException("OrderItem with id " + orderItem.getId() + " has a quantity greater than the stock quantity");
+            }
+
+            product.setStockQty(stockQty);
         }
     }
 }

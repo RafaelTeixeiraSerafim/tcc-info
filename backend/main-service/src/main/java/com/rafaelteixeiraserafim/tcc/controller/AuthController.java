@@ -4,6 +4,7 @@ import com.rafaelteixeiraserafim.tcc.config.auth.SecurityFilter;
 import com.rafaelteixeiraserafim.tcc.config.auth.TokenProvider;
 import com.rafaelteixeiraserafim.tcc.dto.LoginDto;
 import com.rafaelteixeiraserafim.tcc.dto.SignUpDto;
+import com.rafaelteixeiraserafim.tcc.dto.UpdateUserDto;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.Order;
@@ -18,41 +19,40 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Validated
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final SecurityFilter securityFilter;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManager authenticationManager;
     private final OrderService orderService;
 
     @Autowired
-    public AuthController(AuthService authService, UserService userService, SecurityFilter securityFilter, TokenProvider tokenProvider, AuthenticationManager authenticationManager, OrderService orderService) {
+    public AuthController(AuthService authService, UserService userService, SecurityFilter securityFilter, TokenProvider tokenProvider, OrderService orderService) {
         this.authService = authService;
         this.userService = userService;
         this.securityFilter = securityFilter;
         this.tokenProvider = tokenProvider;
-        this.authenticationManager = authenticationManager;
         this.orderService = orderService;
     }
 
     @PostMapping("/signup/{role}")
     public ResponseEntity<User> signUpUser(@RequestBody @Valid SignUpDto data, @PathVariable("role") String role) {
-        System.out.println("entered");
         for (UserRole userRole : UserRole.values()) {
             if (Objects.equals(userRole.getRole(), role)) {
                 User user = authService.signUpByRole(data, userRole);
                 ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
 
-                if (Objects.equals(role, UserRole.USER.getRole())) {
+                if (Objects.equals(role, UserRole.CLIENT.getRole())) {
                     orderService.createOrder(new Order(user, OrderStatus.IN_PROGRESS));
                 }
 
@@ -80,6 +80,16 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<User> updateUser(@ModelAttribute @Valid UpdateUserDto updateUserDto) {
+        User user = authService.updateUser(updateUserDto);
+
+        ResponseCookie jwtCookie = this.generateJwtCookie(user.getEmail(), null);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(user);
+    }
+
     @PostMapping("/check-token")
     public ResponseEntity<?> checkToken(HttpServletRequest request) {
         String token = securityFilter.recoverToken(request);
@@ -96,7 +106,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
+    public ResponseEntity<String> logout() {
         // Create an empty cookie with the same name and set maxAge to 0 to delete it
         ResponseCookie deleteCookie = authService.deleteCookie();
 
@@ -108,9 +118,11 @@ public class AuthController {
 
     public ResponseCookie generateJwtCookie(String email, String password) {
         try {
+            System.out.println("Email: " + email);
             var emailPassword = new UsernamePasswordAuthenticationToken(email, password);
-            var authUser = authenticationManager.authenticate(emailPassword);
-            String accessToken = tokenProvider.generateAccessToken((User) authUser.getPrincipal());
+//            authenticationManager.authenticate(emailPassword);
+            SecurityContextHolder.getContext().setAuthentication(emailPassword);
+            String accessToken = tokenProvider.generateAccessToken(email);
             return authService.createCookie(accessToken);
         } catch (Exception e) {
             System.out.println("Exception: " + e);

@@ -81,7 +81,7 @@ export default function AddressModal({
   return (
     <Modal handleClose={handleClose} isOpen={isOpen}>
       <Modal.Title>Adicionar Endereço</Modal.Title>
-      <Form handleSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <TextField
           label="Nome Completo"
           required

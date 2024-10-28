@@ -6,8 +6,8 @@ interface SmallImageProps {
   onHoverEnter: (event: React.MouseEvent<HTMLImageElement>) => void;
   onHoverLeave: () => void;
   onClick: (event: React.MouseEvent<HTMLImageElement>) => void;
-  hoveredImageId: number;
-  selectedImageId: number;
+  hoveredImageId: number | string;
+  selectedImageId: number | string;
 }
 
 export default function SmallImage({

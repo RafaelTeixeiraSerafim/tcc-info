@@ -1,9 +1,9 @@
 import { Typography, TypographyProps } from "@mui/material";
-import { useCartContext } from "../hooks";
+import { useAddressContext } from "../hooks";
 import { formatCurrency } from "../utils/helpers";
 
 export default function CartShippingFee({ ...restProps }: TypographyProps) {
-  const { selectedShippingOption } = useCartContext();
+  const { selectedShippingOption } = useAddressContext();
 
   return (
     <Typography variant="h6" {...restProps}>

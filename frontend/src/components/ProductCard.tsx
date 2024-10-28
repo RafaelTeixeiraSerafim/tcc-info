@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <Box
         component={"img"}
-        src={product.images[0]?.url || ""}
+        src={product.images?.[0]?.url || ""}
         alt=""
         height={"13rem"}
         loading="lazy"

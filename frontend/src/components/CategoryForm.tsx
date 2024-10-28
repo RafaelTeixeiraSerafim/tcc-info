@@ -41,7 +41,7 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
     handleTextInputChange(e, setFormCategory);
 
   return (
-    <Form handleSubmit={handleSubmit} style={{ width: "60%" }}>
+    <Form onSubmit={handleSubmit} style={{ width: "60%" }}>
       <Form.Title>{isUpdating ? "Alterar" : "Nova"} Categoria</Form.Title>
       <TextField
         type="text"

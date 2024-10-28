@@ -50,7 +50,7 @@ export default function UserTabs() {
           aria-label="basic tabs example"
         >
           <Tab label="Admins" {...a11yProps(0)} />
-          <Tab label="Usuários" {...a11yProps(1)} />
+          <Tab label="Clientes" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

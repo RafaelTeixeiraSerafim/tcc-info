@@ -1,23 +1,31 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
-import com.rafaelteixeiraserafim.tcc.dto.OrderRequest;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import com.rafaelteixeiraserafim.tcc.model.Order;
-import com.rafaelteixeiraserafim.tcc.model.OrderItem;
-import com.rafaelteixeiraserafim.tcc.model.Product;
+import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OrderService {
+    private final OrderRepository orderRepository;
+    private final UserService userService;
+    private final ProductService productService;
+
     @Autowired
-    private OrderRepository orderRepository;
+    public OrderService(OrderRepository orderRepository, UserService userService, ProductService productService) {
+        this.orderRepository = orderRepository;
+        this.userService = userService;
+        this.productService = productService;
+    }
 
     public void createOrder(Order order) {
         orderRepository.save(order);
@@ -33,7 +41,7 @@ public class OrderService {
         return optionalOrder.get();
     }
 
-    public Order getOrderByUserId(Long userId) throws IllegalArgumentException {
+    public Order getActiveOrder(Long userId) throws IllegalArgumentException {
         Optional<Order> optionalOrder = orderRepository.findOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
 
         if (optionalOrder.isEmpty()) {
@@ -44,29 +52,15 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateOrderById(Long orderId, OrderRequest orderRequest) throws IllegalArgumentException {
+    public void updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = this.getOrderById(orderId);
-        OrderStatus prevStatus = order.getStatus();
 
-        if (orderRequest.status() != null) {
-            order.setStatus(orderRequest.status());
-        }
-        if (orderRequest.datePlaced() != null) {
-            order.setDatePlaced(orderRequest.datePlaced());
-        }
+        order.setStatus(status);
+    }
 
-        if (prevStatus == OrderStatus.IN_PROGRESS && order.getStatus() == OrderStatus.PENDING) {
-            for (OrderItem orderItem : order.getOrderItems()) {
-                Product product = orderItem.getProduct();
-                int stockQty = product.getStockQty() - orderItem.getQty();
-
-                if (stockQty < 0) {
-                    throw new IllegalArgumentException("OrderItem with id " + orderItem.getId() + " has a quantity greater than the stock quantity");
-                }
-
-                product.setStockQty(stockQty);
-            }
-        }
+    public void updateOrder(Order order, OrderStatus status, Date datePlaced) {
+        order.setStatus(status);
+        order.setDatePlaced(datePlaced);
     }
 
     public Order getOrderByUserIdAndStatus(Long userId, OrderStatus orderStatus) throws IllegalArgumentException {
@@ -97,4 +91,12 @@ public class OrderService {
         return OrderStatus.values();
     }
 
+    @Transactional
+    public void checkoutOrder(Long userId) {
+        User user = userService.getUserById(userId);
+        Order order = getActiveOrder(userId);
+        productService.updateStockQtys(order.getOrderItems());
+        updateOrder(order, OrderStatus.PENDING, Date.from(Instant.now()));
+        createOrder(new Order(user, OrderStatus.IN_PROGRESS));
+    }
 }

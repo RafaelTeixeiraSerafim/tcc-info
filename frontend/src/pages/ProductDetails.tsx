@@ -71,7 +71,6 @@ export default function ProductDetails() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            mt: "7rem",
             paddingInline: "3rem",
             gap: "3rem",
           }}
