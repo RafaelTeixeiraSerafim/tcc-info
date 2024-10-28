@@ -64,7 +64,7 @@ public class PaymentService {
             PreferenceItemRequest item = PreferenceItemRequest.builder()
                     .id(orderItem.getId().toString())
                     .title(product.getName())
-                    .pictureUrl(product.getImages().getFirst().getUrl())
+                    .pictureUrl(product.getImages().get(0).getUrl())
                     .categoryId(product.getCategory().getId().toString())
                     .quantity(orderItem.getQty())
                     .currencyId("BRL")
