@@ -20,7 +20,7 @@ export default function ReviewOrder() {
   };
 
   useEffect(() => {
-    initMercadoPago(import.meta.env.MERCADO_PAGO_PUBLIC_KEY);
+    initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY);
   }, []);
 
   useEffect(() => {
