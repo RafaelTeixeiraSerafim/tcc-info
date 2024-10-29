@@ -24,7 +24,7 @@ def create_app():
     else:
         host = get_windows_host_ip()
         server_url = f'http://{host}:8761/eureka'
-    eureka_client.init(eureka_server=server_url, app_name="postal-service", instance_port=app.config.get("FLASK_RUN_PORT"), instance_ip="127.0.0.1")
+    eureka_client.init(eureka_server=server_url, app_name="postal-service", instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_ip="127.0.0.1")
     CORS(app)
     route_index(app)
     return app
