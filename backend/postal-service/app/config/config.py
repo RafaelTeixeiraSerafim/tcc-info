@@ -23,6 +23,7 @@ class Config(object):
     IS_PROD = os.environ.get('IS_PROD', "False")
     EUREKA_SERVER_HOST = os.environ.get("EUREKA_SERVER_HOST", "localhost")
     INSTANCE_HOST = os.environ.get("INSTANCE_HOST", "localhost")
+    FLASK_RUN_HOST = os.environ.get("FLASK_RUN_HOST", "0.0.0.0")
 
 
 class ProductionConfig(Config):
