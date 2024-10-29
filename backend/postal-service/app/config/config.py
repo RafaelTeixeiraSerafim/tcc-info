@@ -19,7 +19,7 @@ class Config(object):
     # CSRF_ENABLED = True
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     # EUREKA_URL = os.environ['EUREKA_URL']
-    FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 8080)
+    FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 5000)
     IS_PROD = os.environ.get('IS_PROD', "False")
     EUREKA_SERVER_HOST = os.environ.get("EUREKA_SERVER_HOST", "localhost")
 
