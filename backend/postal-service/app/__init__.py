@@ -18,9 +18,11 @@ def create_app():
     migrate.init_app(app, db)
     if app.config.get("IS_PROD") == "True":
         host = app.config.get("EUREKA_SERVER_HOST")
+        ip = app.config.get("INSTANCE_IP")
     else:
         host = get_windows_host_ip()
-    eureka_client.init(eureka_server=f'http://{host}:8761/eureka/', app_name="postal-service", instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_ip="127.0.0.1")
+        ip = "127.0.0.1"
+    eureka_client.init(eureka_server=f'http://{host}:8761/eureka/', app_name="postal-service", instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_ip=ip)
     CORS(app)
     route_index(app)
     return app
