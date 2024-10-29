@@ -22,7 +22,7 @@ class Config(object):
     FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 5000)
     IS_PROD = os.environ.get('IS_PROD', "False")
     EUREKA_SERVER_HOST = os.environ.get("EUREKA_SERVER_HOST", "localhost")
-    INSTANCE_IP = os.environ.get("INSTANCE_IP", "127.0.0.1")
+    INSTANCE_HOST = os.environ.get("INSTANCE_HOST", "localhost")
 
 
 class ProductionConfig(Config):

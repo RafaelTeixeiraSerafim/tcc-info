@@ -17,12 +17,12 @@ def create_app():
     migrate = Migrate(app, db)
     migrate.init_app(app, db)
     if app.config.get("IS_PROD") == "True":
-        host = app.config.get("EUREKA_SERVER_HOST")
-        ip = app.config.get("INSTANCE_IP")
+        eureka_server_host = app.config.get("EUREKA_SERVER_HOST")
+        instance_host = app.config.get("INSTANCE_HOST")
     else:
-        host = get_windows_host_ip()
-        ip = "127.0.0.1"
-    eureka_client.init(eureka_server=f'http://{host}:8761/eureka/', app_name="postal-service", instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_ip=ip)
+        eureka_server_host = get_windows_host_ip()
+        instance_host = "localhost"
+    eureka_client.init(eureka_server=f'http://{eureka_server_host}:8761/eureka/', app_name="postal-service", instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_host=instance_host)
     CORS(app)
     route_index(app)
     return app
