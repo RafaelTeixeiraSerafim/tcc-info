@@ -17,8 +17,8 @@ export default function ProfilePicInputContainer({
         return {
           position: "relative",
           overflow: "visible",
-          marginTop: 20,
           border: "1px solid",
+          marginTop: "1.5rem",
           borderColor:
             theme.palette.mode === "dark"
               ? alpha("#fff", 0.2)

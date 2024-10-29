@@ -18,9 +18,9 @@ export default function useDashboardAuth() {
   const authentication = useMemo(() => {
     return {
       signIn: () => {},
-      signOut: () => {
+      signOut: async () => {
         setSession(null);
-        logoutUser();
+        await logoutUser();
         navigate("/");
       },
     };

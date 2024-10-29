@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AddressList from "../../components/AddressList";
 import AddressModal from "../../components/AddressModal";
@@ -47,39 +47,47 @@ export default function AddressOptions() {
 
   return (
     <>
-      <Box
+      <Paper
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: "1.5rem",
-          mt: "7rem",
           mb: "3rem",
           width: "60%",
           minHeight: "60vh",
           marginInline: "auto",
-          padding: "1rem",
+          paddingBlock: "2.5rem",
+          paddingInline: "2rem",
         }}
       >
-        <Typography>Escolha seu endereço de entrega</Typography>
+        <Box>
+          <Typography component="h1" variant="h3">
+            Escolha seu endereço de entrega
+          </Typography>
+          <hr style={{ width: "100%" }} color="#d3d3d3" />
+        </Box>
         <AddressList
           selectedAddressId={selectedAddress?.id || 0}
           onChange={handleChange}
           onUpdate={handleUpdate}
         />
-        <CartSubtotal />
-        <CartTotal />
         <Box>
           <Button variant="outlined" onClick={() => setIsModalOpen(true)}>
             Adicionar endereço
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => navigate("/checkout/shipping-options")}
-          >
-            Continuar
-          </Button>
         </Box>
-      </Box>
+        <Box>
+          <CartSubtotal />
+          <CartTotal />
+        </Box>
+        <Button
+          variant="contained"
+          onClick={() => navigate("/checkout/shipping-options")}
+          disabled={!selectedAddress}
+        >
+          Continuar
+        </Button>
+      </Paper>
       <AddressModal
         isOpen={isModalOpen}
         onClose={handleClose}

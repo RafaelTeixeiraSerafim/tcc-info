@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Paper, TextField } from "@mui/material";
 import React, { useState } from "react";
 import ProfilePicInput from "../components/ProfilePicInput";
 import { useUserContext } from "../hooks";
@@ -55,28 +55,43 @@ export default function ProfileUpdate() {
   return (
     <>
       {user && (
-        <Form onSubmit={handleSubmit}>
-          <ProfilePicInput
-            label="Imagem"
-            defaultImage={user.profilePic}
-            name="profilePic"
-            setUser={setFormUpdateUser}
-          />
-          <TextField
-            label="Nome de Usuário"
-            name="username"
-            value={formUpdateUser.username}
-            onChange={handleChange}
-          />
-          <TextField
-            type="email"
-            label="Email"
-            name="email"
-            value={formUpdateUser.email}
-            onChange={handleChange}
-          />
-          <Form.SubmitButton>Alterar</Form.SubmitButton>
-        </Form>
+        <Paper
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2.5rem",
+            mb: "3rem",
+            width: "60%",
+            minHeight: "60vh",
+            marginInline: "auto",
+            paddingBlock: "2.5rem",
+            paddingInline: "2rem",
+          }}
+        >
+          <Form onSubmit={handleSubmit}>
+            <Form.Title>Alterar Perfil</Form.Title>
+            <ProfilePicInput
+              label="Perfil"
+              defaultImage={user.profilePic}
+              name="profilePic"
+              setUser={setFormUpdateUser}
+            />
+            <TextField
+              label="Nome de Usuário"
+              name="username"
+              value={formUpdateUser.username}
+              onChange={handleChange}
+            />
+            <TextField
+              type="email"
+              label="Email"
+              name="email"
+              value={formUpdateUser.email}
+              onChange={handleChange}
+            />
+            <Form.SubmitButton>Alterar</Form.SubmitButton>
+          </Form>
+        </Paper>
       )}
     </>
   );

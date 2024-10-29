@@ -12,7 +12,7 @@ interface IUserContextInterface {
   user: IUser | null;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   authenticate: () => Promise<void>;
-  logoutUser: () => void;
+  logoutUser: () => Promise<void>;
   hasCheckedToken: boolean;
 }
 

@@ -9,7 +9,7 @@ export default function ProfileImageLabel({ label }: ProfileImageLabel) {
     <InputLabel
       sx={{
         position: "absolute",
-        top: -22,
+        top: -24,
         left: "50%",
         transform: "translateX(-50%)",
         color: "inherit",

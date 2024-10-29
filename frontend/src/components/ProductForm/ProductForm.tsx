@@ -190,7 +190,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       <FormRow>
         <TextField
           name="length"
-          label="Comprimento"
+          label="Comprimento (m)"
           value={formProduct.length}
           onChange={handleChange}
           required
@@ -198,7 +198,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
         />
         <TextField
           name="width"
-          label="Largura"
+          label="Largura (m)"
           value={formProduct.width}
           onChange={handleChange}
           required
@@ -209,7 +209,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       <FormRow>
         <TextField
           name="height"
-          label="Altura"
+          label="Altura (m)"
           value={formProduct.height}
           required
           onChange={handleChange}
@@ -217,7 +217,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
         />
         <TextField
           name="weight"
-          label="Peso"
+          label="Peso (kg)"
           value={formProduct.weight}
           required
           onChange={handleChange}

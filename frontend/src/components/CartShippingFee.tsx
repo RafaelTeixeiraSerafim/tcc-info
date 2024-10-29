@@ -10,7 +10,7 @@ export default function CartShippingFee({ ...restProps }: TypographyProps) {
       Frete:{" "}
       {formatCurrency(
         selectedShippingOption ? parseFloat(selectedShippingOption.price) : 0
-      )}
+      ) || "-"}
     </Typography>
   );
 }

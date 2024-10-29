@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
-import { IAddress } from "../interfaces";
 import { useAddressContext } from "../hooks";
+import { IAddress } from "../interfaces";
 
 interface AddressListProps {
   onUpdate: (addressToUpdate: IAddress) => void;
@@ -19,7 +19,14 @@ export default function AddressList({
   return (
     <>
       {userAddresses.map((address) => (
-        <Box key={address.id}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "1rem",
+            width: "100%"
+          }}
+          key={address.id}
+        >
           <input
             type="radio"
             name="address"
@@ -28,10 +35,31 @@ export default function AddressList({
             onChange={onChange}
             checked={selectedAddressId === address.id}
           />
-          <Typography>{address.fullName}</Typography>
-          <Typography>{address.city}</Typography>
-          <Button onClick={() => handleDelete(address.id)}>Excluir</Button>
-          <Button onClick={() => onUpdate(address)}>Alterar</Button>
+          <Box>
+            <Typography>
+              {address.street}, {address.houseNumber} - {address.neighbourhood}
+            </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.7 }}>
+              {address.city}, {address.state} - {address.postalCode}
+            </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.7 }}>
+              {address.fullName}
+            </Typography>
+            <Button
+              color="error"
+              size="small"
+              onClick={() => handleDelete(address.id)}
+            >
+              Excluir
+            </Button>
+            <Button
+              color="warning"
+              size="small"
+              onClick={() => onUpdate(address)}
+            >
+              Alterar
+            </Button>
+          </Box>
         </Box>
       ))}
     </>

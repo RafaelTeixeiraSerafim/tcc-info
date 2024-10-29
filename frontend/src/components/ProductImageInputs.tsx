@@ -40,7 +40,7 @@ export default function ProductImageInputs({
   }, [numOfImages, images]);
 
   const handleSubImg = () => {
-    if (images.length > 1) setNumOfImages((prevNum) => prevNum - 1);
+    if (numOfImages > 1) setNumOfImages((prevNum) => prevNum - 1);
   };
 
   return (
