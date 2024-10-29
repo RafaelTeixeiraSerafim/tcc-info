@@ -2,8 +2,16 @@ import os
 from dotenv import load_dotenv
 # basedir = os.path.abspath(os.path.dirname(__file__))
 
-load_dotenv(".flaskenv.local")
-load_dotenv(".env.local")
+load_dotenv()
+
+# Get the environment setting (default to 'local' if not set)
+env = os.getenv('ENV', 'local')
+dotenv_file = f".env.{env}"
+flask_dotenv_file = f".flaskenv.{env}"
+
+# Load the specific environment file
+load_dotenv(dotenv_file)
+load_dotenv(flask_dotenv_file)
 
 class Config(object):
     DEBUG = False
@@ -12,6 +20,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     # EUREKA_URL = os.environ['EUREKA_URL']
     FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 8080)
+    IS_PROD = os.environ.get('IS_PROD', "False")
+    EUREKA_SERVER_HOST = os.environ.get("EUREKA_SERVER_HOST", "localhost")
 
 
 class ProductionConfig(Config):
