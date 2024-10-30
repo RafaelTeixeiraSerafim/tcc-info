@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Configuration
 public class AppConfig {
     @Bean
-    @LoadBalanced
+//    @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
