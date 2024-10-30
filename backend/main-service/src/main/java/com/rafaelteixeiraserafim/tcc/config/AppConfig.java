@@ -5,7 +5,7 @@ import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.*;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+//import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
