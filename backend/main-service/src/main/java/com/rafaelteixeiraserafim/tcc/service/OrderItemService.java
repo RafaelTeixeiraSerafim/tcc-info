@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderItemService {
@@ -44,14 +45,25 @@ public class OrderItemService {
         return order.getOrderItems();
     }
 
+    public Optional<OrderItem> getOrderItem(Long userId, Long productId) {
+        Order order = orderService.getActiveOrder(userId);
+        Product product = productService.getProduct(productId);
+
+        return orderItemRepository.findByOrderAndProduct(order, product);
+    }
+
     @Transactional
     public OrderItem createOrderItem(OrderItemRequest orderItemRequest) throws IllegalArgumentException {
-        OrderItem orderItem = this.getOrderItem(orderItemRequest.userId(), orderItemRequest.productId());
+        Optional<OrderItem> optionalOrderItem = this.getOrderItem(orderItemRequest.userId(), orderItemRequest.productId());
         Product product = productService.getProduct(orderItemRequest.productId());
-        if (orderItem != null) {
+
+        if (optionalOrderItem.isPresent()) {
+            OrderItem orderItem = optionalOrderItem.get();
+
             if (orderItem.getQty() + orderItemRequest.qty() > product.getStockQty()) {
                 throw new IllegalArgumentException("OrderItem qty is greater than product stock");
             }
+
             orderItem.setQty(orderItem.getQty() + orderItemRequest.qty());
             return orderItem;
         } else {
@@ -72,13 +84,6 @@ public class OrderItemService {
         OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
 
         orderItemRepository.delete(orderItem);
-    }
-
-    public OrderItem getOrderItem(Long userId, Long productId) {
-        Order order = orderService.getActiveOrder(userId);
-        Product product = productService.getProduct(productId);
-
-        return orderItemRepository.findByOrderAndProduct(order, product).orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
     }
 
     public void createPrices(List<OrderItem> orderItems) {
