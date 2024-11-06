@@ -27,7 +27,7 @@ export default function Reviews({ productId }: ReviewsProps) {
 
   const { user } = useUserContext();
 
-  const getBoughtProduct = async (userId: number, productId: number) => {
+  const getBoughtProduct = async (productId: number, userId: number) => {
     try {
       const boughtProduct = await fetchBoughtProduct(productId, userId);
       setBoughtProduct(boughtProduct);
