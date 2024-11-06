@@ -6,10 +6,7 @@ import com.rafaelteixeiraserafim.tcc.model.Product;
 import jakarta.validation.constraints.Min;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BoughtProductService {
@@ -36,6 +33,7 @@ public class BoughtProductService {
             boughtProductQties.add(new BoughtProductQty(entry.getKey(), entry.getValue()));
         }
 
+        boughtProductQties.sort(Comparator.comparingInt(BoughtProductQty::qty).reversed());
         return boughtProductQties;
     }
 
