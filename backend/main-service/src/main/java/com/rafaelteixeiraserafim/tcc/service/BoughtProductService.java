@@ -28,7 +28,7 @@ public class BoughtProductService {
         for (OrderItem orderItem : orderItems) {
             Order order = orderItem.getOrder();
             Product product = orderItem.getProduct();
-            Optional<BoughtProduct> optionalBoughtProduct = boughtProductRepository.findByUserAndProduct(order.getUser(), product);
+            List<BoughtProduct> optionalBoughtProduct = boughtProductRepository.findByUserAndProduct(order.getUser(), product);
 
             if (optionalBoughtProduct.isEmpty()) {
                 BoughtProduct boughtProduct = new BoughtProduct(order.getUser(), order, product, orderItem, ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem.getQty())));
@@ -64,14 +64,14 @@ public class BoughtProductService {
     }
 
 
-    public BoughtProductDto getBoughtProductByOrderId(Long userId, Long productId) {
-        Optional<BoughtProduct> optionalBoughtProduct = boughtProductRepository.findByUserIdAndProductId(userId, productId);
+    public BoughtProductDto getBoughtProduct(Long userId, Long productId) {
+        List<BoughtProduct> boughtProducts = boughtProductRepository.findByUserIdAndProductId(userId, productId);
 
-        if (optionalBoughtProduct.isEmpty()) {
+        if (boughtProducts.isEmpty()) {
             return null;
         }
 
-        BoughtProduct boughtProduct = optionalBoughtProduct.get();
+        BoughtProduct boughtProduct = boughtProducts.get(0);
 
         return new BoughtProductDto(boughtProduct.getId(), boughtProduct.getCreatedAt());
     }

@@ -23,7 +23,7 @@ public class BoughtProductController {
     @GetMapping
     public ResponseEntity<?> getBoughtProducts(@RequestParam Long userId, @RequestParam(required = false) Long productId) {
         if (productId != null) {
-            return ResponseEntity.ok(boughtProductService.getBoughtProductByOrderId(userId, productId));
+            return ResponseEntity.ok(boughtProductService.getBoughtProduct(userId, productId));
         }
         return ResponseEntity.ok(boughtProductService.getBoughtProducts(userId));
     }

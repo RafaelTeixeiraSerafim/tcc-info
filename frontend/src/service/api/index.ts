@@ -421,7 +421,7 @@ export const deleteReview = async (reviewId: number) => {
 export const fetchBoughtProduct = async (productId: number, userId: number) => {
   try {
     const response = await axiosInstance.get(
-      `/bought-products?userId=${userId}&&productId=${productId}`
+      `/bought-products?userId=${userId}&productId=${productId}`
     );
     console.log(response);
     return response.data;
