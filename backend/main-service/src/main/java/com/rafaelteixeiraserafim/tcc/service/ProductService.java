@@ -44,10 +44,6 @@ public class ProductService {
         return product.get();
     }
 
-    public void createProduct(Product product) {
-        productRepository.save(product);
-    }
-
     public void deleteProductById(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
@@ -65,11 +61,11 @@ public class ProductService {
     }
 
     @Transactional
-    public Long createProductRequest(ProductDto productDTO) {
+    public Product createProductRequest(ProductDto productDTO) {
         Product newProduct = new Product();
         Product product = populateProductFromDto(productDTO, newProduct);
 
-        createProduct(product);
+        productRepository.save(product);
 
         List<ImageDto> images = productDTO.getImages();
 
@@ -83,7 +79,7 @@ public class ProductService {
             }
         }
 
-        return product.getId();
+        return product;
     }
 
     @Transactional

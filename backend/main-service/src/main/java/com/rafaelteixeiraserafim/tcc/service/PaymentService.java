@@ -48,7 +48,7 @@ public class PaymentService {
     }
 
     public String createPreference(User user, AddressDto address, BigDecimal shippingFee) {
-        List<OrderItem> orderItems = orderItemService.getOrderItemsByUserId(user.getId());
+        List<OrderItem> orderItems = orderItemService.getOrderItems(user.getId());
 
         PreferenceClient client = new PreferenceClient();
 
@@ -111,7 +111,9 @@ public class PaymentService {
                                         .build()
                         )
                         .metadata(
-                                Map.of("user_id", user.getId())
+                                Map.of("user_id", user.getId(),
+                                        "address_id", address.id(),
+                                        "shipping_fee", shippingFee)
                         )
                         .build();
 

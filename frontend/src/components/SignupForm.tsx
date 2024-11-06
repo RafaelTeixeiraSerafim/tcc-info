@@ -44,6 +44,7 @@ export default function SignupForm() {
           name="username"
           value={signupUser.username}
           onChange={handleChange}
+          required
         />
         <AuthForm.Input
           type="email"
@@ -51,6 +52,7 @@ export default function SignupForm() {
           name="email"
           value={signupUser.email}
           onChange={handleChange}
+          required
         />
         <AuthForm.Input
           type="password"
@@ -58,6 +60,7 @@ export default function SignupForm() {
           name="password"
           value={signupUser.password}
           onChange={handleChange}
+          required
         />
       </AuthForm.Content>
       <AuthForm.Actions>

@@ -43,3 +43,12 @@ export const formatPriceInputForBackend = (value: string) => {
 export const formatPriceInputForFrontend = (value: string) => {
   return value.replace(".", ",");
 };
+
+export const formatDatetime = (date: string) => {
+  const newDate = new Date(date);
+  return (
+    newDate.toLocaleTimeString().substring(0, 5) +
+    " - " +
+    newDate.toLocaleDateString()
+  );
+};

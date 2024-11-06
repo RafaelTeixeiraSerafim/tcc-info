@@ -11,9 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface BoughtProductRepository extends JpaRepository<BoughtProduct, Long> {
-    Optional<BoughtProduct> findBoughtProductByUserAndProduct(User user, Product product);
+    Optional<BoughtProduct> findByUserAndProduct(User user, Product product);
 
-    Optional<BoughtProduct> findBoughtProductByUserIdAndProductId(Long userId, Long productId);
+    Optional<BoughtProduct> findByUserIdAndProductId(Long userId, Long productId);
 
-    List<BoughtProduct> findBoughtProductsByUserId(Long userId);
+    List<BoughtProduct> findAllByUserId(Long userId);
+
+    Optional<BoughtProduct> findByOrderId(Long orderId);
 }

@@ -4,14 +4,18 @@ import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.*;
+import com.rafaelteixeiraserafim.tcc.service.OrderService;
+import com.rafaelteixeiraserafim.tcc.utils.ProductUtils;
 import org.springframework.boot.CommandLineRunner;
-//import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 
 @Configuration
 public class AppConfig {
@@ -22,7 +26,7 @@ public class AppConfig {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(CategoryRepository categoryRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository) {
+    public CommandLineRunner commandLineRunner(CategoryRepository categoryRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderService orderService, BoughtProductRepository boughtProductRepository) {
         return args -> {
             if (categoryRepository.findAll().isEmpty()) {
                 Category category = new Category(
@@ -31,7 +35,7 @@ public class AppConfig {
                 );
                 categoryRepository.save(category);
 
-                Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(40), new BigDecimal(30), 4, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
+                Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(40), new BigDecimal(30), 5, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
                 productRepository.save(product);
 
                 ProductImage productImage1 = new ProductImage("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_1_92e411091a3aa9100c2035d02d45028c.jpg", product);
@@ -41,8 +45,7 @@ public class AppConfig {
                 productImageRepository.save(productImage1);
                 productImageRepository.save(productImage2);
                 productImageRepository.save(productImage3);
-            }
-            if (userRepository.findAll().isEmpty()) {
+
                 String adminPassword = "admin";
                 String encryptedAdminPassword = new BCryptPasswordEncoder().encode(adminPassword);
                 User admin = new User(
@@ -61,12 +64,31 @@ public class AppConfig {
                         UserRole.CLIENT
                 );
 
+                userRepository.save(admin);
                 userRepository.save(user);
 
                 Order order = new Order(user, OrderStatus.IN_PROGRESS);
 
                 orderRepository.save(order);
-                userRepository.save(admin);
+
+                OrderItem orderItem = new OrderItem(order, product, 2);
+                orderItemRepository.save(orderItem);
+
+                BoughtProduct boughtProduct = new BoughtProduct(user, order, product, orderItem, ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem.getQty())));
+                boughtProductRepository.save(boughtProduct);
+
+                Order order2 = orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68));
+
+
+                OrderItem orderItem2 = new OrderItem(order2, product, 1);
+                orderItemRepository.save(orderItem2);
+
+                BoughtProduct boughtProduct2 = new BoughtProduct(user, order2, product, orderItem2, ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem2.getQty())));
+                boughtProductRepository.save(boughtProduct2);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2024, Calendar.OCTOBER, 7, 18, 49, 23);
+                orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68), calendar.getTime());
             }
         };
     }

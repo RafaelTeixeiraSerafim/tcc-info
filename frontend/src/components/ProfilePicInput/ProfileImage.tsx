@@ -10,8 +10,8 @@ export default function ProfileImage({ previewImage }: ProfileImageProps) {
       src={previewImage as string}
       onError={() => console.log("Erro na profile picture")}
       sx={{
-        width: "8rem",
-        height: "8rem",
+        width: "10rem",
+        height: "10rem",
       }}
     />
   );

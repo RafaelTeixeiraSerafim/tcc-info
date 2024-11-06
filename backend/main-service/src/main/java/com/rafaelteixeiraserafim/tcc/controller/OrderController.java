@@ -6,12 +6,19 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.service.BoughtProductService;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
 import com.rafaelteixeiraserafim.tcc.service.UserService;
+import jakarta.validation.constraints.Min;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/orders")
+@Validated
 public class OrderController {
     private final OrderService orderService;
 
@@ -25,12 +32,12 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public Order getOrder(@PathVariable Long orderId) {
+    public Order getOrder(@PathVariable @Min(1) Long orderId) {
         return orderService.getOrderById(orderId);
     }
 
     @GetMapping("/user/{userId}")
-    public Order getOrderByUserId(@PathVariable Long userId) {
+    public Order getOrderByUserId(@PathVariable @Min(1) Long userId) {
         return orderService.getActiveOrder(userId);
     }
 
@@ -40,9 +47,16 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}")
-    public String updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderRequest orderRequest) {
+    public String updateOrderStatus(@PathVariable @Min(1) Long orderId, @RequestBody OrderRequest orderRequest) {
         orderService.updateOrderStatus(orderId, orderRequest.status());
 
-        return "Order updated successfully";
+        return "Order updated successfully"; // TODO: return a ResponseEntity with a corresponding status code
+    }
+
+    @GetMapping("/sales")
+    public ResponseEntity<?> getMonthlySales() {
+        List<BigDecimal> sales = orderService.getMonthlySales();
+
+        return ResponseEntity.status(HttpStatus.OK).body(sales);
     }
 }

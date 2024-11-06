@@ -28,13 +28,13 @@ public class Review {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "bought_product_id")
-    private BoughtProduct boughtProduct;
-    private float review;
+    @JoinColumn(name = "product_id")
+    private Product product;
+    private float rating;
     private String title;
     private String comment;
     @CreatedDate
-    @Column(updatable = false)
+//    @Column(updatable = false)
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;

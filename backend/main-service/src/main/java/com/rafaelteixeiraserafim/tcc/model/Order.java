@@ -2,11 +2,9 @@ package com.rafaelteixeiraserafim.tcc.model;
 
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,21 +14,27 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+@ToString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    private Long addressId;
+
+    private BigDecimal shippingFee;
+
     private Date datePlaced;
+
+    @NonNull
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
-    public Order(User user, OrderStatus status) {
-        this.user = user;
-        this.status = status;
-    }
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;

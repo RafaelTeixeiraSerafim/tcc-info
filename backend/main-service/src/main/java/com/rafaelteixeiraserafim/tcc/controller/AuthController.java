@@ -71,13 +71,18 @@ public class AuthController {
             if (Objects.equals(userRole.getRole(), role)) {
                 ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
                 User user = userService.getUserByEmailAndRole(data.email(), userRole);
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                        .body(user);
+
+                if (authService.isValidPassword(user.getPassword(), data.password())) {
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                            .body(user);
+                }
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .build();
             }
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PutMapping("/update")

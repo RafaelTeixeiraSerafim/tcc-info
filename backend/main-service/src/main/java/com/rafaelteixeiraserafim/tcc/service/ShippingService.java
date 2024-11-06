@@ -29,7 +29,7 @@ public class ShippingService {
     }
 
     public ShippingOptionsResponseDto calculateShipping(Long userId, String userPostalCode) {
-        List<OrderItem> orderItems = orderItemService.getOrderItemsByUserId(userId);
+        List<OrderItem> orderItems = orderItemService.getOrderItems(userId);
 
         List<ShippingOptionRequestProduct> shippingOptionRequestProducts = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {

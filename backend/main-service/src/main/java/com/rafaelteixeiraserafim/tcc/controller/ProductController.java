@@ -27,13 +27,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createProductRequest(@ModelAttribute @Valid ProductDto productDTO) {
-        Long productId = productService.createProductRequest(productDTO);
+    public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductDto productDTO) {
+        Product product = productService.createProductRequest(productDTO);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(productId)
+                .buildAndExpand(product.getId())
                 .toUri();
 
         return ResponseEntity.created(location).build();

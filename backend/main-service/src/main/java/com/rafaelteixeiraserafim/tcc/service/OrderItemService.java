@@ -30,11 +30,11 @@ public class OrderItemService {
 //        return orderItemRepository.findAll();
 //    }
 
-    public List<OrderItem> getOrderItemsByOrder(Order order) {
+    public List<OrderItem> getOrderItems(Order order) {
         return orderItemRepository.findOrderItemsByOrder(order);
     }
 
-    public List<OrderItemResponse> createOrderItemResponsesFromOrderItems(List<OrderItem> orderItems) {
+    public List<OrderItemResponse> createOrderItemResponses(List<OrderItem> orderItems) {
         List<OrderItemResponse> orderItemResponses = new ArrayList<>();
 
         for (OrderItem orderItem : orderItems) {
@@ -45,15 +45,15 @@ public class OrderItemService {
         return orderItemResponses;
     }
 
-    public List<OrderItem> getOrderItemsByUserId(Long userId) throws IllegalArgumentException {
+    public List<OrderItem> getOrderItems(Long userId) throws IllegalArgumentException {
         Order order = orderService.getActiveOrder(userId);
 
-        return this.getOrderItemsByOrder(order);
+        return this.getOrderItems(order);
     }
 
     @Transactional
     public OrderItem createOrderItem(OrderItemRequest orderItemRequest) throws IllegalArgumentException {
-        OrderItem orderItem = this.getOrderItemByUserIdAndProductId(orderItemRequest.userId(), orderItemRequest.productId());
+        OrderItem orderItem = this.getOrderItem(orderItemRequest.userId(), orderItemRequest.productId());
         Product product = productService.getProductById(orderItemRequest.productId());
         if (orderItem != null) {
             if (orderItem.getQty() + orderItemRequest.qty() > product.getStockQty()) {
@@ -87,7 +87,7 @@ public class OrderItemService {
         orderItemRepository.delete(optionalOrderItem.get());
     }
 
-    public OrderItem getOrderItemByUserIdAndProductId(Long userId, Long productId) {
+    public OrderItem getOrderItem(Long userId, Long productId) {
         Order order = orderService.getActiveOrder(userId);
         Product product = productService.getProductById(productId);
 

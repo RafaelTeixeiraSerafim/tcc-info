@@ -47,6 +47,7 @@ export default function LoginForm() {
           name="email"
           value={loginUser.email}
           onChange={handleChange}
+          required
         />
         <AuthForm.Input
           type="password"
@@ -54,6 +55,7 @@ export default function LoginForm() {
           name="password"
           value={loginUser.password}
           onChange={handleChange}
+          required
         />
       </AuthForm.Content>
       <AuthForm.Actions>

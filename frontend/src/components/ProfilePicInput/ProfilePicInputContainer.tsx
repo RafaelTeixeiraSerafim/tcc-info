@@ -1,14 +1,16 @@
 import { Box, alpha } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 interface ProfilePicInputContainerProps {
   children: React.ReactNode;
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
+  style?: CSSProperties;
 }
 
 export default function ProfilePicInputContainer({
   children,
   onClick,
+  style
 }: ProfilePicInputContainerProps) {
   return (
     <Box
@@ -17,9 +19,9 @@ export default function ProfilePicInputContainer({
         return {
           position: "relative",
           overflow: "visible",
-          border: "1px solid",
-          marginTop: "1.5rem",
-          borderColor:
+          // border: "1px solid",
+          outline: "1px solid",
+          outlineColor:
             theme.palette.mode === "dark"
               ? alpha("#fff", 0.2)
               : alpha("#000", 0.2),
@@ -27,13 +29,14 @@ export default function ProfilePicInputContainer({
           display: "inline-block",
           textAlign: "center",
           cursor: "pointer",
-          width: "8.125rem",
-          height: "8.125rem",
+          width: "10rem",
+          height: "10rem",
           zIndex: 10,
           ":hover": {
-            borderColor: theme.palette.mode === "dark" ? "#fff" : "#000",
+            outlineColor: theme.palette.mode === "dark" ? "#fff" : "#000",
             color: theme.palette.mode === "dark" ? "#fff" : "#000",
           },
+          ...style
         };
       }}
     >

@@ -36,7 +36,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     @CreatedDate
-    @Column(updatable = false)
+//    @Column(updatable = false)
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;

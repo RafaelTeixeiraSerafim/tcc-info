@@ -1,13 +1,12 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AddressList from "../../components/AddressList";
 import AddressModal from "../../components/AddressModal";
 import CartSubtotal from "../../components/CartSubtotal";
-import CartTotal from "../../components/CartTotal";
 import { useUserContext } from "../../hooks";
 import useAddressContext from "../../hooks/useAddressContext";
 import { IAddress } from "../../interfaces";
-import { useNavigate } from "react-router-dom";
 
 export default function AddressOptions() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,7 +77,6 @@ export default function AddressOptions() {
         </Box>
         <Box>
           <CartSubtotal />
-          <CartTotal />
         </Box>
         <Button
           variant="contained"

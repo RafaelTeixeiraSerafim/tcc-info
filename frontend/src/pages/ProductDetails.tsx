@@ -1,19 +1,13 @@
-import {
-  Box,
-  FormControl,
-  SelectChangeEvent,
-  Typography
-} from "@mui/material";
+import { Box, FormControl, SelectChangeEvent, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import AddToCartButton from "../components/AddToCartButton";
 import PriceDisplay from "../components/PriceDisplay";
 import ProductImagesDisplay from "../components/ProductImagesDisplay/ProductImagesDisplay";
+import { Reviews } from "../components/Reviews";
 import SelectProductQty from "../components/SelectProductQty";
-import axiosInstance from "../config/axiosInstance";
-import { useUserContext } from "../hooks";
-import { IBoughtProduct, IProduct } from "../interfaces";
+import { IProduct } from "../interfaces";
 import { fetchProduct } from "../service/api";
 
 export default function ProductDetails() {
@@ -21,12 +15,8 @@ export default function ProductDetails() {
 
   const [product, setProduct] = useState<IProduct | null>(productState || null);
   const [qty, setQty] = useState<number>(1);
-  const [boughtProduct, setBoughtProduct] = useState<IBoughtProduct | null>(
-    null
-  );
+  
   const { productId } = useParams();
-
-  const { user } = useUserContext();
 
   const getProduct = async (productId: number) => {
     try {
@@ -35,18 +25,6 @@ export default function ProductDetails() {
     } catch (error) {
       alert(`Erro ao pegar o produto: ${(error as AxiosError).message}`);
     }
-  };
-
-  const getBoughtProduct = (userId: number, productId: number) => {
-    axiosInstance
-      .get(`/bought-products?userId=${userId}&&productId=${productId}`)
-      .then((response) => {
-        console.log(response);
-        setBoughtProduct(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   };
 
   const handleQtyChange = (e: SelectChangeEvent<number>) => {
@@ -58,11 +36,6 @@ export default function ProductDetails() {
 
     getProduct(parseInt(productId));
   }, [productId]);
-
-  useEffect(() => {
-    if (!product || !user) return;
-    getBoughtProduct(product.id, user.id);
-  }, [product, user]);
 
   return (
     <>
@@ -130,6 +103,7 @@ export default function ProductDetails() {
             <Typography>{product.description}</Typography>
             <Box sx={{ height: "3rem" }} />
           </Box>
+          <Reviews productId={product.id} />
         </Box>
       )}
     </>

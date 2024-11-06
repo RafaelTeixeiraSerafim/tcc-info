@@ -1,19 +1,19 @@
-import Box from "@mui/material/Box";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Box from "@mui/material/Box";
 // import BarChartIcon from "@mui/icons-material/BarChart";
 // import DescriptionIcon from "@mui/icons-material/Description";
 // import LayersIcon from "@mui/icons-material/Layers";
 import CategoryIcon from "@mui/icons-material/Category";
+import GroupIcon from "@mui/icons-material/Group";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import type { Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import type { Navigation } from "@toolpad/core";
-import Logo from "../assets/images/logo.png";
 import { Outlet } from "react-router-dom";
-import GroupIcon from "@mui/icons-material/Group";
-import { dashboardTheme } from "../themes";
+import Logo from "../assets/images/logo.png";
 import useDashboardLayout from "../hooks/useDashboardLayout";
+import { dashboardTheme } from "../themes";
 
 const NAVIGATION: Navigation = [
   {

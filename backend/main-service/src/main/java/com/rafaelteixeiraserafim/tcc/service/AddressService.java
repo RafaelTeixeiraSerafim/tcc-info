@@ -52,10 +52,9 @@ public class AddressService {
         );
     }
 
-    public static void validatePostalCode(String postalCode) throws ResponseStatusException {
+    public static void validatePostalCode(String postalCode) throws IllegalArgumentException {
         if (postalCode.length() != 8 || !postalCode.chars().allMatch(Character::isDigit)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
+            throw new IllegalArgumentException(
                     "Invalid postal code format. Postal code needs to have exactly 8 numeric digits."
             );
         }

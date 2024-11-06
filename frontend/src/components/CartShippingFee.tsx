@@ -8,9 +8,9 @@ export default function CartShippingFee({ ...restProps }: TypographyProps) {
   return (
     <Typography variant="h6" {...restProps}>
       Frete:{" "}
-      {formatCurrency(
-        selectedShippingOption ? parseFloat(selectedShippingOption.price) : 0
-      ) || "-"}
+      {selectedShippingOption
+        ? formatCurrency(parseFloat(selectedShippingOption.price))
+        : "-"}
     </Typography>
   );
 }

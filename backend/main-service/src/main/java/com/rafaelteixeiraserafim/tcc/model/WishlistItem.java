@@ -30,6 +30,6 @@ public class WishlistItem {
     @JoinColumn(name = "product_id")
     private Product product;
     @CreatedDate
-    @Column(updatable = false)
+//    @Column(updatable = false)
     private Date createdAt;
 }

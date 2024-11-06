@@ -40,7 +40,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User getUserByEmailAndRole(String email, UserRole role) {
+    public User getUserByEmailAndRole(String email, UserRole role) throws IllegalArgumentException {
         Optional<User> optionalUser = userRepository.findByEmailAndRole(email, role);
 
         if (optionalUser.isEmpty()) {

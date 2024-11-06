@@ -35,9 +35,9 @@ public class OrderItemController {
     public ResponseEntity<?> getOrderItemsByUserId(@PathVariable @Min(1) Long userId) {
         try {
             Order order = orderService.getOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
-            List<OrderItem> orderItems = orderItemService.getOrderItemsByOrder(order);
+            List<OrderItem> orderItems = orderItemService.getOrderItems(order);
 
-            return ResponseEntity.ok(orderItemService.createOrderItemResponsesFromOrderItems(orderItems));
+            return ResponseEntity.ok(orderItemService.createOrderItemResponses(orderItems));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

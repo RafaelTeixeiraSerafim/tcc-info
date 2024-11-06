@@ -8,19 +8,19 @@ import ProfilePicInputContainer from "./ProfilePicInputContainer";
 import ProfileImageLabel from "./ProfileImageLabel";
 
 interface ProfilePicInputProps {
-  label: string;
   name: string;
   setUser: React.Dispatch<React.SetStateAction<IUpdateUser>>;
   defaultImage: string;
   required?: boolean;
+  label?: string;
 }
 
 export default function ProfilePicInput({
-  label,
   name,
   setUser,
   defaultImage,
   required,
+  label,
 }: ProfilePicInputProps) {
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
     defaultImage || null
@@ -67,8 +67,11 @@ export default function ProfilePicInput({
   useEffect(() => setPreviewImage(defaultImage), [defaultImage]);
 
   return (
-    <ProfilePicInputContainer onClick={handleOpen}>
-      <ProfileImageLabel label={label} />
+    <ProfilePicInputContainer
+      onClick={handleOpen}
+      style={label ? { marginTop: "1.5rem" } : {}}
+    >
+      {label && <ProfileImageLabel label={label} />}
       {previewImage ? (
         <ProfileImage previewImage={previewImage} />
       ) : (

@@ -116,4 +116,8 @@ public class AuthService implements UserDetailsService {
 
         return user;
     }
+
+    public boolean isValidPassword(String passwordHash, String password) {
+        return new BCryptPasswordEncoder().matches(password, passwordHash);
+    }
 }

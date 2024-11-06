@@ -66,7 +66,7 @@ public class Product {
 
     @NotNull
     @CreatedDate
-    @Column(updatable = false)
+//    @Column(updatable = false)
     private Date createdAt;
 
     @NotNull

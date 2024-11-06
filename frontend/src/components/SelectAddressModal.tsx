@@ -49,9 +49,12 @@ export default function SelectAddressModal({
     setIsOpen(false);
   };
 
-  const handleUseIncompletePostal = () => {
+  const handleUseIncompletePostal = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     clearSelectedAddress();
-    localStorage.removeItem("selectedAddressId");
+    localStorage.removeItem("addressId");
     localStorage.setItem("postalCode", formAddress.postalCode);
     updateFunction();
     setIsOpen(false);
@@ -102,24 +105,51 @@ export default function SelectAddressModal({
         onUpdate={handleUpdate}
       />
       <Form onSubmit={handleSave}>
-        <Box>
-          <PostalCodeInput
-            postalCode={formAddress.postalCode}
-            setAddress={setFormAddress}
-          />
-          <Button
-            onClick={handleUseIncompletePostal}
-            variant="outlined"
-            disabled={!formAddress.state}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.75rem",
+          }}
+        >
+          <Typography fontWeight={"bold"}>Outro lugar</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "1rem",
+              alignItems: "center",
+            }}
           >
-            Usar
-          </Button>
+            <PostalCodeInput
+              postalCode={formAddress.postalCode}
+              setAddress={setFormAddress}
+            />
+            <Button
+              onClick={(e) => handleUseIncompletePostal(e)}
+              variant="outlined"
+              disabled={!formAddress.state}
+              sx={{
+                height: "fit-content",
+              }}
+            >
+              Usar
+            </Button>
+          </Box>
+          {formAddress.street && (
+            <Box>
+              <Typography>
+                {formAddress.street}- {formAddress.neighbourhood}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                {formAddress.city}, {formAddress.state} -{" "}
+                {formAddress.postalCode}
+              </Typography>
+            </Box>
+          )}
+          <Form.Action handleClick={handleNewAddress}>
+            Adicionar endereço completo
+          </Form.Action>
         </Box>
-        <Typography>{formAddress.street}</Typography>
-        <Typography>{formAddress.city}</Typography>
-        <Form.Action handleClick={handleNewAddress}>
-          Adicionar endereço completo
-        </Form.Action>
         <Form.Actions>
           <Modal.CancelButton />
           <Form.SubmitButton>Salvar</Form.SubmitButton>

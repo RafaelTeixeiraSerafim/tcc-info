@@ -181,3 +181,21 @@ export interface IShippingOption {
   price: string;
   deliveryTime: number;
 }
+
+export interface IReview {
+  id: number;
+  user: IUser;
+  product: IProduct;
+  rating: number;
+  title: string;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IFormReview {
+  userId: number;
+  rating: number;
+  title: string;
+  comment: string;
+}

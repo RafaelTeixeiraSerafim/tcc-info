@@ -4,6 +4,7 @@ import {
   IAddress,
   IFormAddress,
   IFormCategory,
+  IFormReview,
   IOrderItem,
   IRequestOrderItem,
   IShippingOptions,
@@ -355,12 +356,72 @@ export const createPreference = async (
   shippingFee: number
 ) => {
   try {
+    const response = await axiosInstance.post(`/payments/preferences`, {
+      userId,
+      addressId,
+      shippingFee,
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchReviews = async (productId: number) => {
+  try {
+    const response = await axiosInstance.get(`/products/${productId}/reviews`);
+    console.log(response);
+    return response.data.reviews;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createReview = async (review: IFormReview, productId: number) => {
+  try {
     const response = await axiosInstance.post(
-      `/payments/preferences`, {
-        userId,
-        addressId,
-        shippingFee
-      }
+      `/products/${productId}/reviews`,
+      review
+    );
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateReview = async (reviewId: number, review: IFormReview) => {
+  try {
+    const response = await axiosInstance.put(
+      `/products/reviews/${reviewId}`,
+      review
+    );
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteReview = async (reviewId: number) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/products/reviews/${reviewId}`
+    );
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchBoughtProduct = async (productId: number, userId: number) => {
+  try {
+    const response = await axiosInstance.get(
+      `/bought-products?userId=${userId}&&productId=${productId}`
     );
     console.log(response);
     return response.data;

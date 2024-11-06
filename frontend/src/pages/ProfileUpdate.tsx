@@ -71,7 +71,6 @@ export default function ProfileUpdate() {
           <Form onSubmit={handleSubmit}>
             <Form.Title>Alterar Perfil</Form.Title>
             <ProfilePicInput
-              label="Perfil"
               defaultImage={user.profilePic}
               name="profilePic"
               setUser={setFormUpdateUser}
