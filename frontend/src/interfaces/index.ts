@@ -116,11 +116,6 @@ export interface IRequestOrderItem {
   qty: number;
 }
 
-export interface IBoughtProduct {
-  id: number;
-  createdAt: string;
-}
-
 export interface IOrderTableRow {
   id: number;
   status: string;

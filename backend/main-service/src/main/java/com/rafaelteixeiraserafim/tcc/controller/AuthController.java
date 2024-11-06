@@ -70,7 +70,7 @@ public class AuthController {
         for (UserRole userRole : UserRole.values()) {
             if (Objects.equals(userRole.getRole(), role)) {
                 ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
-                User user = userService.getUserByEmailAndRole(data.email(), userRole);
+                User user = userService.getUser(data.email(), userRole);
 
                 if (authService.isValidPassword(user.getPassword(), data.password())) {
                     return ResponseEntity.ok()
@@ -100,7 +100,7 @@ public class AuthController {
         String token = securityFilter.recoverToken(request);
         if (token != null) {
             String email = tokenProvider.validateToken(token);
-            User user = userService.getUserByEmail(email);
+            User user = userService.getUser(email);
             if (user != null) {
                 return ResponseEntity.ok(user);
             }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @Validated
 @RestController
@@ -35,9 +34,8 @@ public class OrderItemController {
     public ResponseEntity<?> getOrderItemsByUserId(@PathVariable @Min(1) Long userId) {
         try {
             Order order = orderService.getOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
-            List<OrderItem> orderItems = orderItemService.getOrderItems(order);
 
-            return ResponseEntity.ok(orderItemService.createOrderItemResponses(orderItems));
+            return ResponseEntity.ok(orderItemService.createOrderItemResponses(order.getOrderItems()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

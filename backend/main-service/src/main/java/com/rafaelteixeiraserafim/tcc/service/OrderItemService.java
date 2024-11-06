@@ -7,12 +7,13 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.repository.OrderItemRepository;
+import com.rafaelteixeiraserafim.tcc.utils.ProductUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderItemService {
@@ -24,14 +25,6 @@ public class OrderItemService {
         this.orderItemRepository = orderItemRepository;
         this.orderService = orderService;
         this.productService = productService;
-    }
-
-    //    public List<OrderItem> getOrderItems() {
-//        return orderItemRepository.findAll();
-//    }
-
-    public List<OrderItem> getOrderItems(Order order) {
-        return orderItemRepository.findOrderItemsByOrder(order);
     }
 
     public List<OrderItemResponse> createOrderItemResponses(List<OrderItem> orderItems) {
@@ -48,13 +41,13 @@ public class OrderItemService {
     public List<OrderItem> getOrderItems(Long userId) throws IllegalArgumentException {
         Order order = orderService.getActiveOrder(userId);
 
-        return this.getOrderItems(order);
+        return order.getOrderItems();
     }
 
     @Transactional
     public OrderItem createOrderItem(OrderItemRequest orderItemRequest) throws IllegalArgumentException {
         OrderItem orderItem = this.getOrderItem(orderItemRequest.userId(), orderItemRequest.productId());
-        Product product = productService.getProductById(orderItemRequest.productId());
+        Product product = productService.getProduct(orderItemRequest.productId());
         if (orderItem != null) {
             if (orderItem.getQty() + orderItemRequest.qty() > product.getStockQty()) {
                 throw new IllegalArgumentException("OrderItem qty is greater than product stock");
@@ -76,24 +69,42 @@ public class OrderItemService {
     }
 
     public void deleteOrderItem(Long orderItemId) {
-        Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(orderItemId);
+        OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
 
-        if (optionalOrderItem.isEmpty()) {
-            System.out.println("Error 0_0");
-            throw new IllegalArgumentException("OrderItem not found");
-        }
-
-        System.out.println("Deleting yay!");
-        orderItemRepository.delete(optionalOrderItem.get());
+        orderItemRepository.delete(orderItem);
     }
 
     public OrderItem getOrderItem(Long userId, Long productId) {
         Order order = orderService.getActiveOrder(userId);
-        Product product = productService.getProductById(productId);
+        Product product = productService.getProduct(productId);
 
-        Optional<OrderItem> optionalOrderItem = orderItemRepository.findByOrderAndProduct(order, product);
+        return orderItemRepository.findByOrderAndProduct(order, product).orElseThrow(() -> new IllegalArgumentException("OrderItem not found"));
+    }
 
-        return optionalOrderItem.orElse(null);
+    public void createPrices(List<OrderItem> orderItems) {
+        for (OrderItem orderItem : orderItems) {
+            Product product = orderItem.getProduct();
+            orderItem.setPrice(ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem.getQty())));
+        }
+    }
 
+    public List<OrderItem> getNonInProgressOrderItems() {
+        List<Order> orders = orderService.getNonInProgressOrders();
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (Order order : orders) {
+            orderItems.addAll(order.getOrderItems());
+        }
+
+        return orderItems;
+    }
+
+    public List<OrderItem> getNonInProgressOrderItems(Long userId) {
+        List<Order> orders = orderService.getNonInProgressOrders(userId);
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (Order order : orders) {
+            orderItems.addAll(order.getOrderItems());
+        }
+
+        return orderItems;
     }
 }

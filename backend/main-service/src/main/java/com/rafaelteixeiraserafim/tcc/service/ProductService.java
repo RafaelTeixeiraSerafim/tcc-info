@@ -4,8 +4,8 @@ import com.rafaelteixeiraserafim.tcc.dto.ImageDto;
 import com.rafaelteixeiraserafim.tcc.dto.ProductDto;
 import com.rafaelteixeiraserafim.tcc.model.Category;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
-import com.rafaelteixeiraserafim.tcc.model.ProductImage;
 import com.rafaelteixeiraserafim.tcc.model.Product;
+import com.rafaelteixeiraserafim.tcc.model.ProductImage;
 import com.rafaelteixeiraserafim.tcc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(Long productId) {
+    public Product getProduct(Long productId) {
         Optional<Product> product = productRepository.findById(productId);
 
         if (product.isEmpty()) {
@@ -44,7 +44,7 @@ public class ProductService {
         return product.get();
     }
 
-    public void deleteProductById(Long productId) {
+    public void deleteProduct(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
         if (optionalProduct.isEmpty()) {
@@ -83,13 +83,13 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProductById(Long productId, ProductDto productDTO) {
-        Product product = getProductById(productId);
+    public Product updateProduct(Long productId, ProductDto productDTO) {
+        Product product = getProduct(productId);
         populateProductFromDto(productDTO, product);
 
         List<ImageDto> images = productDTO.getImages();
 
-        if (images == null) return;
+        if (images == null) return productRepository.save(product);
 
         Instant currentTimestamp = Instant.now();
         for (int i = 0; i < images.size(); i++) {
@@ -106,10 +106,12 @@ public class ProductService {
                 productImageService.handleUpdateImage(imageUrl, imageFile);
             }
         }
+
+        return productRepository.save(product);
     }
 
     private Product populateProductFromDto(ProductDto productDTO, Product product) {
-        Category category = categoryService.getCategoryById(productDTO.getCategoryId());
+        Category category = categoryService.getCategory(productDTO.getCategoryId());
 
         product.setName(productDTO.getName());
         product.setAbout(productDTO.getAbout());
@@ -128,7 +130,7 @@ public class ProductService {
 
     public void deleteProductsById(List<Long> productIds) {
         for (Long productId : productIds) {
-            deleteProductById(productId);
+            deleteProduct(productId);
         }
     }
 

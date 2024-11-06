@@ -3,7 +3,6 @@ package com.rafaelteixeiraserafim.tcc.service;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
-import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final BoughtProductService boughtProductService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, UserService userService, ProductService productService, BoughtProductService boughtProductService) {
+    public OrderService(OrderRepository orderRepository, UserService userService, ProductService productService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.productService = productService;
-        this.boughtProductService = boughtProductService;
     }
 
     public Order createOrder(Order order) {
@@ -58,10 +55,11 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateOrderStatus(Long orderId, OrderStatus status) {
+    public Order updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = this.getOrderById(orderId);
 
         order.setStatus(status);
+        return orderRepository.save(order);
     }
 
     public void updateOrder(Order order, OrderStatus status, Date datePlaced, Long addressId, BigDecimal shippingFee) {
@@ -101,7 +99,7 @@ public class OrderService {
 
     @Transactional
     public Order checkoutOrder(Long userId, Long addressId, BigDecimal shippingFee) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         Order order = getActiveOrder(userId);
         productService.updateStockQtys(order.getOrderItems());
         updateOrder(order, OrderStatus.PENDING, Date.from(Instant.now()), addressId, shippingFee);
@@ -110,7 +108,7 @@ public class OrderService {
 
     @Transactional
     public Order checkoutOrder(Long userId, Long addressId, BigDecimal shippingFee, Date datePlaced) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         Order order = getActiveOrder(userId);
         productService.updateStockQtys(order.getOrderItems());
         updateOrder(order, OrderStatus.PENDING, datePlaced, addressId, shippingFee);
@@ -149,50 +147,6 @@ public class OrderService {
             total = BigDecimal.ZERO;
             monthIdx++;
         }
-//        for (Order order : orders) {
-//            LocalDate localDate = order.getDatePlaced().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//            while (months[i] != localDate.getMonth()) {
-//                sales.add(total);
-//                total = BigDecimal.ZERO;
-//                i++;
-//            }
-//            total = total.add(getOrderTotal(order));
-//        }
-
-//        Map<String, Map<String, Object>> map = new HashMap<>();
-//        for (Order order : orders) {
-//            System.out.println(order);
-//            System.out.println(order.getDatePlaced());
-//            LocalDate localDate = order.getDatePlaced().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//            System.out.println(localDate);
-//            Month month = localDate.getMonth();
-//            System.out.println(month);
-//            if (map.containsKey(month.toString())) {
-//                System.out.println("Contains");
-//                Map<String, Object> value = map.get(month.toString());
-//                List<Order> sales = (List<Order>) value.get("sales");
-//                System.out.println(sales);
-//                sales.add(order);
-//                value.put("sales", sales);
-//                map.put(month.toString(), value);
-//            } else {
-//                System.out.println("Doesn't contain");
-//                List<Order> sales = List.of(order);
-//                map.put(month.toString(), Map.of("sales", sales, "total", BigDecimal.valueOf(0)));
-//            }
-//        }
-
-//        for (Map<String, Object> value : map.values()) {
-//            List<Order> sales = (List<Order>) value.get("sales");
-//            System.out.println(sales);
-//            BigDecimal total = new BigDecimal(0);
-//            for (Order order : sales) {
-//                System.out.println(order);
-//                total = total.add(getOrderTotal(order));
-//            }
-//            System.out.println(total);
-//            value.put("total", total);
-//        }
 
         return sales;
     }
@@ -201,14 +155,17 @@ public class OrderService {
         BigDecimal total = order.getShippingFee();
         for (OrderItem orderItem : order.getOrderItems()) {
             total = total.add(
-                    boughtProductService.getBoughtProductByOrderId(orderItem.getId())
-                            .getPrice()
+                    orderItem.getPrice()
             );
         }
         return total;
     }
 
-    private List<Order> getNonInProgressOrders() {
+    public List<Order> getNonInProgressOrders() {
         return orderRepository.findByStatusIsNot(OrderStatus.IN_PROGRESS);
+    }
+
+    public List<Order> getNonInProgressOrders(Long userId) {
+        return orderRepository.findByStatusIsNotAndUserId(OrderStatus.IN_PROGRESS, userId);
     }
 }

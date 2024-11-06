@@ -13,9 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Calendar;
-import java.util.Date;
 
 @Configuration
 public class AppConfig {
@@ -26,7 +24,7 @@ public class AppConfig {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(CategoryRepository categoryRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderService orderService, BoughtProductRepository boughtProductRepository) {
+    public CommandLineRunner commandLineRunner(CategoryRepository categoryRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderService orderService) {
         return args -> {
             if (categoryRepository.findAll().isEmpty()) {
                 Category category = new Category(
@@ -71,20 +69,14 @@ public class AppConfig {
 
                 orderRepository.save(order);
 
-                OrderItem orderItem = new OrderItem(order, product, 2);
+                OrderItem orderItem = new OrderItem(order, product, 2, ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(2)));
                 orderItemRepository.save(orderItem);
 
-                BoughtProduct boughtProduct = new BoughtProduct(user, order, product, orderItem, ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem.getQty())));
-                boughtProductRepository.save(boughtProduct);
 
                 Order order2 = orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68));
 
-
-                OrderItem orderItem2 = new OrderItem(order2, product, 1);
+                OrderItem orderItem2 = new OrderItem(order2, product, 1,ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(1)));
                 orderItemRepository.save(orderItem2);
-
-                BoughtProduct boughtProduct2 = new BoughtProduct(user, order2, product, orderItem2, ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem2.getQty())));
-                boughtProductRepository.save(boughtProduct2);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(2024, Calendar.OCTOBER, 7, 18, 49, 23);

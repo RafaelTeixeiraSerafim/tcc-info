@@ -23,22 +23,20 @@ public class PaymentController {
     private final UserService userService;
     private final AddressService addressService;
     private final OrderService orderService;
-    private final BoughtProductService boughtProductService;
     private final OrderItemService orderItemService;
 
     @Autowired
-    public PaymentController(PaymentService paymentService, UserService userService, AddressService addressService, OrderService orderService, BoughtProductService boughtProductService, OrderItemService orderItemService) {
+    public PaymentController(PaymentService paymentService, UserService userService, AddressService addressService, OrderService orderService, OrderItemService orderItemService) {
         this.paymentService = paymentService;
         this.userService = userService;
         this.addressService = addressService;
         this.orderService = orderService;
-        this.boughtProductService = boughtProductService;
         this.orderItemService = orderItemService;
     }
 
     @PostMapping("/preferences")
     public ResponseEntity<String> createPreference(@RequestBody PreferenceDto preferenceDto) {
-        User user = userService.getUserById(preferenceDto.userId());
+        User user = userService.getUser(preferenceDto.userId());
         AddressDto address = addressService.getAddress(preferenceDto.addressId());
         String preferenceId = paymentService.createPreference(user, address, preferenceDto.shippingFee());
         return ResponseEntity.ok(preferenceId);
@@ -60,7 +58,7 @@ public class PaymentController {
                 Long addressId = (long) Double.parseDouble(payment.getMetadata().get("address_id").toString());
                 BigDecimal shippingFee = BigDecimal.valueOf(Double.parseDouble(payment.getMetadata().get("user_id").toString()));
 
-                boughtProductService.createBoughtProducts(orderItemService.getOrderItems(userId));
+                orderItemService.createPrices(orderItemService.getOrderItems(userId));
                 orderService.checkoutOrder(userId, addressId, shippingFee);
             }
         }

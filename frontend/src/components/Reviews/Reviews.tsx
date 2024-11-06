@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../hooks";
-import { IBoughtProduct, IReview } from "../../interfaces";
+import { IProduct, IReview } from "../../interfaces";
 import {
   deleteReview,
   fetchBoughtProduct,
@@ -19,7 +19,7 @@ export default function Reviews({ productId }: ReviewsProps) {
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [userReview, setUserReview] = useState<IReview | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [boughtProduct, setBoughtProduct] = useState<IBoughtProduct | null>(
+  const [boughtProduct, setBoughtProduct] = useState<IProduct | null>(
     null
   );
 

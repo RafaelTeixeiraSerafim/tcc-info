@@ -43,7 +43,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userService.getUserByEmail(email);
+        return userService.getUser(email);
     }
 
     public User signUpByRole(SignUpDto data, UserRole userRole) throws ResponseStatusException {
@@ -80,7 +80,7 @@ public class AuthService implements UserDetailsService {
     public User updateUser(@Valid UpdateUserDto updateUserDto) {
         String contextEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(contextEmail);
-        User user = userService.getUserByEmail(contextEmail);
+        User user = userService.getUser(contextEmail);
 
         System.out.println(updateUserDto.getEmail());
         Optional<User> existingUser = userRepository.findByEmail(updateUserDto.getEmail());
@@ -114,7 +114,7 @@ public class AuthService implements UserDetailsService {
             user.setProfilePic(s3Service.getImageUrl(key));
         }
 
-        return user;
+        return userRepository.save(user);
     }
 
     public boolean isValidPassword(String passwordHash, String password) {

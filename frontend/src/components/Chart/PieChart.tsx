@@ -33,7 +33,7 @@ const PieChart = ({ style }: PieChartProps) => {
     const getMostBoughtProducts = async () => {
       try {
         const response = await axiosInstance.get(
-          "/bought-products/most-bought"
+          "/products/most-bought"
         );
         console.log(response);
         setMostBoughtProducts(response.data.mostBoughtProducts);

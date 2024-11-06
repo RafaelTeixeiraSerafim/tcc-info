@@ -18,10 +18,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //    public List<User> getUsers() {
-//        return userRepository.findAll();
-//    }
-
     public List<User> getClients() {
         return userRepository.findByRole(UserRole.CLIENT);
     }
@@ -30,7 +26,7 @@ public class UserService {
         return userRepository.findByRole(UserRole.ADMIN);
     }
 
-    public User getUserByEmail(String email) {
+    public User getUser(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
         if (optionalUser.isEmpty()) {
@@ -40,7 +36,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User getUserByEmailAndRole(String email, UserRole role) throws IllegalArgumentException {
+    public User getUser(String email, UserRole role) throws IllegalArgumentException {
         Optional<User> optionalUser = userRepository.findByEmailAndRole(email, role);
 
         if (optionalUser.isEmpty()) {
@@ -50,7 +46,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User getUserById(Long userId) {
+    public User getUser(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
 
         if (optionalUser.isEmpty()) {

@@ -22,7 +22,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category getCategoryById(Long categoryId) {
+    public Category getCategory(Long categoryId) {
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
         if (categoryOptional.isEmpty()) {
@@ -37,22 +37,22 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category updateCategoryById(Long categoryId, Category category) {
-        Category origCategory = this.getCategoryById(categoryId);
+    public Category updateCategory(Long categoryId, Category category) {
+        Category origCategory = this.getCategory(categoryId);
 
         origCategory.setName(category.getName());
         origCategory.setDescription(category.getDescription());
 
-        return origCategory;
+        return categoryRepository.save(origCategory);
     }
 
-    public void deleteCategoryById(Long categoryId) {
+    public void deleteCategory(Long categoryId) {
         categoryRepository.deleteById(categoryId);
     }
 
     public void deleteCategoriesById(List<Long> categoryIds) {
         for (Long categoryId : categoryIds) {
-            deleteCategoryById(categoryId);
+            deleteCategory(categoryId);
         }
     }
 }
