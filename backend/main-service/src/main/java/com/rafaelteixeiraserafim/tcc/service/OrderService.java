@@ -201,7 +201,7 @@ public class OrderService {
         BigDecimal total = order.getShippingFee();
         for (OrderItem orderItem : order.getOrderItems()) {
             total = total.add(
-                    boughtProductService.getBoughtProduct(orderItem.getId())
+                    boughtProductService.getBoughtProductByOrderId(orderItem.getId())
                             .getPrice()
             );
         }
