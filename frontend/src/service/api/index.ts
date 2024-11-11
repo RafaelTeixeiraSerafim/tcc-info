@@ -5,10 +5,10 @@ import {
   IFormAddress,
   IFormCategory,
   IFormReview,
-  IOrderItem,
+  IOrderResponse,
   IRequestOrderItem,
   IShippingOptions,
-  ISignupUser,
+  ISignupUser
 } from "../../interfaces";
 
 export const checkToken = async () => {
@@ -56,11 +56,11 @@ export const deleteCartItem = async (cartItemId: number) => {
 
 export const fetchCartItems = async (userId: number) => {
   try {
-    const response = await axiosInstance.get<IOrderItem[]>(
-      `/order-items/${userId}`
+    const response = await axiosInstance.get<IOrderResponse>(
+      `/users/${userId}/orders/active`
     );
     console.log(response);
-    return response.data;
+    return response.data.orderItems;
   } catch (error) {
     console.error(error);
     throw error;
@@ -69,7 +69,7 @@ export const fetchCartItems = async (userId: number) => {
 
 export const fetchOrder = async (userId: number) => {
   try {
-    const response = await axiosInstance.get(`/orders/user/${userId}`);
+    const response = await axiosInstance.get(`/users/${userId}/orders/active`);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -247,6 +247,17 @@ export const updateCategory = async (
       `/categories/${categoryId}`,
       category
     );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchProducts = async () => {
+  try {
+    const response = await axiosInstance.get(`/products`);
     console.log(response);
     return response.data;
   } catch (error) {

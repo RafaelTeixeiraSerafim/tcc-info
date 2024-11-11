@@ -10,6 +10,7 @@ import {
 } from "../../service/api";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
+import TitleUnderline from "../TitleUnderline";
 
 interface ReviewsProps {
   productId: number;
@@ -19,9 +20,7 @@ export default function Reviews({ productId }: ReviewsProps) {
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [userReview, setUserReview] = useState<IReview | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [boughtProduct, setBoughtProduct] = useState<IProduct | null>(
-    null
-  );
+  const [boughtProduct, setBoughtProduct] = useState<IProduct | null>(null);
 
   const hasBoughtProduct = Boolean(boughtProduct);
 
@@ -85,34 +84,37 @@ export default function Reviews({ productId }: ReviewsProps) {
   return (
     <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
         marginBottom: "5rem",
       }}
     >
-      <Typography component={"span"} variant="h3" sx={{ fontWeight: "bold" }}>
-        Análises
-      </Typography>
-      <hr
-        style={{
-          color: "#d3d3d3",
-          marginBottom: "1.5rem",
-          height: 1,
-          width: "100%",
-        }}
-      ></hr>
-      {hasBoughtProduct && (!userReview || isUpdating) && (
-        <ReviewForm
-          productId={productId}
-          onUpdate={handleFormUpdate}
-          origReview={userReview || undefined}
-          onCancel={() => setIsUpdating(false)}
+      <Box>
+        <Typography component={"span"} variant="h3" sx={{ fontWeight: "bold" }}>
+          Análises
+        </Typography>
+        <TitleUnderline />
+      </Box>
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1.5rem"
+      }}>
+        {hasBoughtProduct && (!userReview || isUpdating) && (
+          <ReviewForm
+            productId={productId}
+            onUpdate={handleFormUpdate}
+            origReview={userReview || undefined}
+            onCancel={() => setIsUpdating(false)}
+          />
+        )}
+        <ReviewList
+          reviews={reviews}
+          userReview={userReview || undefined}
+          onDelete={handleDeleteUserReview}
+          onUpdate={handleUpdateUserReview}
         />
-      )}
-      <ReviewList
-        reviews={reviews}
-        userReview={userReview || undefined}
-        onDelete={handleDeleteUserReview}
-        onUpdate={handleUpdateUserReview}
-      />
+      </Box>
     </Box>
   );
 }

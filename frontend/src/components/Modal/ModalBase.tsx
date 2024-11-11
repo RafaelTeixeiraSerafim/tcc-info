@@ -1,16 +1,18 @@
 import { Box, Modal } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 interface FormModalProps {
   isOpen: boolean;
   handleClose: () => void;
   children: React.ReactNode;
+  style?: CSSProperties;
 }
 
 export default function ModalBase({
   isOpen,
   handleClose,
   children,
+  style,
 }: FormModalProps) {
   return (
     <Modal
@@ -29,13 +31,14 @@ export default function ModalBase({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          minWidth: "26rem",
+          minWidth: "32rem",
           maxHeight: "90vh",
           bgcolor: "background.paper",
           border: "2px solid #000",
           boxShadow: 24,
           p: 4,
           overflowY: "scroll",
+          ...style,
         }}
       >
         {children}

@@ -12,74 +12,82 @@ export default function ShippingOptions() {
     useAddressContext();
 
   return (
-    <Paper
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: "2.5rem",
+        gap: "1rem",
         mb: "3rem",
-        width: "60%",
-        minHeight: "60vh",
+        width: "80%",
         marginInline: "auto",
-        paddingBlock: "2.5rem",
-        paddingInline: "2rem",
       }}
     >
-      <Box>
-        <Typography component="h1" variant="h3">
-          Escolha sua forma de entrega
-        </Typography>
-        <hr style={{ width: "100%" }} color="#d3d3d3" />
-      </Box>
-      <Box
+      <Typography component="h1" variant="h4">
+        Escolha sua forma de entrega
+      </Typography>
+      <Paper
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: "1.5rem",
+          justifyContent: "space-between",
+          padding: "2rem",
+          minHeight: "60vh",
+          gap: "2rem",
         }}
       >
-        {shippingOptions.map((option) => (
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-            }}
-            key={option.id}
-          >
-            <input
-              type="radio"
-              name="shippingOption"
-              key={option.id}
-              value={option.id}
-              onChange={() => changeSelectedShippingOption(option)}
-              checked={selectedShippingOption?.id === option.id}
-            />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1.5rem",
+          }}
+        >
+          {shippingOptions.map((option) => (
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
+                gap: "1rem",
+                paddingBottom: "1.5rem",
+                borderBottom: "solid 1px #c3c3c3",
               }}
+              key={option.id}
             >
-              <Box>
-                <Typography fontWeight={"bold"}>{option.name}</Typography>
-                <Typography>
-                  Chegará em até {option.deliveryTime} dias
+              <input
+                type="radio"
+                name="shippingOption"
+                key={option.id}
+                value={option.id}
+                onChange={() => changeSelectedShippingOption(option)}
+                checked={selectedShippingOption?.id === option.id}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <Box>
+                  <Typography fontWeight={"bold"}>{option.name}</Typography>
+                  <Typography>
+                    Chegará entre {option.deliveryMinDays} e{" "}
+                    {option.deliveryMaxDays} dias
+                  </Typography>
+                </Box>
+                <Typography fontWeight={"bold"}>
+                  {formatCurrency(parseFloat(option.price))}
                 </Typography>
               </Box>
-              <Typography fontWeight={"bold"}>
-                {formatCurrency(parseFloat(option.price))}
-              </Typography>
             </Box>
-          </Box>
-        ))}
-      </Box>
-      <Box>
-        <CartSubtotal />
-        <CartShippingFee />
-        <CartTotal />
-      </Box>
-      <CheckoutButton />
-    </Paper>
+          ))}
+        </Box>
+        <Box>
+          <CartSubtotal fontSize={"1.125rem"} />
+          <CartShippingFee fontSize={"1.125rem"} />
+          <CartTotal fontSize={"1.125rem"} fontWeight={"bold"} />
+        </Box>
+        <CheckoutButton />
+      </Paper>
+    </Box>
   );
 }

@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import AddedToCartBackdrop from "../components/AddedToCartPopup/AddedToCartBackdrop";
 import { AddressProvider } from "../contexts/AddressContext";
 import { CartProvider } from "../contexts/CartContext";

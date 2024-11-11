@@ -1,9 +1,11 @@
 package com.rafaelteixeiraserafim.tcc.controller;
 
-import com.rafaelteixeiraserafim.tcc.dto.ProductDto;
+import com.rafaelteixeiraserafim.tcc.dto.ProductRequest;
+import com.rafaelteixeiraserafim.tcc.dto.ProductResponse;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.service.BoughtProductService;
 import com.rafaelteixeiraserafim.tcc.service.ProductService;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductDto productDTO) {
-        Product product = productService.createProductRequest(productDTO);
+    public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductRequest productRequest) {
+        Product product = productService.createProductRequest(productRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -44,13 +46,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return productService.getProducts();
+    public List<ProductResponse> getProducts() {
+        List<Product> products = productService.getProducts();
+
+        return ModelDtoConversion.createProductResponses(products);
     }
 
     @GetMapping("/{productId}")
-    public Product getProductById(@PathVariable @Min(1) Long productId) {
-        return productService.getProduct(productId);
+    public ProductResponse getProductById(@PathVariable @Min(1) Long productId) {
+        Product product = productService.getProduct(productId);
+
+        return ModelDtoConversion.createProductResponse(product);
     }
 
     @DeleteMapping("/{productId}")
@@ -64,14 +70,14 @@ public class ProductController {
     public ResponseEntity<?> deleteProductsById(@RequestBody List<Long> productIds) {
         productService.deleteProductsById(productIds);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{productId}")
-    public String updateProductById(@PathVariable @Min(1) Long productId, @ModelAttribute @Valid ProductDto productDTO) {
-        productService.updateProduct(productId, productDTO);
+    public ResponseEntity<?> updateProductById(@PathVariable @Min(1) Long productId, @ModelAttribute @Valid ProductRequest productRequest) {
+        productService.updateProduct(productId, productRequest);
 
-        return "Product altered successfully";
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/most-bought")
@@ -80,7 +86,12 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}/check-purchased")
-    public ResponseEntity<?> checkPurchased(@PathVariable @Min(1) Long productId, @RequestParam @Min(1) Long userId) {
-        return ResponseEntity.ok(boughtProductService.getBoughtProductElseNull(userId, productId));
+    public ResponseEntity<ProductResponse> checkPurchased(@PathVariable @Min(1) Long productId, @RequestParam @Min(1) Long userId) {
+        Product product = boughtProductService.getBoughtProductElseNull(userId, productId);
+
+        if (product != null) {
+            return ResponseEntity.ok(ModelDtoConversion.createProductResponse(product));
+        }
+        return ResponseEntity.ok().build();
     }
 }

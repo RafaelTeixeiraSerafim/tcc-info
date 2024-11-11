@@ -8,7 +8,7 @@ def get_addresses_controller():
         if user_id == -1:
                 return jsonify({"message": "Missing one or more required parameters"}), 400
         
-        addresses = address_service.get_addresses(user_id)
+        addresses = address_service.get_active_addresses(user_id)
         
         return jsonify({"addresses": addresses})
     except Exception as e:
@@ -53,7 +53,7 @@ def delete_address_controller(address_id: int):
         if not address_id:
             return jsonify({"message": "Missing identifier for operation"}), 400
         
-        address_service.delete_address(address_id)
+        address_service.deactivate_address(address_id) # TODO: deactivate if fk of one or more orders else delete
 
         return jsonify({'message': 'Address deleted successfully'}), 200
     except Exception as e:

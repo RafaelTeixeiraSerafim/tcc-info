@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public record PreferenceDto(
         Long userId,
         Long addressId,
-        BigDecimal shippingFee
+        BigDecimal shippingFee,
+        int deliveryMinDays,
+        int deliveryMaxDays
 ) {
 }

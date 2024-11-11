@@ -24,7 +24,15 @@ const Form: React.FC<FormProps> & FormComponents = ({
   style,
 }) => {
   return (
-    <Box component={"form"} onSubmit={onSubmit} style={style}>
+    <Box
+      component={"form"}
+      onSubmit={onSubmit}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        ...style,
+      }}
+    >
       <FormControl
         sx={{
           display: "flex",

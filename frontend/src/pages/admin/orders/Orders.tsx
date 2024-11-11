@@ -80,7 +80,6 @@ export default function Orders() {
         flexDirection: "column",
         gap: "1rem",
         width: "90%",
-        paddingInline: 3,
         textAlign: "left",
       }}
     >

@@ -5,8 +5,8 @@ from flask import current_app
 
 from alembic import context
 
-from database.db import db  # SQLAlchemy instance
-from models.address import Address  # Import your models here
+from app.database import db  # SQLAlchemy instance
+from app.models.address import Address  # Import your models here
 
 target_metadata = db.metadata
 

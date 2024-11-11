@@ -1,10 +1,14 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
+import com.rafaelteixeiraserafim.tcc.dto.AddressDto;
+import com.rafaelteixeiraserafim.tcc.dto.OrderItemResponse;
+import com.rafaelteixeiraserafim.tcc.dto.OrderResponse;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import com.rafaelteixeiraserafim.tcc.model.Order;
-import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.repository.OrderRepository;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
+import com.rafaelteixeiraserafim.tcc.utils.OrderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +25,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final ProductService productService;
+    private final AddressService addressService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, UserService userService, ProductService productService) {
+    public OrderService(OrderRepository orderRepository, UserService userService, ProductService productService, AddressService addressService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.productService = productService;
+        this.addressService = addressService;
     }
 
     public Order createOrder(Order order) {
@@ -59,38 +65,22 @@ public class OrderService {
         Order order = this.getOrderById(orderId);
 
         order.setStatus(status);
+        if (status == OrderStatus.DELIVERED) {
+            order.setDateDelivered(Date.from(Instant.now()));
+        }
         return orderRepository.save(order);
     }
 
-    public void updateOrder(Order order, OrderStatus status, Date datePlaced, Long addressId, BigDecimal shippingFee) {
+    @Transactional
+    public void updateOrder(Order order, OrderStatus status, Date datePlaced, Long addressId, BigDecimal shippingFee, int deliveryMinDays, int deliveryMaxDays) {
         order.setStatus(status);
         order.setDatePlaced(datePlaced);
         order.setAddressId(addressId);
         order.setShippingFee(shippingFee);
-    }
+        order.setDeliveryMinDays(deliveryMinDays);
+        order.setDeliveryMaxDays(deliveryMaxDays);
 
-    public Order getOrderByUserIdAndStatus(Long userId, OrderStatus orderStatus) throws IllegalArgumentException {
-        Optional<Order> optionalOrder = orderRepository.findOrderByUserIdAndStatus(userId, orderStatus);
-
-        if (optionalOrder.isEmpty()) {
-            throw new IllegalArgumentException("Order with userId " + userId + " orderStatus " + orderStatus.getStatus() + " not found");
-        }
-
-        return optionalOrder.get();
-    }
-
-    public List<Order> getOrders() {
-        List<Order> orders = orderRepository.findAll();
-
-        List<Order> filteredOrders = new ArrayList<>();
-
-        for (Order order : orders) {
-            if (order.getStatus() != OrderStatus.IN_PROGRESS) {
-                filteredOrders.add(order);
-            }
-        }
-
-        return filteredOrders;
+        orderRepository.save(order);
     }
 
     public OrderStatus[] getOrderStatus() {
@@ -98,25 +88,25 @@ public class OrderService {
     }
 
     @Transactional
-    public Order checkoutOrder(Long userId, Long addressId, BigDecimal shippingFee) {
+    public Order checkoutOrder(Long userId, Long addressId, BigDecimal shippingFee, int deliveryMinDays, int deliveryMaxDays) {
         User user = userService.getUser(userId);
         Order order = getActiveOrder(userId);
         productService.updateStockQtys(order.getOrderItems());
-        updateOrder(order, OrderStatus.PENDING, Date.from(Instant.now()), addressId, shippingFee);
+        updateOrder(order, OrderStatus.PENDING, Date.from(Instant.now()), addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
         return createOrder(new Order(user, OrderStatus.IN_PROGRESS));
     }
 
     @Transactional
-    public Order checkoutOrder(Long userId, Long addressId, BigDecimal shippingFee, Date datePlaced) {
+    public Order checkoutOrder(Long userId, Long addressId, BigDecimal shippingFee, int deliveryMinDays, int deliveryMaxDays, Date datePlaced) {
         User user = userService.getUser(userId);
         Order order = getActiveOrder(userId);
         productService.updateStockQtys(order.getOrderItems());
-        updateOrder(order, OrderStatus.PENDING, datePlaced, addressId, shippingFee);
+        updateOrder(order, OrderStatus.PENDING, datePlaced, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
         return createOrder(new Order(user, OrderStatus.IN_PROGRESS));
     }
 
     public List<BigDecimal> getMonthlySales() {
-        List<Order> orders = this.getNonInProgressOrders();
+        List<Order> orders = this.getPlacedOrders();
 
         System.out.println(orders);
         orders.sort(Comparator.comparing(Order::getDatePlaced));
@@ -138,7 +128,7 @@ public class OrderService {
                 LocalDate localDate = order.getDatePlaced().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
                 if (months[monthIdx] == localDate.getMonth()) {
-                    total = total.add(getOrderTotal(order));
+                    total = total.add(OrderUtils.getOrderTotal(order));
                     orderIdx++;
                     continue;
                 }
@@ -151,21 +141,24 @@ public class OrderService {
         return sales;
     }
 
-    private BigDecimal getOrderTotal(Order order) {
-        BigDecimal total = order.getShippingFee();
-        for (OrderItem orderItem : order.getOrderItems()) {
-            total = total.add(
-                    orderItem.getPrice()
-            );
-        }
-        return total;
-    }
-
-    public List<Order> getNonInProgressOrders() {
+    public List<Order> getPlacedOrders() {
         return orderRepository.findByStatusIsNot(OrderStatus.IN_PROGRESS);
     }
 
-    public List<Order> getNonInProgressOrders(Long userId) {
+    public List<Order> getPlacedOrders(Long userId) {
         return orderRepository.findByStatusIsNotAndUserId(OrderStatus.IN_PROGRESS, userId);
+    }
+
+    public List<OrderResponse> createPlacedOrderResponses(List<Order> orders) {
+        List<OrderResponse> orderResponses = new ArrayList<>();
+
+        for (Order order : orders) {
+            BigDecimal total = OrderUtils.getOrderTotal(order);
+            AddressDto addressDto = addressService.getAddress(order.getAddressId());
+            List<OrderItemResponse> orderItems = ModelDtoConversion.createOrderItemResponses(order.getOrderItems());
+            orderResponses.add(new OrderResponse(order.getId(), order.getUser(), order.getDatePlaced(), order.getDateDelivered(), order.getStatus(), addressDto, order.getShippingFee(), order.getDeliveryMinDays(), order.getDeliveryMaxDays(), total, orderItems));
+        }
+
+        return orderResponses;
     }
 }

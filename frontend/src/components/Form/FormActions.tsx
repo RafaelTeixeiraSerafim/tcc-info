@@ -1,16 +1,18 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 interface FormActionProps {
   children: React.ReactNode;
+  style?: CSSProperties;
 }
 
-export default function FormActions({ children }: FormActionProps) {
+export default function FormActions({ children, style }: FormActionProps) {
   return (
     <Box
       sx={{
         display: "flex",
         gap: "1rem",
+        ...style,
       }}
     >
       {children}

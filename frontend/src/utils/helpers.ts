@@ -2,8 +2,8 @@ import { IOrderItem } from "../interfaces";
 
 const statusMap: { [key: string]: string } = {
   IN_PROGRESS: "Em andamento",
-  PENDING: "Pendente",
-  SHIPPED: "Enviado",
+  PENDING: "Em preparação",
+  SHIPPED: "A caminho",
   DELIVERED: "Entregue",
 };
 
@@ -51,4 +51,35 @@ export const formatDatetime = (date: string) => {
     " - " +
     newDate.toLocaleDateString()
   );
+};
+
+const MONTHS = [
+  "janeiro",
+  "fevereiro",
+  "março",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro",
+];
+
+export const formatDate = (date: string) => {
+  const newDate = new Date(date);
+  return `${newDate.getDate()} de ${MONTHS[newDate.getMonth()]} de ${newDate.getFullYear()}`;
+};
+
+export const daysBetween = (startDate: Date, endDate: Date) => {
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  const startMs = startDate.getTime();
+  const endMs = endDate.getTime();
+
+  const diff = Math.abs(endMs - startMs);
+
+  return Math.round(diff / msPerDay);
 };

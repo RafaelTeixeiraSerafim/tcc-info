@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,12 +31,19 @@ public class Order {
 
     private BigDecimal shippingFee;
 
+    private int deliveryMinDays;
+
+    private int deliveryMaxDays;
+
     private Date datePlaced;
+
+    private Date dateDelivered;
 
     @NonNull
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 //    @JsonManagedReference

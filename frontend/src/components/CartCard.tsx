@@ -9,55 +9,67 @@ interface CartCardProps {
 }
 
 export default function CartCard({ cartItem }: CartCardProps) {
-  const {handleDeleteFromCart} = useCartContext()
+  const { handleDeleteFromCart } = useCartContext();
 
   return (
     <Box
       sx={{
         position: "relative",
         display: "grid",
-        gridTemplateColumns: "25% 75%",
+        gridTemplateColumns: "15% 85%",
         gap: "1rem",
+        paddingBottom: "1.5rem",
+        borderBottom: "solid 1px #c3c3c3",
       }}
     >
       <Box
         component={"img"}
         src={cartItem.product.images[0].url}
-        width={"100%"}
+        sx={{
+          width: "100%",
+        }}
       />
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
         <Box
           sx={{
             width: "50%",
-            height: "4rem",
+            maxHeight: "4rem",
             overflow: "hidden",
           }}
         >
           <Typography variant="h5">{cartItem.product.name}</Typography>
         </Box>
-        {cartItem.product.salePrice ? (
-          <Box>
-            <Typography
-              component={"s"}
-              variant="subtitle2"
-              sx={{ color: "#666" }}
-            >
+        <Box>
+          {cartItem.product.salePrice ? (
+            <Box>
+              <Typography
+                component={"s"}
+                variant="subtitle2"
+                sx={{ color: "#666" }}
+              >
+                {formatCurrency(parseFloat(cartItem.product.origPrice))}
+              </Typography>
+              <Typography variant="h5" fontWeight={"bold"}>
+                {formatCurrency(parseFloat(cartItem.product.salePrice))}
+              </Typography>
+            </Box>
+          ) : (
+            <Typography variant="h5" fontWeight={"bold"}>
               {formatCurrency(parseFloat(cartItem.product.origPrice))}
             </Typography>
-            <Typography variant="h5" fontWeight={"bold"}>
-              {formatCurrency(parseFloat(cartItem.product.salePrice))}
-            </Typography>
-          </Box>
-        ) : (
-          <Typography variant="h5" fontWeight={"bold"}>
-            {formatCurrency(parseFloat(cartItem.product.origPrice))}
-          </Typography>
-        )}
+          )}
+        </Box>
         <Typography>Qtde: {cartItem.qty}</Typography>
       </Box>
       <IconButton
         onClick={() => handleDeleteFromCart(cartItem.id)}
-        sx={{ position: "absolute", right: 0 }}
+        sx={{ position: "absolute", right: "1rem", top: "1rem" }}
       >
         <DeleteOutlineIcon />
       </IconButton>

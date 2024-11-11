@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { IReview } from "../../interfaces";
 import ReviewCard from "./ReviewCard";
 
@@ -16,7 +16,12 @@ export default function ReviewList({
   userReview,
 }: ReviewListProps) {
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {reviews.length === 0 ? (
         <Typography>
           Parece que este produto ainda não possui nenhuma análise...
@@ -40,6 +45,6 @@ export default function ReviewList({
           ))}
         </>
       )}
-    </>
+    </Box>
   );
 }

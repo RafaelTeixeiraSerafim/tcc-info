@@ -1,7 +1,7 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
 import com.rafaelteixeiraserafim.tcc.dto.ImageDto;
-import com.rafaelteixeiraserafim.tcc.dto.ProductDto;
+import com.rafaelteixeiraserafim.tcc.dto.ProductRequest;
 import com.rafaelteixeiraserafim.tcc.model.Category;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.Product;
@@ -61,13 +61,13 @@ public class ProductService {
     }
 
     @Transactional
-    public Product createProductRequest(ProductDto productDTO) {
+    public Product createProductRequest(ProductRequest productRequest) {
         Product newProduct = new Product();
-        Product product = populateProductFromDto(productDTO, newProduct);
+        Product product = populateProductFromDto(productRequest, newProduct);
 
         productRepository.save(product);
 
-        List<ImageDto> images = productDTO.getImages();
+        List<ImageDto> images = productRequest.getImages();
 
         if (images != null) {
             Instant currentTimestamp = Instant.now();
@@ -83,11 +83,11 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(Long productId, ProductDto productDTO) {
+    public Product updateProduct(Long productId, ProductRequest productRequest) {
         Product product = getProduct(productId);
-        populateProductFromDto(productDTO, product);
+        populateProductFromDto(productRequest, product);
 
-        List<ImageDto> images = productDTO.getImages();
+        List<ImageDto> images = productRequest.getImages();
 
         if (images == null) return productRepository.save(product);
 
@@ -110,20 +110,20 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    private Product populateProductFromDto(ProductDto productDTO, Product product) {
-        Category category = categoryService.getCategory(productDTO.getCategoryId());
+    private Product populateProductFromDto(ProductRequest productRequest, Product product) {
+        Category category = categoryService.getCategory(productRequest.getCategoryId());
 
-        product.setName(productDTO.getName());
-        product.setAbout(productDTO.getAbout());
-        product.setDescription(productDTO.getDescription());
+        product.setName(productRequest.getName());
+        product.setAbout(productRequest.getAbout());
+        product.setDescription(productRequest.getDescription());
         product.setCategory(category);
-        product.setOrigPrice(productDTO.getOrigPrice());
-        product.setSalePrice(productDTO.getSalePrice());
-        product.setStockQty(productDTO.getStockQty());
-        product.setLength(productDTO.getLength());
-        product.setHeight(productDTO.getHeight());
-        product.setWidth(productDTO.getWidth());
-        product.setWeight(productDTO.getWeight());
+        product.setOrigPrice(productRequest.getOrigPrice());
+        product.setSalePrice(productRequest.getSalePrice());
+        product.setStockQty(productRequest.getStockQty());
+        product.setLength(productRequest.getLength());
+        product.setHeight(productRequest.getHeight());
+        product.setWidth(productRequest.getWidth());
+        product.setWeight(productRequest.getWeight());
 
         return product;
     }

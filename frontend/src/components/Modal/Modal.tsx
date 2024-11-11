@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import ModalBase from "./ModalBase";
 import { ModalContext } from "./ModalContext";
 import ModalTitle from "./ModalTitle";
@@ -8,21 +8,23 @@ interface ModalProps {
   isOpen: boolean;
   handleClose: () => void;
   children: React.ReactNode;
+  style?: CSSProperties;
 }
 
 type ModalComponents = {
   Title: typeof ModalTitle;
-  CancelButton: typeof ModalCancelButton
+  CancelButton: typeof ModalCancelButton;
 };
 
 const Modal: React.FC<ModalProps> & ModalComponents = ({
   isOpen,
   handleClose,
   children,
+  style,
 }) => {
   return (
     <ModalContext.Provider value={{ isOpen, handleClose }}>
-      <ModalBase isOpen={isOpen} handleClose={handleClose}>
+      <ModalBase isOpen={isOpen} handleClose={handleClose} style={style}>
         {children}
       </ModalBase>
     </ModalContext.Provider>
@@ -30,6 +32,6 @@ const Modal: React.FC<ModalProps> & ModalComponents = ({
 };
 
 Modal.Title = ModalTitle;
-Modal.CancelButton = ModalCancelButton
+Modal.CancelButton = ModalCancelButton;
 
 export default Modal;

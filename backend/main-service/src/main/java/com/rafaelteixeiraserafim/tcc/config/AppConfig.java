@@ -73,14 +73,14 @@ public class AppConfig {
                 orderItemRepository.save(orderItem);
 
 
-                Order order2 = orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68));
+                Order order2 = orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68), 4, 5);
 
                 OrderItem orderItem2 = new OrderItem(order2, product, 1,ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(1)));
                 orderItemRepository.save(orderItem2);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(2024, Calendar.OCTOBER, 7, 18, 49, 23);
-                orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68), calendar.getTime());
+                orderService.checkoutOrder(user.getId(), 1L, BigDecimal.valueOf(13.68), 5, 7, calendar.getTime());
             }
         };
     }

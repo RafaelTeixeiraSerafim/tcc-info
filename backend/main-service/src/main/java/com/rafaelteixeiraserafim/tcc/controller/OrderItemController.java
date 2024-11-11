@@ -6,6 +6,7 @@ import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.service.OrderItemService;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +22,23 @@ import java.net.URI;
 @RestController
 @RequestMapping("api/v1/order-items")
 public class OrderItemController {
-    private final OrderService orderService;
     private final OrderItemService orderItemService;
 
     @Autowired
-    public OrderItemController(OrderService orderService, OrderItemService orderItemService) {
-        this.orderService = orderService;
+    public OrderItemController(OrderItemService orderItemService) {
         this.orderItemService = orderItemService;
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getOrderItemsByUserId(@PathVariable @Min(1) Long userId) {
-        try {
-            Order order = orderService.getOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
-
-            return ResponseEntity.ok(orderItemService.createOrderItemResponses(order.getOrderItems()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<?> getOrderItemsByUserId(@PathVariable @Min(1) Long userId) {
+//        try {
+//            Order order = orderService.getOrderByUserIdAndStatus(userId, OrderStatus.IN_PROGRESS);
+//
+//            return ResponseEntity.ok(orderItemService.createOrderItemResponses(order.getOrderItems()));
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @PostMapping
     public ResponseEntity<?> createOrderItem(@RequestBody @Valid OrderItemRequest orderItemRequest) {
@@ -52,7 +51,7 @@ public class OrderItemController {
                     .buildAndExpand(orderItem.getId())
                     .toUri();
 
-            return ResponseEntity.created(uri).body(orderItem);
+            return ResponseEntity.created(uri).body(ModelDtoConversion.createOrderItemResponse(orderItem));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

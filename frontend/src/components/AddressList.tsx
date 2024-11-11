@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useAddressContext } from "../hooks";
 import { IAddress } from "../interfaces";
@@ -23,7 +23,9 @@ export default function AddressList({
           sx={{
             display: "flex",
             gap: "1rem",
-            width: "100%"
+            width: "100%",
+            paddingBottom: "1.5rem",
+            borderBottom: "solid 1px #c3c3c3",
           }}
           key={address.id}
         >
@@ -35,30 +37,34 @@ export default function AddressList({
             onChange={onChange}
             checked={selectedAddressId === address.id}
           />
-          <Box>
-            <Typography>
-              {address.street}, {address.houseNumber} - {address.neighbourhood}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.7 }}>
-              {address.city}, {address.state} - {address.postalCode}
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.7 }}>
-              {address.fullName}
-            </Typography>
-            <Button
-              color="error"
-              size="small"
-              onClick={() => handleDelete(address.id)}
-            >
-              Excluir
-            </Button>
-            <Button
-              color="warning"
-              size="small"
-              onClick={() => onUpdate(address)}
-            >
-              Alterar
-            </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography>
+                {address.street}, {address.houseNumber} -{" "}
+                {address.neighbourhood}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                {address.city}, {address.state} - {address.postalCode}
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                {address.fullName}
+              </Typography>
+            </Box>
+            <Stack>
+              <Button color="warning" onClick={() => onUpdate(address)}>
+                Alterar
+              </Button>
+              <Button color="error" onClick={() => handleDelete(address.id)}>
+                Excluir
+              </Button>
+            </Stack>
           </Box>
         </Box>
       ))}

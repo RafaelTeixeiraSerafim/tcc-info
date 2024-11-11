@@ -7,6 +7,11 @@ def get_addresses(user_id: int) -> list[dict]:
 
     return [address.to_dict() for address in data]
 
+def get_active_addresses(user_id: int) -> list[dict]:
+    data: list[Address] = Address.query.filter(Address.user_id == user_id and Address.deactivated != True).all()
+
+    return [address.to_dict() for address in data]
+
 def create_address(data: dict):
     address = Address(
                 data["userId"],
@@ -18,7 +23,8 @@ def create_address(data: dict):
                 data["street"],
                 data["houseNumber"],
                 data["apartmentNumber"],
-                data["contactPhone"]
+                data["contactPhone"],
+                data.get("deactivated")
             )
     db.session.add(address)
     db.session.commit()
@@ -56,6 +62,16 @@ def delete_address(address_id: int):
         raise Exception(f'Address with id {address_id} not found')
 
     db.session.delete(address)
+    db.session.commit()
+
+def deactivate_address(address_id: int):
+    address: Address = Address.query.get(address_id)
+        
+    if not address:
+        raise Exception(f'Address with id {address_id} not found')
+    
+    address.deactivated = True
+
     db.session.commit()
 
 def get_address_by_postal_code(postal_code):

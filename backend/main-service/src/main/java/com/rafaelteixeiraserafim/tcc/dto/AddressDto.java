@@ -11,6 +11,7 @@ public record AddressDto(
         String street,
         String houseNumber,
         String apartmentNumber,
-        String contactPhone
+        String contactPhone,
+        boolean deactivated
 ) {
 }

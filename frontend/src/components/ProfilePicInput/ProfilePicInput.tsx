@@ -13,6 +13,7 @@ interface ProfilePicInputProps {
   defaultImage: string;
   required?: boolean;
   label?: string;
+  size?: string;
 }
 
 export default function ProfilePicInput({
@@ -21,6 +22,7 @@ export default function ProfilePicInput({
   defaultImage,
   required,
   label,
+  size,
 }: ProfilePicInputProps) {
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
     defaultImage || null
@@ -69,11 +71,18 @@ export default function ProfilePicInput({
   return (
     <ProfilePicInputContainer
       onClick={handleOpen}
-      style={label ? { marginTop: "1.5rem" } : {}}
+      style={
+        label
+          ? { marginTop: "1.5rem", height: size, width: size }
+          : { height: size, width: size }
+      }
     >
       {label && <ProfileImageLabel label={label} />}
       {previewImage ? (
-        <ProfileImage previewImage={previewImage} />
+        <ProfileImage
+          previewImage={previewImage}
+          style={{ height: size, width: size }}
+        />
       ) : (
         <DefaultProfileImage />
       )}

@@ -1,8 +1,6 @@
-import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Autocomplete, TextField, alpha, styled } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { IProduct } from "../interfaces";
+import React, { useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -84,24 +82,19 @@ const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
 }));
 
 interface SearchBarProps {
-  products: IProduct[];
+  data: unknown[];
+  placeholder: string;
+  onChange: (event: React.SyntheticEvent, value: unknown) => void;
+  dataLabelKey?: string;
 }
 
-export default function SearchBar({ products }: SearchBarProps) {
+export default function SearchBar({
+  data,
+  placeholder,
+  onChange,
+  dataLabelKey = "",
+}: SearchBarProps) {
   const [inputValue, setInputValue] = useState("");
-
-  const navigate = useNavigate();
-
-  const handleChange = (
-    _: React.SyntheticEvent<Element, Event>,
-    newValue: unknown
-  ) => {
-    if (newValue && typeof newValue === "object" && "id" in newValue) {
-      navigate(`/product/${(newValue as { id: string }).id}`, {
-        state: newValue,
-      }); // Navigate using the product's id
-    }
-  };
 
   return (
     <Search>
@@ -111,15 +104,20 @@ export default function SearchBar({ products }: SearchBarProps) {
       <StyledAutocomplete
         freeSolo
         id="free-solo-2-demo"
-        options={products}
-        getOptionLabel={(option) => (option as IProduct).name}
+        options={data}
+        getOptionLabel={(option) =>
+          option &&
+          typeof option === "string"
+            ? option
+            : (option as object)[dataLabelKey as keyof object]
+        }
         inputValue={inputValue}
         onInputChange={(_, value) => setInputValue(value)}
-        onChange={handleChange}
+        onChange={onChange}
         renderInput={(params) => (
           <StyledTextField
             {...params}
-            placeholder="O que você procura?"
+            placeholder={placeholder}
             InputProps={{
               ...params.InputProps,
               type: "search",

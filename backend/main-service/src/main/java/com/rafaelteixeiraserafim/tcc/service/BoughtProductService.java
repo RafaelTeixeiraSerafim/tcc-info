@@ -1,8 +1,10 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
 import com.rafaelteixeiraserafim.tcc.dto.BoughtProductQty;
+import com.rafaelteixeiraserafim.tcc.dto.ProductResponse;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.Product;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import jakarta.validation.constraints.Min;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,9 @@ public class BoughtProductService {
 
     public List<BoughtProductQty> getMostBoughtProducts() {
         List<OrderItem> orderItems = orderItemService.getNonInProgressOrderItems();
-        Map<Product, Integer> qtys = new HashMap<>();
+        Map<ProductResponse, Integer> qtys = new HashMap<>();
         for (OrderItem orderItem : orderItems) {
-            Product product = orderItem.getProduct();
+            ProductResponse product = ModelDtoConversion.createProductResponse(orderItem.getProduct());
             if (qtys.containsKey(product)) {
                 qtys.put(product, qtys.get(product) + orderItem.getQty());
             } else {
@@ -29,7 +31,7 @@ public class BoughtProductService {
         }
 
         List<BoughtProductQty> boughtProductQties = new ArrayList<>();
-        for (Map.Entry<Product, Integer> entry : qtys.entrySet()) {
+        for (Map.Entry<ProductResponse, Integer> entry : qtys.entrySet()) {
             boughtProductQties.add(new BoughtProductQty(entry.getKey(), entry.getValue()));
         }
 

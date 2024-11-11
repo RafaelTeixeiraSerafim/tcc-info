@@ -97,19 +97,24 @@ export default function SelectAddressModal({
   }, [incompleteAddress]);
 
   return (
-    <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+    <Modal
+      isOpen={isOpen}
+      handleClose={() => setIsOpen(false)}
+      style={{ width: "35rem", paddingBlock: "2rem", paddingInline: "3rem", gap: "2.5rem" }}
+    >
       <Modal.Title>Escolha um endereço</Modal.Title>
       <AddressList
         selectedAddressId={selectedAddress?.id || 0}
         onChange={handleChange}
         onUpdate={handleUpdate}
       />
-      <Form onSubmit={handleSave}>
+      <Form onSubmit={handleSave} style={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             gap: "0.75rem",
+            alignItems: "start",
           }}
         >
           <Typography fontWeight={"bold"}>Outro lugar</Typography>
@@ -138,7 +143,7 @@ export default function SelectAddressModal({
           {formAddress.street && (
             <Box>
               <Typography>
-                {formAddress.street}- {formAddress.neighbourhood}
+                {formAddress.street} - {formAddress.neighbourhood}
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
                 {formAddress.city}, {formAddress.state} -{" "}

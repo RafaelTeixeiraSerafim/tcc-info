@@ -84,20 +84,28 @@ export interface ISignupUser {
 export interface IOrder {
   id: number;
   user: IUser;
+  addressId: number;
+  shippingFee: number;
   datePlaced: string;
-  status: string;
+  status: "PENDING" | "SHIPPED" | "DELIVERED";
   orderItems: IOrderItem[];
 }
 
 export interface IOrderResponse {
   id: number;
   datePlaced: string;
-  status: string;
+  dateDelivered: string | null;
+  status: "PENDING" | "SHIPPED" | "DELIVERED";
+  address: IAddress;
+  shippingFee: number;
+  deliveryMinDays: number;
+  deliveryMaxDays: number;
+  totalPrice: number;
+  orderItems: IOrderItemResponse[];
 }
 
 export interface IOrderItemResponse {
   id: number;
-  order: IOrderResponse;
   product: IProduct;
   qty: number;
   createdAt: string;
@@ -174,7 +182,8 @@ export interface IShippingOption {
   id: number;
   name: string;
   price: string;
-  deliveryTime: number;
+  deliveryMinDays: number;
+  deliveryMaxDays: number;
 }
 
 export interface IReview {

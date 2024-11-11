@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import { IProduct } from "../interfaces";
 import { formatCurrency } from "../utils/helpers";
 
@@ -8,7 +8,7 @@ export interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Box
+    <Card
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -68,6 +68,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </Box>
       </Box>
-    </Box>
+    </Card>
   );
 }

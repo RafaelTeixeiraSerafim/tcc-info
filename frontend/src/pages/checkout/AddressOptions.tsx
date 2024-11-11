@@ -46,46 +46,59 @@ export default function AddressOptions() {
 
   return (
     <>
-      <Paper
+      <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: "1.5rem",
+          gap: "1rem",
           mb: "3rem",
-          width: "60%",
-          minHeight: "60vh",
+          width: "80%",
           marginInline: "auto",
-          paddingBlock: "2.5rem",
-          paddingInline: "2rem",
         }}
       >
-        <Box>
-          <Typography component="h1" variant="h3">
-            Escolha seu endereço de entrega
-          </Typography>
-          <hr style={{ width: "100%" }} color="#d3d3d3" />
-        </Box>
-        <AddressList
-          selectedAddressId={selectedAddress?.id || 0}
-          onChange={handleChange}
-          onUpdate={handleUpdate}
-        />
-        <Box>
-          <Button variant="outlined" onClick={() => setIsModalOpen(true)}>
+        <Typography component="h1" variant="h4">
+          Escolha seu endereço de entrega
+        </Typography>
+        <Paper
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "2rem",
+            minHeight: "60vh",
+            gap: "2rem",
+          }}
+        >
+          <AddressList
+            selectedAddressId={selectedAddress?.id || 0}
+            onChange={handleChange}
+            onUpdate={handleUpdate}
+          />
+          <Button
+            variant="outlined"
+            onClick={() => setIsModalOpen(true)}
+            sx={{ width: "fit-content" }}
+          >
             Adicionar endereço
           </Button>
-        </Box>
-        <Box>
-          <CartSubtotal />
-        </Box>
-        <Button
-          variant="contained"
-          onClick={() => navigate("/checkout/shipping-options")}
-          disabled={!selectedAddress}
-        >
-          Continuar
-        </Button>
-      </Paper>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem"
+            }}
+          >
+            <CartSubtotal fontSize={"1.125rem"} />
+            <Button
+              variant="contained"
+              onClick={() => navigate("/checkout/shipping-options")}
+              disabled={!selectedAddress}
+            >
+              Continuar
+            </Button>
+          </Box>
+        </Paper>
+      </Box>
       <AddressModal
         isOpen={isModalOpen}
         onClose={handleClose}

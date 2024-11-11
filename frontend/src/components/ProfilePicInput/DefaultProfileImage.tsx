@@ -5,7 +5,8 @@ export default function DefaultProfileImage() {
     <AddPhotoAlternateIcon
       fontSize="large"
       sx={{
-        marginBlock: "35%",
+        marginBlock: "auto",
+        height: "100%"
       }}
     />
   );

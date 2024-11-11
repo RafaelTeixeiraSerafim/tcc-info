@@ -19,8 +19,9 @@ public class ProductImage {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+
     private String url;
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
@@ -29,5 +30,4 @@ public class ProductImage {
         this.url = url;
         this.product = product;
     }
-
 }

@@ -90,7 +90,7 @@ export default function ReviewForm({
       {user && (
         <Box
           sx={{
-            padding: "1rem",
+            paddingBlock: "1rem",
           }}
         >
           <Form

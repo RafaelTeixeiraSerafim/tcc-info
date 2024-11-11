@@ -13,11 +13,12 @@ class Address(db.Model):
     house_number = db.Column(db.String(200), unique=False, nullable=True)
     apartment_number = db.Column(db.String(200), unique=False, nullable=True) # Complemento
     contact_phone = db.Column(db.String(200), unique=False, nullable=False)
+    deactivated = db.Column(db.Boolean, unique=False, nullable=True)
     
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
 
-    def __init__(self, user_id, full_name, postal_code, state, city, neighbourhood, street, house_number, apartment_number, contact_phone):
+    def __init__(self, user_id, full_name, postal_code, state, city, neighbourhood, street, house_number, apartment_number, contact_phone, deactivated):
         self.user_id = user_id
         self.full_name = full_name
         self.postal_code = postal_code
@@ -28,6 +29,7 @@ class Address(db.Model):
         self.house_number = house_number
         self.apartment_number = apartment_number
         self.contact_phone = contact_phone
+        self.deactivated = deactivated
 
     def to_dict(self):
         return {
@@ -41,5 +43,6 @@ class Address(db.Model):
             "street": self.street,
             "houseNumber": self.house_number,
             "apartmentNumber": self.apartment_number,
-            "contactPhone": self.contact_phone
+            "contactPhone": self.contact_phone,
+            "deactivated": self.deactivated
         }

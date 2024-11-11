@@ -38,7 +38,7 @@ public class PaymentController {
     public ResponseEntity<String> createPreference(@RequestBody PreferenceDto preferenceDto) {
         User user = userService.getUser(preferenceDto.userId());
         AddressDto address = addressService.getAddress(preferenceDto.addressId());
-        String preferenceId = paymentService.createPreference(user, address, preferenceDto.shippingFee());
+        String preferenceId = paymentService.createPreference(user, address, preferenceDto.shippingFee(), preferenceDto.deliveryMinDays(), preferenceDto.deliveryMaxDays());
         return ResponseEntity.ok(preferenceId);
     }
 
@@ -57,9 +57,11 @@ public class PaymentController {
                 Long userId = (long) Double.parseDouble(payment.getMetadata().get("user_id").toString());
                 Long addressId = (long) Double.parseDouble(payment.getMetadata().get("address_id").toString());
                 BigDecimal shippingFee = BigDecimal.valueOf(Double.parseDouble(payment.getMetadata().get("user_id").toString()));
+                int deliveryMinDays = Integer.parseInt(payment.getMetadata().get("delivery_min_days").toString());
+                int deliveryMaxDays = Integer.parseInt(payment.getMetadata().get("delivery_max_days").toString());
 
                 orderItemService.createPrices(orderItemService.getOrderItems(userId));
-                orderService.checkoutOrder(userId, addressId, shippingFee);
+                orderService.checkoutOrder(userId, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
             }
         }
         return ResponseEntity.ok(data);

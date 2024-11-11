@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { IProduct } from "../interfaces";
 import { Box, Typography } from "@mui/material";
 import ProductCard from "./ProductCard";
+import TitleUnderline from "./TitleUnderline";
 
 interface ProductCarouselProps {
   categoryName: string;
@@ -17,13 +18,7 @@ export default function ProductCarousel({
       <Typography component={"span"} variant="h3" sx={{ fontWeight: "bold" }}>
         {categoryName}
       </Typography>
-      <hr
-        style={{
-          color: "#d3d3d3",
-          marginBottom: "1.5rem",
-          height: 1,
-        }}
-      ></hr>
+      <TitleUnderline />
       <Box
         sx={{
           display: "flex",

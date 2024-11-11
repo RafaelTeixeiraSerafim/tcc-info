@@ -58,7 +58,6 @@ export default function Products() {
         display: "flex",
         flexDirection: "column",
         width: "90%",
-        paddingInline: 3,
         textAlign: "left",
         gap: "1rem",
       }}

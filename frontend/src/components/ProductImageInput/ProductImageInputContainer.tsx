@@ -26,7 +26,6 @@ export default function ProductImageInputContainer({
         cursor: "pointer",
         pointerEvents: "auto",
         width: "100%",
-        minHeight: "12rem",
         ":hover": {
           borderColor: `${theme.palette.text.primary} !important`,
           color: `${theme.palette.text.primary} !important`,
@@ -39,6 +38,5 @@ export default function ProductImageInputContainer({
     >
       {children}
     </Box>
-    // <div className="product-image-container-dark">Hey</div>
   );
 }

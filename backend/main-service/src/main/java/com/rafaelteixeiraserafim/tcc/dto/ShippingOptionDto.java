@@ -4,6 +4,7 @@ public record ShippingOptionDto(
         Long id,
         String name,
         String price,
-        int deliveryTime
+        int deliveryMinDays,
+        int deliveryMaxDays
 ) {
 }

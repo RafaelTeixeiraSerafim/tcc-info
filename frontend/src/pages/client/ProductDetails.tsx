@@ -2,20 +2,21 @@ import { Box, FormControl, SelectChangeEvent, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import AddToCartButton from "../components/AddToCartButton";
-import PriceDisplay from "../components/PriceDisplay";
-import ProductImagesDisplay from "../components/ProductImagesDisplay/ProductImagesDisplay";
-import { Reviews } from "../components/Reviews";
-import SelectProductQty from "../components/SelectProductQty";
-import { IProduct } from "../interfaces";
-import { fetchProduct } from "../service/api";
+import AddToCartButton from "../../components/AddToCartButton";
+import PriceDisplay from "../../components/PriceDisplay";
+import ProductImagesDisplay from "../../components/ProductImagesDisplay/ProductImagesDisplay";
+import { Reviews } from "../../components/Reviews";
+import SelectProductQty from "../../components/SelectProductQty";
+import { IProduct } from "../../interfaces";
+import { fetchProduct } from "../../service/api";
+import TitleUnderline from "../../components/TitleUnderline";
 
 export default function ProductDetails() {
   const productState: IProduct = useLocation().state;
 
   const [product, setProduct] = useState<IProduct | null>(productState || null);
   const [qty, setQty] = useState<number>(1);
-  
+
   const { productId } = useParams();
 
   const getProduct = async (productId: number) => {
@@ -92,14 +93,7 @@ export default function ProductDetails() {
             >
               Descrição
             </Typography>
-            <hr
-              style={{
-                color: "#d3d3d3",
-                marginBottom: "1.5rem",
-                height: 1,
-                width: "100%",
-              }}
-            ></hr>
+            <TitleUnderline />
             <Typography>{product.description}</Typography>
             <Box sx={{ height: "3rem" }} />
           </Box>

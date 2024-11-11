@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import ProductCarousel from "../components/ProductCarousel";
-import axiosInstance from "../config/axiosInstance";
-import { ICategory, IProduct } from "../interfaces";
+import ProductCarousel from "../../components/ProductCarousel";
+import axiosInstance from "../../config/axiosInstance";
+import { ICategory, IProduct } from "../../interfaces";
 
 export default function Home() {
   const [products, setProducts] = useState<IProduct[]>([]);

@@ -15,6 +15,7 @@ def calculate_shipping_service(data: dict) -> list:
         response = requests.post(url, json=data, headers=headers)
         response.raise_for_status()  # Raises an error for 4xx/5xx status codes
         data: list[dict] = response.json()  # Return the response as JSON
+        print(data)
 
         shipping_list = []
         for shipping in data:
@@ -24,7 +25,8 @@ def calculate_shipping_service(data: dict) -> list:
                 "id": shipping["id"],
                 "name": shipping["name"],
                 "price": shipping["price"],
-                "deliveryTime": shipping["delivery_time"]
+                "deliveryMinDays": shipping["delivery_range"]["min"],
+                "deliveryMaxDays": shipping["delivery_range"]["max"]
             })
             
         return shipping_list

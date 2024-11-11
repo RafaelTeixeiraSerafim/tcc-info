@@ -46,7 +46,6 @@ export default function Categories() {
     <Box
       sx={{
         width: "90%",
-        paddingInline: 3,
         textAlign: "left",
         display: "flex",
         flexDirection: "column",

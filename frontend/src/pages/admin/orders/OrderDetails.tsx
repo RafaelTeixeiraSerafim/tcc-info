@@ -44,7 +44,7 @@ export default function OrderDetails() {
             flexDirection: "column",
             gap: "2rem",
             alignItems: "center",
-            width: "70%",
+            width: "90%",
             textAlign: "left",
           }}
         >
@@ -79,8 +79,14 @@ export default function OrderDetails() {
               {new Date(order?.datePlaced).toLocaleString()}
             </Typography>
             <Typography>
+              <strong>Subtotal:</strong> {formatCurrency(subtotal)}
+            </Typography>
+            <Typography>
+              <strong>Frete:</strong> {formatCurrency(order.shippingFee)}
+            </Typography>
+            <Typography>
               <strong>Total:</strong>{" "}
-              {formatCurrency(subtotal)}
+              {formatCurrency(subtotal + order.shippingFee)}
             </Typography>
             <Typography>
               <strong>Nome do usuário:</strong> {order?.user.username}
@@ -111,6 +117,7 @@ export default function OrderDetails() {
                   width: "13rem",
                   overflow: "hidden",
                 }}
+                key={orderItem.id}
               >
                 <Box component={"img"} src={orderItem.product.images[0].url} />
                 <Box
@@ -125,7 +132,7 @@ export default function OrderDetails() {
                 >
                   <Box
                     sx={{
-                      height: "4rem",
+                      maxHeight: "4rem",
                       overflow: "scroll",
                     }}
                   >
@@ -142,8 +149,7 @@ export default function OrderDetails() {
                     )}
                   </Typography>
                   <Typography>
-                    Preço total:{" "}
-                    {formatCurrency(getOrderItemPrice(orderItem))}
+                    Preço total: {formatCurrency(getOrderItemPrice(orderItem))}
                   </Typography>
                 </Box>
               </Paper>
