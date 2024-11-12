@@ -62,9 +62,9 @@ public class PaymentController {
                 System.out.println("AddressId: " + addressId);
                 BigDecimal shippingFee = BigDecimal.valueOf(Double.parseDouble(metadata.get("shipping_fee").toString()));
                 System.out.println("ShippingFee: " + shippingFee);
-                int deliveryMinDays = Integer.parseInt(metadata.get("delivery_min_days").toString());
+                int deliveryMinDays = (int) Double.parseDouble(metadata.get("delivery_min_days").toString());
                 System.out.println("DeliveryMinDays: " + deliveryMinDays);
-                int deliveryMaxDays = Integer.parseInt(metadata.get("delivery_max_days").toString());
+                int deliveryMaxDays = (int) Double.parseDouble(metadata.get("delivery_max_days").toString());
                 System.out.println("DeliveryMaxDays: " + deliveryMaxDays);
 
                 orderItemService.createPrices(orderItemService.getOrderItems(userId));
