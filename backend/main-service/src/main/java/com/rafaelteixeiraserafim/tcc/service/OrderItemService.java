@@ -78,6 +78,7 @@ public class OrderItemService {
         for (OrderItem orderItem : orderItems) {
             Product product = orderItem.getProduct();
             orderItem.setPrice(ProductUtils.getActivePrice(product).multiply(BigDecimal.valueOf(orderItem.getQty())));
+            orderItemRepository.save(orderItem);
         }
     }
 

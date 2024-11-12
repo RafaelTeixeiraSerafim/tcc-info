@@ -60,8 +60,12 @@ public class PaymentController {
                 int deliveryMinDays = Integer.parseInt(payment.getMetadata().get("delivery_min_days").toString());
                 int deliveryMaxDays = Integer.parseInt(payment.getMetadata().get("delivery_max_days").toString());
 
+                System.out.println("DeliveryMinDays: " + deliveryMinDays);
+                System.out.println("DeliveryMaxDays: " + deliveryMaxDays);
                 orderItemService.createPrices(orderItemService.getOrderItems(userId));
+                System.out.println("After createPrices");
                 orderService.checkoutOrder(userId, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
+                System.out.println("After checkoutOrder");
             }
         }
         return ResponseEntity.ok(data);

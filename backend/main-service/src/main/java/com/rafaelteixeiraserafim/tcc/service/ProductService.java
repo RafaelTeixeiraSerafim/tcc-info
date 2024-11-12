@@ -144,6 +144,7 @@ public class ProductService {
             }
 
             product.setStockQty(stockQty);
+            productRepository.save(product);
         }
     }
 }
