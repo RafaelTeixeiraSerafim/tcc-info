@@ -53,15 +53,20 @@ public class PaymentController {
             Payment payment = paymentService.getPayment(Long.parseLong((String) innerData.get("id")));
 
             if (payment != null && payment.getStatus().equals("approved")) {
-                MapUtils.printMap(payment.getMetadata());
-                Long userId = (long) Double.parseDouble(payment.getMetadata().get("user_id").toString());
-                Long addressId = (long) Double.parseDouble(payment.getMetadata().get("address_id").toString());
-                BigDecimal shippingFee = BigDecimal.valueOf(Double.parseDouble(payment.getMetadata().get("user_id").toString()));
-                int deliveryMinDays = Integer.parseInt(payment.getMetadata().get("delivery_min_days").toString());
-                int deliveryMaxDays = Integer.parseInt(payment.getMetadata().get("delivery_max_days").toString());
+                Map<String, Object> metadata = payment.getMetadata();
+                MapUtils.printMap(metadata);
 
+                Long userId = (long) Double.parseDouble(metadata.get("user_id").toString());
+                System.out.println("UserId: " + userId);
+                Long addressId = (long) Double.parseDouble(metadata.get("address_id").toString());
+                System.out.println("AddressId: " + addressId);
+                BigDecimal shippingFee = BigDecimal.valueOf(Double.parseDouble(metadata.get("shipping_fee").toString()));
+                System.out.println("ShippingFee: " + shippingFee);
+                int deliveryMinDays = Integer.parseInt(metadata.get("delivery_min_days").toString());
                 System.out.println("DeliveryMinDays: " + deliveryMinDays);
+                int deliveryMaxDays = Integer.parseInt(metadata.get("delivery_max_days").toString());
                 System.out.println("DeliveryMaxDays: " + deliveryMaxDays);
+
                 orderItemService.createPrices(orderItemService.getOrderItems(userId));
                 System.out.println("After createPrices");
                 orderService.checkoutOrder(userId, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
