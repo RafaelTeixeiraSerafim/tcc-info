@@ -8,7 +8,7 @@ import {
   IOrderResponse,
   IRequestOrderItem,
   IShippingOptions,
-  ISignupUser
+  ISignupUser,
 } from "../../interfaces";
 
 export const checkToken = async () => {
@@ -364,13 +364,17 @@ export const fetchShippingOptions = async (
 export const createPreference = async (
   userId: number,
   addressId: number,
-  shippingFee: number
+  shippingFee: number,
+  deliveryMinDays: number,
+  deliveryMaxDays: number
 ) => {
   try {
     const response = await axiosInstance.post(`/payments/preferences`, {
       userId,
       addressId,
       shippingFee,
+      deliveryMinDays,
+      deliveryMaxDays,
     });
     console.log(response);
     return response.data;

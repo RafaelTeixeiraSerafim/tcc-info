@@ -19,10 +19,18 @@ export default function ReviewOrder() {
   const handleCheckout = async (
     userId: number,
     selectedAddressId: number,
-    shippingFee: number
+    shippingFee: number,
+    deliveryMinDays: number,
+    deliveryMaxDays: number
   ) => {
     try {
-      const id = await createPreference(userId, selectedAddressId, shippingFee);
+      const id = await createPreference(
+        userId,
+        selectedAddressId,
+        shippingFee,
+        deliveryMinDays,
+        deliveryMaxDays
+      );
       setPreferenceId(id);
     } catch (error) {
       alert(`Erro ao finalizar sua compra: ${(error as AxiosError).message}`);
@@ -39,7 +47,9 @@ export default function ReviewOrder() {
     handleCheckout(
       user.id,
       selectedAddress.id,
-      parseFloat(selectedShippingOption.price)
+      parseFloat(selectedShippingOption.price),
+      selectedShippingOption.deliveryMinDays,
+      selectedShippingOption.deliveryMaxDays
     );
   }, [user, selectedAddress, selectedShippingOption]);
 
@@ -100,7 +110,14 @@ export default function ReviewOrder() {
               Editar
             </Link>
           </Box>
-          <hr style={{ width: "100%", height: "1px", border: "none", backgroundColor: "#c3c3c3" }} />
+          <hr
+            style={{
+              width: "100%",
+              height: "1px",
+              border: "none",
+              backgroundColor: "#c3c3c3",
+            }}
+          />
           <Box
             sx={{
               display: "flex",
@@ -140,7 +157,14 @@ export default function ReviewOrder() {
               Editar
             </Link>
           </Box>
-          <hr style={{ width: "100%", height: "1px", border: "none", backgroundColor: "#c3c3c3" }} />
+          <hr
+            style={{
+              width: "100%",
+              height: "1px",
+              border: "none",
+              backgroundColor: "#c3c3c3",
+            }}
+          />
           <Box>
             <CartSubtotal />
             <CartShippingFee />
