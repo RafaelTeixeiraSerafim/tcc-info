@@ -10,6 +10,7 @@ import SelectProductQty from "../../components/SelectProductQty";
 import { IProduct } from "../../interfaces";
 import { fetchProduct } from "../../service/api";
 import TitleUnderline from "../../components/TitleUnderline";
+import ShippingFeeDisplay from "../../components/Product/ShippingFeeDisplay";
 
 export default function ProductDetails() {
   const productState: IProduct = useLocation().state;
@@ -60,7 +61,7 @@ export default function ProductDetails() {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "1rem",
+                gap: "1.5rem",
                 flex: 1,
               }}
             >
@@ -83,6 +84,7 @@ export default function ProductDetails() {
                 />
                 <AddToCartButton productId={product.id} productQty={qty} />
               </FormControl>
+              <ShippingFeeDisplay/>
             </Box>
           </Box>
           <Box>

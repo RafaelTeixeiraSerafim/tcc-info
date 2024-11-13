@@ -67,116 +67,120 @@ export default function ReviewOrder() {
       <Typography component="h1" variant="h4">
         Revisar Pedido
       </Typography>
-      {preferenceId.length > 0 && (
-        <Paper
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1.5rem",
-            mb: "3rem",
-            minHeight: "60vh",
-            padding: "2rem",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
-            <Typography variant="h5">Endereço de entrega</Typography>
-            <Box>
-              <Typography>
-                {selectedAddress?.street}, {selectedAddress?.houseNumber} -{" "}
-                {selectedAddress?.neighbourhood}
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                {selectedAddress?.city}, {selectedAddress?.state} -{" "}
-                {selectedAddress?.postalCode}
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                {selectedAddress?.fullName}
-              </Typography>
-            </Box>
-            <Link
-              to={"/checkout/address-options"}
-              style={{
-                textDecoration: "none",
-                color: theme.palette.primary.main,
-                width: "fit-content",
-              }}
-            >
-              Editar
-            </Link>
-          </Box>
-          <hr
-            style={{
-              width: "100%",
-              height: "1px",
-              border: "none",
-              backgroundColor: "#c3c3c3",
-            }}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
-            <Typography variant="h5">Forma de entrega</Typography>
+      <Paper
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.5rem",
+          mb: "3rem",
+          minHeight: "60vh",
+          padding: "2rem",
+        }}
+      >
+        {preferenceId.length > 0 && (
+          <>
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
+                flexDirection: "column",
+                gap: "0.75rem",
               }}
             >
+              <Typography variant="h5">Endereço de entrega</Typography>
               <Box>
-                <Typography>{selectedShippingOption?.name}</Typography>
                 <Typography>
-                  Chegará entre {selectedShippingOption?.deliveryMinDays} e{" "}
-                  {selectedShippingOption?.deliveryMaxDays} dias
+                  {selectedAddress?.street}, {selectedAddress?.houseNumber} -{" "}
+                  {selectedAddress?.neighbourhood}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                  {selectedAddress?.city}, {selectedAddress?.state} -{" "}
+                  {selectedAddress?.postalCode}
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                  {selectedAddress?.fullName}
                 </Typography>
               </Box>
-              <Typography>
-                {formatCurrency(
-                  parseFloat(selectedShippingOption?.price || "")
-                )}
-              </Typography>
+              <Link
+                to={"/checkout/address-options"}
+                style={{
+                  textDecoration: "none",
+                  color: theme.palette.primary.main,
+                  width: "fit-content",
+                }}
+              >
+                Editar
+              </Link>
             </Box>
-            <Link
-              to={"/checkout/shipping-options"}
+            <hr
               style={{
-                textDecoration: "none",
-                color: theme.palette.primary.main,
-                width: "fit-content",
+                width: "100%",
+                height: "1px",
+                border: "none",
+                backgroundColor: "#c3c3c3",
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
               }}
             >
-              Editar
-            </Link>
-          </Box>
-          <hr
-            style={{
-              width: "100%",
-              height: "1px",
-              border: "none",
-              backgroundColor: "#c3c3c3",
-            }}
-          />
-          <Box>
-            <CartSubtotal />
-            <CartShippingFee />
-            <CartTotal />
-          </Box>
-          <Wallet
-            initialization={{ preferenceId }}
-            customization={{ texts: { valueProp: "smart_option" } }}
-            locale="pt-BR"
-          />
-        </Paper>
-      )}
+              <Typography variant="h5">Forma de entrega</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <Box>
+                  <Typography>{selectedShippingOption?.name}</Typography>
+                  <Typography>
+                    Chegará entre {selectedShippingOption?.deliveryMinDays} e{" "}
+                    {selectedShippingOption?.deliveryMaxDays} dias
+                  </Typography>
+                </Box>
+                <Typography>
+                  {formatCurrency(
+                    parseFloat(selectedShippingOption?.price || "")
+                  )}
+                </Typography>
+              </Box>
+              <Link
+                to={"/checkout/shipping-options"}
+                style={{
+                  textDecoration: "none",
+                  color: theme.palette.primary.main,
+                  width: "fit-content",
+                }}
+              >
+                Editar
+              </Link>
+            </Box>
+            <hr
+              style={{
+                width: "100%",
+                height: "1px",
+                border: "none",
+                backgroundColor: "#c3c3c3",
+              }}
+            />
+            <Box>
+              <CartSubtotal />
+              <CartShippingFee />
+              <CartTotal />
+              <Wallet
+                initialization={{ preferenceId }}
+                customization={{
+                  texts: { valueProp: "smart_option" },
+                }}
+                locale="pt-BR"
+              />
+            </Box>
+          </>
+        )}
+      </Paper>
     </Box>
   );
 }

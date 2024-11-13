@@ -203,3 +203,10 @@ export interface IFormReview {
   title: string;
   comment: string;
 }
+
+export interface IWishlistItem {
+  id: number;
+  user: IUser;
+  product: IProduct;
+  createdAt: string;
+}

@@ -1,13 +1,7 @@
 package com.rafaelteixeiraserafim.tcc.utils;
 
-import com.rafaelteixeiraserafim.tcc.dto.OrderItemResponse;
-import com.rafaelteixeiraserafim.tcc.dto.OrderResponse;
-import com.rafaelteixeiraserafim.tcc.dto.ProductImageResponse;
-import com.rafaelteixeiraserafim.tcc.dto.ProductResponse;
-import com.rafaelteixeiraserafim.tcc.model.Order;
-import com.rafaelteixeiraserafim.tcc.model.OrderItem;
-import com.rafaelteixeiraserafim.tcc.model.Product;
-import com.rafaelteixeiraserafim.tcc.model.ProductImage;
+import com.rafaelteixeiraserafim.tcc.dto.*;
+import com.rafaelteixeiraserafim.tcc.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,5 +60,25 @@ public final class ModelDtoConversion {
             productResponses.add(ModelDtoConversion.createProductResponse(product));
         }
         return productResponses;
+    }
+
+    public static WishlistItemResponse createWishlistItemResponse(WishlistItem wishlistItem) {
+        ProductResponse productResponse = ModelDtoConversion.createProductResponse(wishlistItem.getProduct());
+        return new WishlistItemResponse(
+                wishlistItem.getId(),
+                wishlistItem.getUser(),
+                productResponse,
+                wishlistItem.getCreatedAt()
+        );
+    }
+
+    public static List<WishlistItemResponse> createWishlistResponse(List<WishlistItem> wishlist) {
+        List<WishlistItemResponse> responses = new ArrayList<>();
+
+        for (WishlistItem wishlistItem : wishlist) {
+            responses.add(ModelDtoConversion.createWishlistItemResponse(wishlistItem));
+        }
+
+        return responses;
     }
 }

@@ -7,6 +7,7 @@ import com.rafaelteixeiraserafim.tcc.repository.WishlistItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WishlistService {
@@ -16,7 +17,17 @@ public class WishlistService {
         this.wishlistItemRepository = wishlistItemRepository;
     }
 
+    public WishlistItem getWishListItem(User user, Product product) {
+        return wishlistItemRepository.findByUserAndProduct(user, product).orElseThrow(() -> new IllegalArgumentException("Wishlist item not found"));
+    }
+
     public WishlistItem createWishlistItem(User user, Product product) {
+        Optional<WishlistItem> wishlistItem = wishlistItemRepository.findByUserAndProduct(user, product);
+
+        if (wishlistItem.isPresent()) {
+            throw new IllegalArgumentException("Wishlist item already exists");
+        }
+
         return wishlistItemRepository.save(new WishlistItem(user, product));
     }
 

@@ -1,6 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.dto;
 
-public record WishlistItemDto(
+public record WishlistItemRequest(
         Long userId,
         Long productId
 ) {

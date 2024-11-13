@@ -353,7 +353,7 @@ export const fetchShippingOptions = async (
     const response = await axiosInstance.get<IShippingOptions>(
       `/shipping/calculate?userId=${userId}&postalCode=${postalCode}`
     );
-    console.log(response);
+    console.log(postalCode, response);
     return response.data.options;
   } catch (error) {
     console.error(error);

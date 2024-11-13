@@ -73,6 +73,14 @@ export const formatDate = (date: string) => {
   return `${newDate.getDate()} de ${MONTHS[newDate.getMonth()]} de ${newDate.getFullYear()}`;
 };
 
+export const daysIn = (date: Date) => {
+  const msPerDay = 24 * 60 * 60 * 1000;
+
+  const ms = date.getTime();
+
+  return Math.round(ms / msPerDay);
+}
+
 export const daysBetween = (startDate: Date, endDate: Date) => {
   const msPerDay = 24 * 60 * 60 * 1000;
 

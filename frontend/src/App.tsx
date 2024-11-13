@@ -34,6 +34,7 @@ import ProfileUpdate from "./pages/client/ProfileUpdate";
 import Success from "./pages/checkout/Success";
 import ReviewOrder from "./pages/checkout/ReviewOrder";
 import Purchases from "./pages/client/Purchases";
+import Wishlist from "./pages/client/Wishlist";
 
 function App() {
   return (
@@ -47,9 +48,11 @@ function App() {
                 <Route index element={<Home />} />
 
                 <Route path="product/:productId" element={<ProductDetails />} />
-                
+
                 <Route path="cart" element={<Cart />} />
-                
+
+                <Route path="wishlist" element={<Wishlist />} />
+
                 <Route path="checkout" element={<LoginRequired />}>
                   <Route path="address-options" element={<AddressOptions />} />
                   <Route
@@ -73,7 +76,7 @@ function App() {
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<Signup />} />
                 </Route>
-                
+
                 <Route path="test" element={<Test />} />
               </Route>
               <Route path="admin">

@@ -137,7 +137,8 @@ function AddressProvider({ children }: AddressProviderProps) {
           id: 0,
           name: "",
           price: Number.MAX_SAFE_INTEGER.toString(),
-          deliveryTime: 0,
+          deliveryMinDays: 0,
+          deliveryMaxDays: 0,
         };
 
         shippingOptions.map((option) => {

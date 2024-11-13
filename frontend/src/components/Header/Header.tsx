@@ -8,6 +8,7 @@ import AddedToCartPopup from "../AddedToCartPopup/AddedToCartPopup";
 import AddressDisplay from "../AddressDisplay";
 import AccountButton from "./AccountButton";
 import ProductSearchBar from "./ProductSearchBar";
+import { FavoriteBorder, FavoriteOutlined } from "@mui/icons-material";
 
 export default function Header() {
   const { user } = useUserContext();
@@ -57,17 +58,30 @@ export default function Header() {
             </Link> */}
             {user ? (
               <>
-                {/* <IconButton
-                  size="large"
-                  aria-label="wishlist"
-                  color="inherit"
-                  href={"/wishlist"}
+                <Box
+                  sx={{
+                    position: "relative",
+                  }}
                 >
-                  Ícone de notificação
+                  <Link
+                    to={"wishlist"}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
+                    <IconButton
+                      size="large"
+                      aria-label="wishlist"
+                      color="inherit"
+                    >
+                      {/* Ícone de notificação
                   <Badge badgeContent={4} color="error">
-                </Badge>
-                  <FavoriteOutlined />
-                </IconButton> */}
+                </Badge> */}
+                      <FavoriteBorder />
+                    </IconButton>
+                  </Link>
+                </Box>
                 <Box
                   sx={{
                     position: "relative",

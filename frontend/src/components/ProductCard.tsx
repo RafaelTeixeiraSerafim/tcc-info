@@ -1,6 +1,7 @@
 import { Box, Card, Typography } from "@mui/material";
 import { IProduct } from "../interfaces";
-import { formatCurrency } from "../utils/helpers";
+import AddToWishlistButton from "./Wishlist/AddToWishlistButton";
+import PriceDisplay from "./PriceDisplay";
 
 export interface ProductCardProps {
   product: IProduct;
@@ -10,6 +11,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card
       sx={{
+        position: "relative",
         display: "flex",
         flexDirection: "column",
         width: "13rem",
@@ -19,6 +21,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         textAlign: "center",
       }}
     >
+      <AddToWishlistButton
+        productId={product.id}
+        style={{ position: "absolute", top: 0, right: 0 }}
+      />
       <Box
         component={"img"}
         src={product.images?.[0]?.url || ""}
@@ -48,24 +54,11 @@ export default function ProductCard({ product }: ProductCardProps) {
             height: "3rem",
           }}
         >
-          {product.salePrice ? (
-            <>
-              <Typography
-                component={"s"}
-                variant="subtitle2"
-                sx={{ color: "#666" }}
-              >
-                {formatCurrency(parseFloat(product.origPrice))}
-              </Typography>
-              <Typography variant="h5" fontWeight={"bold"}>
-                {formatCurrency(parseFloat(product.salePrice))}
-              </Typography>
-            </>
-          ) : (
-            <Typography variant="h5" fontWeight={"bold"}>
-              {formatCurrency(parseFloat(product.origPrice))}
-            </Typography>
-          )}
+          <PriceDisplay
+            origPrice={product.origPrice}
+            salePrice={product.salePrice}
+            size="small"
+          />
         </Box>
       </Box>
     </Card>

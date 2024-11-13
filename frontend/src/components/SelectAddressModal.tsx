@@ -11,13 +11,13 @@ import PostalCodeInput from "./PostalCodeInput";
 
 interface SelectAddressModalProps {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  closeModal: () => void;
   updateFunction: () => void;
 }
 
 export default function SelectAddressModal({
   isOpen,
-  setIsOpen,
+  closeModal,
   updateFunction,
 }: SelectAddressModalProps) {
   const [addressToUpdate, setAddressToUpdate] = useState<IAddress | null>(null);
@@ -26,6 +26,8 @@ export default function SelectAddressModal({
     useState<IFormAddress>(emptyFormAddress);
   const [newAddressDefaultValues, setNewAddressDefaultValues] =
     useState<IFormAddress | null>(null);
+  const [tempSelectedAddress, setTempSelectedAddress] =
+    useState<IAddress | null>(null);
 
   const { user } = useUserContext();
   const {
@@ -34,6 +36,7 @@ export default function SelectAddressModal({
     incompleteAddress,
     changeSelectedAddressById,
     clearSelectedAddress,
+    userAddresses,
   } = useAddressContext();
 
   const handleNewAddress = () => {
@@ -42,11 +45,15 @@ export default function SelectAddressModal({
   };
 
   const handleSave = () => {
-    if (!selectedAddress) return;
+    if (!tempSelectedAddress) return;
+    changeSelectedAddressById(tempSelectedAddress.id);
     localStorage.removeItem("postalCode");
-    localStorage.setItem("selectedAddressId", selectedAddress.id.toString());
+    localStorage.setItem(
+      "selectedAddressId",
+      tempSelectedAddress.id.toString()
+    );
     updateFunction();
-    setIsOpen(false);
+    closeModal();
   };
 
   const handleUseIncompletePostal = (
@@ -57,7 +64,7 @@ export default function SelectAddressModal({
     localStorage.removeItem("addressId");
     localStorage.setItem("postalCode", formAddress.postalCode);
     updateFunction();
-    setIsOpen(false);
+    closeModal();
   };
 
   const handleClose = (
@@ -82,7 +89,11 @@ export default function SelectAddressModal({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeSelectedAddressById(parseInt(e.target.value));
+    setTempSelectedAddress(
+      userAddresses.find(
+        (address) => address.id === parseInt(e.target.value)
+      ) || null
+    );
   };
 
   const handleUpdateAddresses = () => {
@@ -96,15 +107,24 @@ export default function SelectAddressModal({
     setFormAddress(incompleteAddress);
   }, [incompleteAddress]);
 
+  useEffect(() => {
+    setTempSelectedAddress(selectedAddress);
+  }, [selectedAddress]);
+
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => setIsOpen(false)}
-      style={{ width: "35rem", paddingBlock: "2rem", paddingInline: "3rem", gap: "2.5rem" }}
+      handleClose={closeModal}
+      style={{
+        width: "35rem",
+        paddingBlock: "2rem",
+        paddingInline: "3rem",
+        gap: "2.5rem",
+      }}
     >
       <Modal.Title>Escolha um endereço</Modal.Title>
       <AddressList
-        selectedAddressId={selectedAddress?.id || 0}
+        selectedAddressId={tempSelectedAddress?.id || 0}
         onChange={handleChange}
         onUpdate={handleUpdate}
       />

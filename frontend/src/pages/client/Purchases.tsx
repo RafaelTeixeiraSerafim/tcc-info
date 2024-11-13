@@ -19,8 +19,16 @@ export default function Purchases() {
   useEffect(() => {
     const getPurchases = async (userId: number) => {
       try {
-        const response = await axiosInstance.get(`/users/${userId}/orders`);
+        const response = await axiosInstance.get<IOrderResponse[]>(
+          `/users/${userId}/orders`
+        );
         console.log(response);
+        // setPurchases(
+        //   response.data.sort(
+        //     (a, b) =>
+        //       daysIn(new Date(a.datePlaced)) - daysIn(new Date(b.datePlaced))
+        //   )
+        // );
         setPurchases(response.data);
       } catch (error) {
         alert(`Erro ao pegar compras: ${(error as AxiosError).message}`);
@@ -84,19 +92,23 @@ export default function Purchases() {
                   Chegou no dia {formatDate(purchase.dateDelivered)}
                 </Typography>
               ) : (
-                <Typography>
-                  Chegará entre{" "}
-                  {getRemainingDays(
-                    purchase.deliveryMinDays,
-                    purchase.datePlaced
-                  )}{" "}
-                  e{" "}
-                  {getRemainingDays(
-                    purchase.deliveryMaxDays,
-                    purchase.datePlaced
-                  )}{" "}
-                  dias
-                </Typography>
+                <>
+                  {purchase.status === "SHIPPED" && (
+                    <Typography>
+                      Chegará entre{" "}
+                      {getRemainingDays(
+                        purchase.deliveryMinDays,
+                        purchase.datePlaced
+                      )}{" "}
+                      e{" "}
+                      {getRemainingDays(
+                        purchase.deliveryMaxDays,
+                        purchase.datePlaced
+                      )}{" "}
+                      dias
+                    </Typography>
+                  )}
+                </>
               )}
             </Box>
             {purchase.orderItems.length > 1 ? (

@@ -1,12 +1,13 @@
 package com.rafaelteixeiraserafim.tcc.controller;
 
-import com.rafaelteixeiraserafim.tcc.dto.WishlistItemDto;
+import com.rafaelteixeiraserafim.tcc.dto.WishlistItemRequest;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.model.WishlistItem;
 import com.rafaelteixeiraserafim.tcc.service.ProductService;
 import com.rafaelteixeiraserafim.tcc.service.UserService;
 import com.rafaelteixeiraserafim.tcc.service.WishlistService;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,13 +35,13 @@ public class WishlistController {
     public ResponseEntity<?> getWishlist(@PathVariable Long userId) {
         User user = userService.getUser(userId);
         List<WishlistItem> wishlist = wishlistService.getWishlist(user);
-        return ResponseEntity.ok(wishlist);
+        return ResponseEntity.ok(ModelDtoConversion.createWishlistResponse(wishlist));
     }
 
     @PostMapping("/users/wishlist/item")
-    public ResponseEntity<?> createWishlistItem(@RequestBody @Valid WishlistItemDto wishlistItemDto) {
-        User user = userService.getUser(wishlistItemDto.userId());
-        Product product = productService.getProduct(wishlistItemDto.productId());
+    public ResponseEntity<?> createWishlistItem(@RequestBody @Valid WishlistItemRequest wishlistItemRequest) {
+        User user = userService.getUser(wishlistItemRequest.userId());
+        Product product = productService.getProduct(wishlistItemRequest.productId());
 
         WishlistItem wishlistItem = wishlistService.createWishlistItem(user, product);
 
@@ -58,5 +59,4 @@ public class WishlistController {
         wishlistService.deleteWishlistItem(itemId);
         return ResponseEntity.noContent().build();
     }
-
 }

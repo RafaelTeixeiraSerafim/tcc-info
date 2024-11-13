@@ -5,6 +5,7 @@ import { AddressProvider } from "../contexts/AddressContext";
 import { CartProvider } from "../contexts/CartContext";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../hooks";
+import { WishlistProvider } from "../contexts/WishlistContext";
 
 export default function UserLayout() {
   const [isClient, setIsClient] = useState(false);
@@ -24,10 +25,12 @@ export default function UserLayout() {
       {isClient && (
         <AddressProvider>
           <CartProvider>
-            <Header />
-            <main style={{ marginTop: "8rem" }}>
-              <Outlet />
-            </main>
+            <WishlistProvider>
+              <Header />
+              <main style={{ marginTop: "8rem" }}>
+                <Outlet />
+              </main>
+            </WishlistProvider>
             <AddedToCartBackdrop />
           </CartProvider>
         </AddressProvider>

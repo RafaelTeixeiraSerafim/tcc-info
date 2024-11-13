@@ -3,8 +3,8 @@ import CartShippingFee from "../../components/CartShippingFee";
 import CartSubtotal from "../../components/CartSubtotal";
 import CartTotal from "../../components/CartTotal";
 import { useAddressContext, useCartContext } from "../../hooks";
-import { formatCurrency } from "../../utils/helpers";
 import CheckoutButton from "../../components/CheckoutButton";
+import ShippingOption from "../../components/ShippingOption";
 
 export default function ShippingOptions() {
   const { shippingOptions } = useCartContext();
@@ -60,24 +60,7 @@ export default function ShippingOptions() {
                 onChange={() => changeSelectedShippingOption(option)}
                 checked={selectedShippingOption?.id === option.id}
               />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: "100%",
-                }}
-              >
-                <Box>
-                  <Typography fontWeight={"bold"}>{option.name}</Typography>
-                  <Typography>
-                    Chegará entre {option.deliveryMinDays} e{" "}
-                    {option.deliveryMaxDays} dias
-                  </Typography>
-                </Box>
-                <Typography fontWeight={"bold"}>
-                  {formatCurrency(parseFloat(option.price))}
-                </Typography>
-              </Box>
+              <ShippingOption optionData={option}/>
             </Box>
           ))}
         </Box>

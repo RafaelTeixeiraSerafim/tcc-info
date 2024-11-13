@@ -12,9 +12,12 @@ export default function AddressDisplay() {
   return (
     <>
       {selectedAddress || incompleteAddress ? (
-        <Button onClick={() => setIsModalOpen(true)} sx={{
-          gap: "0.125rem"
-        }}>
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          sx={{
+            gap: "0.125rem",
+          }}
+        >
           <PlaceIcon fontSize="small" />
           {selectedAddress
             ? selectedAddress.street + ", " + selectedAddress.houseNumber
@@ -22,13 +25,13 @@ export default function AddressDisplay() {
         </Button>
       ) : (
         <Button onClick={() => setIsModalOpen(true)}>
-          <PlaceIcon />
+          <PlaceIcon fontSize="small" />
           Escolha um endereço
         </Button>
       )}
       <SelectAddressModal
         isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
+        closeModal={() => setIsModalOpen(false)}
         updateFunction={getFromLocalStorage}
       />
     </>
