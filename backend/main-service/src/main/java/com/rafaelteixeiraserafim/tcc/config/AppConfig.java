@@ -1,6 +1,8 @@
 package com.rafaelteixeiraserafim.tcc.config;
 
+import com.rafaelteixeiraserafim.tcc.enums.NotificationEntity;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
+import com.rafaelteixeiraserafim.tcc.enums.ProductNotificationType;
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.*;
@@ -33,7 +35,7 @@ public class AppConfig {
                 );
                 categoryRepository.save(category);
 
-                Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(40), new BigDecimal(30), 5, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
+                Product product = new Product(category, "Mel Sivestre", "slkdjfçlj", "sçdjkfsljsçl", new BigDecimal(40), new BigDecimal(30), 7, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
                 productRepository.save(product);
 
                 ProductImage productImage1 = new ProductImage("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_1_92e411091a3aa9100c2035d02d45028c.jpg", product);

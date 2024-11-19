@@ -60,7 +60,7 @@ export default function ProfilePicInput({
 
     setUser((prevUser) => ({
       ...prevUser!,
-      [name]: { file: target.files[0] },
+      [name]: { ...prevUser.profilePic, file: target.files[0] },
     }));
     changeBgImage(target.files[0]);
     resetMenuPosition();

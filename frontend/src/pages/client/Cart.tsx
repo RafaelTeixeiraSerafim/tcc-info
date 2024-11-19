@@ -16,6 +16,7 @@ export default function Cart() {
         flexDirection: "column",
         gap: "1rem",
         mb: "3rem",
+        mt: "3rem",
         width: "80%",
         marginInline: "auto",
       }}

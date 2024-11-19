@@ -24,7 +24,7 @@ export default function ReviewList({
     >
       {reviews.length === 0 ? (
         <Typography>
-          Parece que este produto ainda não possui nenhuma análise...
+          Parece que este produto ainda não possui nenhuma avaliação...
         </Typography>
       ) : (
         <>

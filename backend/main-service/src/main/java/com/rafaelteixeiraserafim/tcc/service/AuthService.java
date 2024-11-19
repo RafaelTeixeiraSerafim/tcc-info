@@ -102,12 +102,15 @@ public class AuthService implements UserDetailsService {
 
         Instant currentTimestamp = Instant.now();
         if (imageUrl == null && imageFile != null) {
+            System.out.println("New profilePic");
             s3Service.uploadNewFile(currentTimestamp, user.getUsername(), imageFile, ImageCategory.USER);
             user.setProfilePic(s3Service.getImageUrl(currentTimestamp, user.getUsername(), ImageCategory.USER));
         } else if (imageUrl != null && imageUrl.isEmpty() && imageFile == null) {
+            System.out.println("Delete profilePic");
             s3Service.deleteFile(s3Service.getImageKeyFromUrl(user.getProfilePic()));
             user.setProfilePic(null);
         } else if (imageUrl != null && !imageUrl.isEmpty() && imageFile != null) {
+            System.out.println("Update profilePic");
             String key = s3Service.getImageKeyFromUrl(imageUrl);
             s3Service.deleteFile(key);
             s3Service.uploadNewFile(key, imageFile);

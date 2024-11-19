@@ -65,7 +65,7 @@ export default function ReviewOrder() {
       }}
     >
       <Typography component="h1" variant="h4">
-        Revisar Pedido
+        Revise seu pedido
       </Typography>
       <Paper
         sx={{
@@ -106,6 +106,7 @@ export default function ReviewOrder() {
                   textDecoration: "none",
                   color: theme.palette.primary.main,
                   width: "fit-content",
+                  fontSize: "0.875rem"
                 }}
               >
                 Editar
@@ -116,7 +117,7 @@ export default function ReviewOrder() {
                 width: "100%",
                 height: "1px",
                 border: "none",
-                backgroundColor: "#c3c3c3",
+                backgroundColor: theme.palette.divider,
               }}
             />
             <Box
@@ -153,6 +154,7 @@ export default function ReviewOrder() {
                   textDecoration: "none",
                   color: theme.palette.primary.main,
                   width: "fit-content",
+                  fontSize: "0.875rem"
                 }}
               >
                 Editar
@@ -163,7 +165,7 @@ export default function ReviewOrder() {
                 width: "100%",
                 height: "1px",
                 border: "none",
-                backgroundColor: "#c3c3c3",
+                backgroundColor: theme.palette.divider,
               }}
             />
             <Box>

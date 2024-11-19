@@ -14,7 +14,7 @@ export default function ProductCarousel({
   products,
 }: ProductCarouselProps) {
   return (
-    <Box sx={{ marginInline: "1rem" }}>
+    <Box>
       <Typography component={"span"} variant="h3" sx={{ fontWeight: "bold" }}>
         {categoryName}
       </Typography>
@@ -23,7 +23,7 @@ export default function ProductCarousel({
         sx={{
           display: "flex",
           overflowX: "scroll",
-          gap: 2,
+          gap: "2rem",
         }}
       >
         {products.map((product) => (

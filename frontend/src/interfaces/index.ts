@@ -151,6 +151,14 @@ export interface IProductTableRow {
   updatedAt: string;
 }
 
+export interface IAdminNotificationTableRow {
+  id: number;
+  product: IProduct;
+  description: string;
+  severity: string;
+  createdAt: string;
+}
+
 export interface ICategoryTableRow {
   id: number;
   name: string;
@@ -208,5 +216,15 @@ export interface IWishlistItem {
   id: number;
   user: IUser;
   product: IProduct;
+  createdAt: string;
+}
+
+export interface INotification {
+  id: number;
+  product: IProduct;
+  type: string;
+  severity: "LOW" | "MEDIUM" | "HIGH";
+  description: string;
+  read: boolean;
   createdAt: string;
 }

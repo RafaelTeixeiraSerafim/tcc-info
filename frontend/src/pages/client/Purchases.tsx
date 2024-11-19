@@ -45,6 +45,7 @@ export default function Purchases() {
         flexDirection: "column",
         gap: "1.5rem",
         mb: "3rem",
+        mt: "3rem",
         width: "80%",
         marginInline: "auto",
       }}

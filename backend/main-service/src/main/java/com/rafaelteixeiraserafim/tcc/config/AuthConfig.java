@@ -67,6 +67,8 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/payments/preferences").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/payments/notifications").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/notifications").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/{userId}/notifications").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -1,9 +1,9 @@
 import { Paper, Box, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/helpers";
 import PriceDisplay from "../PriceDisplay";
 import RemoveWishlistItemButton from "./RemoveWishlistItemButton";
 import { IWishlistItem } from "../../interfaces";
+import RouterLink from "../RouterLink";
 
 interface WishlistCard {
   wishlistItem: IWishlistItem;
@@ -11,19 +11,13 @@ interface WishlistCard {
 
 export default function WishlistCard({ wishlistItem }: WishlistCard) {
   return (
-    <Link
-      to={`/product/${wishlistItem.product.id}`}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-      }}
-    >
+    <RouterLink to={`/product/${wishlistItem.product.id}`}>
       <Paper
         sx={{
           position: "relative",
           display: "grid",
           gridTemplateColumns: "15% 85%",
-          padding: "2rem",
+          padding: "1.5rem",
           gap: "1rem",
         }}
       >
@@ -61,6 +55,6 @@ export default function WishlistCard({ wishlistItem }: WishlistCard) {
           </Typography>
         </Box>
       </Paper>
-    </Link>
+    </RouterLink>
   );
 }

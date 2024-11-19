@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
 import { useUserContext } from "../hooks";
 import { IWishlistItem } from "../interfaces";
+import { useNavigate } from "react-router-dom";
 
 interface IWishlistContext {
   wishlist: IWishlistItem[];
@@ -26,6 +27,7 @@ interface WishlistProviderProps {
 const WishlistProvider = ({ children }: WishlistProviderProps) => {
   const [wishlist, setWishlist] = useState<IWishlistItem[]>([]);
   const { user } = useUserContext();
+  const navigate = useNavigate();
 
   const getWishlist = useCallback(async (userId: number) => {
     try {
@@ -52,7 +54,11 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!user) return;
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    
     try {
       await axiosInstance.post("/users/wishlist/item", {
         userId: user.id,
@@ -87,7 +93,9 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
   }, [user, getWishlist]);
 
   return (
-    <WishlistContext.Provider value={{ wishlist, getWishlistItem, addItem, removeItem }}>
+    <WishlistContext.Provider
+      value={{ wishlist, getWishlistItem, addItem, removeItem }}
+    >
       {children}
     </WishlistContext.Provider>
   );

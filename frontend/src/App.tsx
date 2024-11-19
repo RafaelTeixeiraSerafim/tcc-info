@@ -35,6 +35,7 @@ import Success from "./pages/checkout/Success";
 import ReviewOrder from "./pages/checkout/ReviewOrder";
 import Purchases from "./pages/client/Purchases";
 import Wishlist from "./pages/client/Wishlist";
+import Notifications from "./pages/admin/notifications/notifications";
 
 function App() {
   return (
@@ -87,6 +88,7 @@ function App() {
                   <Route element={<AdminDashboardLayout />}>
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="users" element={<Users />} />
+                    <Route path="notifications" element={<Notifications />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="orders/:orderId" element={<OrderDetails />} />
                     <Route path="categories" element={<Categories />} />

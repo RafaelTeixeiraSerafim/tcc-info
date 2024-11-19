@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import WishlistCard from "../../components/Wishlist/WishlistCard";
 import useWishlistContext from "../../hooks/useWishlistContext";
 
@@ -10,8 +10,9 @@ export default function Wishlist() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: "1.5rem",
+        gap: "1rem",
         mb: "3rem",
+        mt: "3rem",
         width: "80%",
         marginInline: "auto",
       }}
@@ -29,9 +30,11 @@ export default function Wishlist() {
           <Typography>Parece que sua lista de desejos está vazia...</Typography>
         </Paper>
       )}
-      {wishlist.map((wishlistItem) => (
-        <WishlistCard wishlistItem={wishlistItem} key={wishlistItem.id} />
-      ))}
+      <Stack gap={"0.5rem"}>
+        {wishlist.map((wishlistItem) => (
+          <WishlistCard wishlistItem={wishlistItem} key={wishlistItem.id} />
+        ))}
+      </Stack>
     </Box>
   );
 }

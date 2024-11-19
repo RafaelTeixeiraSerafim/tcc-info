@@ -6,7 +6,6 @@ import { ICategory, IProduct } from "../../interfaces";
 
 export default function Home() {
   const [products, setProducts] = useState<IProduct[]>([]);
-  // const [categories, setCategories] = useState<ICategory[] | null>(null);
   const [filteredCategories, setFilteredCategories] = useState<ICategory[]>([]);
 
   const getProducts = async () => {
@@ -19,16 +18,6 @@ export default function Home() {
       console.error(error);
     }
   };
-
-  // const getCategories = async () => {
-  //   try {
-  //     const response = await axiosInstance.get("/categories");
-  //     console.log(response);
-  //     setCategories(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   const filterCategories = (products: IProduct[]) => {
     const set = new Set<number>();
@@ -57,18 +46,28 @@ export default function Home() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        marginTop: "8rem",
         marginBottom: "4rem",
         gap: "4rem",
+        marginTop: 0,
       }}
     >
-      {filteredCategories.map((category) => (
-        <ProductCarousel
-          categoryName={category.name}
-          products={products}
-          key={category.id}
-        />
-      ))}
+      <img
+        src="https://ss-nova.myshopify.com/cdn/shop/files/slider1.png?v=1613786027"
+        alt=""
+      />
+      <Box
+        sx={{
+          marginInline: "1.5rem",
+        }}
+      >
+        {filteredCategories.map((category) => (
+          <ProductCarousel
+            categoryName={category.name}
+            products={products}
+            key={category.id}
+          />
+        ))}
+      </Box>
     </Box>
   );
 }

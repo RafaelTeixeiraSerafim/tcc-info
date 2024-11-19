@@ -1,5 +1,6 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import RouterLink from "../../components/RouterLink";
 
 export default function Success() {
   const navigate = useNavigate();
@@ -19,10 +20,16 @@ export default function Success() {
       }}
     >
       <Typography component={"h1"} variant="h2">
-        Compra finalizada com successo!
+        Obrigado pela compra!
       </Typography>
-      <Box flex={1}/>
-      <Button variant="contained" onClick={() => navigate("/")}>Voltar às compras</Button>
+      <Typography>
+        Você pode conferir o status da sua compra{" "}
+        <RouterLink to={"/purchases"}>aqui</RouterLink>
+      </Typography>
+      <Box flex={1} />
+      <Button variant="contained" onClick={() => navigate("/")}>
+        Voltar às compras
+      </Button>
     </Paper>
   );
 }

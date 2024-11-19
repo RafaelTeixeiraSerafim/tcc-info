@@ -6,6 +6,8 @@ import { CartProvider } from "../contexts/CartContext";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../hooks";
 import { WishlistProvider } from "../contexts/WishlistContext";
+import { Toolbar } from "@mui/material";
+import Footer from "../components/Footer";
 
 export default function UserLayout() {
   const [isClient, setIsClient] = useState(false);
@@ -27,8 +29,10 @@ export default function UserLayout() {
           <CartProvider>
             <WishlistProvider>
               <Header />
-              <main style={{ marginTop: "8rem" }}>
+              <main>
+                <Toolbar />
                 <Outlet />
+                <Footer />
               </main>
             </WishlistProvider>
             <AddedToCartBackdrop />

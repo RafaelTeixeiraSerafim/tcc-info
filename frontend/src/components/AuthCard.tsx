@@ -8,8 +8,8 @@ interface AuthCardProps {
 export default function AuthCard({ children }: AuthCardProps) {
   return (
     <Paper
-      style={{
-        marginTop: "8rem",
+      sx={{
+        my: "4rem",
         marginInline: "auto",
         width: "30%",
         paddingBlock: "2rem",

@@ -1,12 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import { PieChart } from "../../components/Chart";
 import LineChart from "../../components/Chart/LineChart";
+import DashboardNotificationDisplay from "../../components/Notification/DashboardNotificationDisplay";
 
 export default function AdminDashboard() {
   return (
     <Box
       sx={{
-        width: "90%",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         gap: "2rem",
@@ -17,23 +18,18 @@ export default function AdminDashboard() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          gap: "1rem",
+          gap: "2rem",
+          width: "100%",
+          minHeight: "22rem",
         }}
       >
-        <Box
-          sx={{
-            flex: 2,
-          }}
-        >
+        <Box width={"65%"}>
           <LineChart />
         </Box>
-        <Box
-          sx={{
-            flex: 1,
-          }}
-        >
-          <PieChart />
-        </Box>
+        <DashboardNotificationDisplay style={{ width: "25%" }} />
+      </Box>
+      <Box sx={{ width: "40%" }}>
+        <PieChart />
       </Box>
     </Box>
   );

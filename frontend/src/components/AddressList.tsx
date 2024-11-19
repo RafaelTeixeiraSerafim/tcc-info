@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useAddressContext } from "../hooks";
 import { IAddress } from "../interfaces";
@@ -15,6 +15,7 @@ export default function AddressList({
   onUpdate,
 }: AddressListProps) {
   const { userAddresses, handleDelete } = useAddressContext();
+  const theme = useTheme()
 
   return (
     <>
@@ -25,7 +26,7 @@ export default function AddressList({
             gap: "1rem",
             width: "100%",
             paddingBottom: "1.5rem",
-            borderBottom: "solid 1px #c3c3c3",
+            borderBottom: "solid 1px " + theme.palette.divider,
           }}
           key={address.id}
         >

@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, useTheme } from "@mui/material";
 import CartShippingFee from "../../components/CartShippingFee";
 import CartSubtotal from "../../components/CartSubtotal";
 import CartTotal from "../../components/CartTotal";
@@ -10,6 +10,7 @@ export default function ShippingOptions() {
   const { shippingOptions } = useCartContext();
   const { selectedShippingOption, changeSelectedShippingOption } =
     useAddressContext();
+  const theme = useTheme()
 
   return (
     <Box
@@ -48,7 +49,7 @@ export default function ShippingOptions() {
                 display: "flex",
                 gap: "1rem",
                 paddingBottom: "1.5rem",
-                borderBottom: "solid 1px #c3c3c3",
+                borderBottom: "solid 1px " + theme.palette.divider,
               }}
               key={option.id}
             >

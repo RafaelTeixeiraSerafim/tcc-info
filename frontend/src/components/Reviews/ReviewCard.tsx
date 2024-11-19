@@ -1,6 +1,6 @@
-import { Box, Avatar, Typography, Rating, Button } from "@mui/material";
+import { Box, Avatar, Typography, Rating, Button, Stack } from "@mui/material";
 import { IReview } from "../../interfaces";
-import { formatDatetime } from "../../utils/helpers";
+import { formatDate, formatDatetime } from "../../utils/helpers";
 
 interface ReviewCardProps {
   review: IReview;
@@ -27,7 +27,7 @@ export default function ReviewCard({
       }}
       key={review.id}
     >
-      <Box>
+      <Stack gap={"0.5rem"}>
         <Box
           style={{
             display: "flex",
@@ -40,23 +40,23 @@ export default function ReviewCard({
           }}
         >
           <Avatar src={review.user.profilePic} alt="" />
-          <Typography sx={{ fontWeight: "bold" }}>
+          <Typography>
             {review.user.username}
           </Typography>
         </Box>
-        <Rating
-          value={review.rating}
-          readOnly
-          size="small"
-          sx={{
-            marginTop: 1,
-          }}
-        />
-      </Box>
-      <Box>
-        <Typography variant="h5">{review.title}</Typography>
-        <Typography >{review.comment}</Typography>
-      </Box>
+        <Stack direction={"row"} gap={"0.25rem"}>
+          <Rating
+            value={review.rating}
+            readOnly
+            size="small"
+            sx={{
+              marginTop: "0.17rem",
+            }}
+          />
+          <Typography fontWeight={"bold"}>{review.title}</Typography>
+        </Stack>
+      </Stack>
+      <Typography>{review.comment}</Typography>
       <Box>
         <Typography
           variant="caption"
@@ -64,10 +64,12 @@ export default function ReviewCard({
             display: "block",
           }}
         >
-          Publicada: {formatDatetime(review.createdAt)}
+          Avaliado em {formatDate(review.createdAt)}
         </Typography>
         {review.updatedAt && (
-          <Typography variant="caption">Editada: {formatDatetime(review.updatedAt)}</Typography>
+          <Typography variant="caption">
+            Editado em {formatDate(review.updatedAt)}
+          </Typography>
         )}
       </Box>
       {showActions && (

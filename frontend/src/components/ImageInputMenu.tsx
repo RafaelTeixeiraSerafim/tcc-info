@@ -8,12 +8,19 @@ interface ImageInputMenuProps {
     left: number;
   } | null;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onChange: (event: React.FormEvent<HTMLInputElement>) => void
+  onChange: (event: React.FormEvent<HTMLInputElement>) => void;
   onPhotoRemove: (event: React.MouseEvent<HTMLElement>) => void;
-  required?: boolean
+  required?: boolean;
 }
 
-export default function ImageInputMenu({isOpen, menuPosition, onClose, onChange, onPhotoRemove, required}: ImageInputMenuProps) {
+export default function ImageInputMenu({
+  isOpen,
+  menuPosition,
+  onClose,
+  onChange,
+  onPhotoRemove,
+  required,
+}: ImageInputMenuProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>) => {

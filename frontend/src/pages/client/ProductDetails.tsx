@@ -3,14 +3,14 @@ import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import AddToCartButton from "../../components/AddToCartButton";
+import PageSubtitle from "../../components/PageSubtitle";
 import PriceDisplay from "../../components/PriceDisplay";
+import ShippingFeeDisplay from "../../components/Product/ShippingFeeDisplay";
 import ProductImagesDisplay from "../../components/ProductImagesDisplay/ProductImagesDisplay";
 import { Reviews } from "../../components/Reviews";
 import SelectProductQty from "../../components/SelectProductQty";
 import { IProduct } from "../../interfaces";
 import { fetchProduct } from "../../service/api";
-import TitleUnderline from "../../components/TitleUnderline";
-import ShippingFeeDisplay from "../../components/Product/ShippingFeeDisplay";
 
 export default function ProductDetails() {
   const productState: IProduct = useLocation().state;
@@ -48,6 +48,7 @@ export default function ProductDetails() {
             flexDirection: "column",
             paddingInline: "3rem",
             gap: "3rem",
+            mt: "3rem",
           }}
         >
           <Box
@@ -84,18 +85,11 @@ export default function ProductDetails() {
                 />
                 <AddToCartButton productId={product.id} productQty={qty} />
               </FormControl>
-              <ShippingFeeDisplay/>
+              <ShippingFeeDisplay />
             </Box>
           </Box>
           <Box>
-            <Typography
-              component={"span"}
-              variant="h3"
-              sx={{ fontWeight: "bold" }}
-            >
-              Descrição
-            </Typography>
-            <TitleUnderline />
+            <PageSubtitle>Descrição</PageSubtitle>
             <Typography>{product.description}</Typography>
             <Box sx={{ height: "3rem" }} />
           </Box>

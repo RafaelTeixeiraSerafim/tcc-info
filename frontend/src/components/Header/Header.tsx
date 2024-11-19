@@ -2,13 +2,12 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 import HeaderLogo from "./HeaderLogo";
-// import FavoriteOutlined from "@mui/icons-material/FavoriteOutlined";
+import { FavoriteBorder } from "@mui/icons-material";
 import { useCartContext, useUserContext } from "../../hooks";
 import AddedToCartPopup from "../AddedToCartPopup/AddedToCartPopup";
 import AddressDisplay from "../AddressDisplay";
 import AccountButton from "./AccountButton";
 import ProductSearchBar from "./ProductSearchBar";
-import { FavoriteBorder, FavoriteOutlined } from "@mui/icons-material";
 
 export default function Header() {
   const { user } = useUserContext();

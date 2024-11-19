@@ -4,28 +4,8 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import AdminTab from "./AdminTab";
 import ClientTab from "./ClientTab";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Box
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ paddingBlock: 3 }}>{children}</Box>}
-    </Box>
-  );
-}
+import { Typography } from "@mui/material";
+import CustomTabPanel from "./CustomTabPanel";
 
 function a11yProps(index: number) {
   return {
@@ -42,8 +22,11 @@ export default function UserTabs() {
   };
 
   return (
-    <Box sx={{ width: "90%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <Box>
+      <Box sx={{display: "flex", justifyContent: "space-between", borderBottom: 1, borderColor: "divider"}}>
+      <Typography variant="h4" component={"h1"} textAlign={"left"}>
+        Usuários
+      </Typography>
         <Tabs
           value={value}
           onChange={handleChange}

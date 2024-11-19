@@ -6,6 +6,7 @@ import {
   IFormCategory,
   IFormReview,
   IOrderResponse,
+  IProduct,
   IRequestOrderItem,
   IShippingOptions,
   ISignupUser,
@@ -257,7 +258,7 @@ export const updateCategory = async (
 
 export const fetchProducts = async () => {
   try {
-    const response = await axiosInstance.get(`/products`);
+    const response = await axiosInstance.get<IProduct[]>(`/products`);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -314,6 +315,18 @@ export const updateProduct = async (productId: number, formData: FormData) => {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+export const deleteProducts = async (ids: number[]) => {
+  try {
+    const response = await axiosInstance.delete("/products/batch-delete", {
+      data: ids,
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao deletar produtos:", error);
   }
 };
 
@@ -440,6 +453,28 @@ export const fetchBoughtProduct = async (productId: number, userId: number) => {
     );
     console.log(response);
     return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchAdminUnreadNotifications = async (userId: number) => {
+  try {
+    const response = await axiosInstance.get(`/users/${userId}/notifications/unread`);
+    console.log(response);
+    return response.data.notifications;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchAdminReadNotifications = async (userId: number) => {
+  try {
+    const response = await axiosInstance.get(`/users/${userId}/notifications/read`);
+    console.log(response);
+    return response.data.notifications;
   } catch (error) {
     console.error(error);
     throw error;

@@ -1,4 +1,4 @@
-import Logo from "../../assets/images/logo (2).png";
+import Logo from "../../assets/images/small_logo.png";
 import { Box } from "@mui/material";
 
 export default function HeaderLogo() {

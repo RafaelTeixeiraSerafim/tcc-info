@@ -3,6 +3,7 @@ package com.rafaelteixeiraserafim.tcc.controller;
 import com.mercadopago.resources.payment.Payment;
 import com.rafaelteixeiraserafim.tcc.dto.AddressDto;
 import com.rafaelteixeiraserafim.tcc.dto.PreferenceDto;
+import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.service.*;
 import com.rafaelteixeiraserafim.tcc.utils.MapUtils;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,14 +26,16 @@ public class PaymentController {
     private final AddressService addressService;
     private final OrderService orderService;
     private final OrderItemService orderItemService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public PaymentController(PaymentService paymentService, UserService userService, AddressService addressService, OrderService orderService, OrderItemService orderItemService) {
+    public PaymentController(PaymentService paymentService, UserService userService, AddressService addressService, OrderService orderService, OrderItemService orderItemService, NotificationService notificationService) {
         this.paymentService = paymentService;
         this.userService = userService;
         this.addressService = addressService;
         this.orderService = orderService;
         this.orderItemService = orderItemService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/preferences")
@@ -67,10 +71,13 @@ public class PaymentController {
                 int deliveryMaxDays = (int) Double.parseDouble(metadata.get("delivery_max_days").toString());
                 System.out.println("DeliveryMaxDays: " + deliveryMaxDays);
 
-                orderItemService.createPrices(orderItemService.getOrderItems(userId));
+                List<OrderItem> orderItems = orderItemService.getOrderItems(userId);
+                orderItemService.createPrices(orderItems);
                 System.out.println("After createPrices");
                 orderService.checkoutOrder(userId, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
                 System.out.println("After checkoutOrder");
+                notificationService.createNotificationsIfStockLessThan5(orderItems.stream().map(OrderItem::getProduct).toList());
+                notificationService.createNotificationsIfEmptyStock(orderItems.stream().map(OrderItem::getProduct).toList());
             }
         }
         return ResponseEntity.ok(data);

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../hooks";
@@ -8,9 +8,9 @@ import {
   fetchBoughtProduct,
   fetchReviews,
 } from "../../service/api";
+import PageSubtitle from "../PageSubtitle";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
-import TitleUnderline from "../TitleUnderline";
 
 interface ReviewsProps {
   productId: number;
@@ -89,12 +89,7 @@ export default function Reviews({ productId }: ReviewsProps) {
         marginBottom: "5rem",
       }}
     >
-      <Box>
-        <Typography component={"span"} variant="h3" sx={{ fontWeight: "bold" }}>
-          Análises
-        </Typography>
-        <TitleUnderline />
-      </Box>
+      <PageSubtitle>Avaliações</PageSubtitle>
       <Box sx={{
         display: "flex",
         flexDirection: "column",

@@ -11,9 +11,11 @@ import type { Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { Outlet } from "react-router-dom";
-import Logo from "../assets/images/logo.png";
+import Logo from "../assets/images/small_logo.png";
 import useDashboardLayout from "../hooks/useDashboardLayout";
 import { dashboardTheme } from "../themes";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { AdminNotificationProvider } from "../contexts/AdminNotificationContext";
 
 const NAVIGATION: Navigation = [
   {
@@ -35,6 +37,11 @@ const NAVIGATION: Navigation = [
     segment: "admin/users",
     title: "Usuários",
     icon: <GroupIcon />,
+  },
+  {
+    segment: "admin/notifications",
+    title: "Notificações",
+    icon: <NotificationsIcon />,
   },
   // {
   //   kind: "divider",
@@ -70,7 +77,7 @@ const NAVIGATION: Navigation = [
   },
   {
     kind: "header",
-    title: "Conteúdo",
+    title: "Inventário",
   },
   {
     segment: "admin/products",
@@ -101,20 +108,22 @@ export default function AdminDashboardLayout() {
         title: "Apiários Azuis",
       }}
     >
-      <DashboardLayout>
-        <Box
-          sx={{
-            py: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            maxWidth: "100%",
-          }}
-        >
-          <Outlet />
-        </Box>
-      </DashboardLayout>
+      <AdminNotificationProvider>
+        <DashboardLayout>
+          <Box
+            sx={{
+              py: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              maxWidth: "100%",
+            }}
+          >
+            <Outlet />
+          </Box>
+        </DashboardLayout>
+      </AdminNotificationProvider>
     </AppProvider>
   );
 }

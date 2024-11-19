@@ -1,5 +1,5 @@
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useCartContext } from "../hooks";
 import { IOrderItem } from "../interfaces";
 import { formatCurrency } from "../utils/helpers";
@@ -10,6 +10,7 @@ interface CartCardProps {
 
 export default function CartCard({ cartItem }: CartCardProps) {
   const { handleDeleteFromCart } = useCartContext();
+  const theme = useTheme()
 
   return (
     <Box
@@ -19,7 +20,7 @@ export default function CartCard({ cartItem }: CartCardProps) {
         gridTemplateColumns: "15% 85%",
         gap: "1rem",
         paddingBottom: "1.5rem",
-        borderBottom: "solid 1px #c3c3c3",
+        borderBottom: "solid 1px " + theme.palette.divider,
       }}
     >
       <Box
@@ -69,9 +70,9 @@ export default function CartCard({ cartItem }: CartCardProps) {
       </Box>
       <IconButton
         onClick={() => handleDeleteFromCart(cartItem.id)}
-        sx={{ position: "absolute", right: "1rem", top: "1rem" }}
+        sx={{ position: "absolute", right: "0.25rem", top: "0.25rem" }}
       >
-        <DeleteOutlineIcon />
+        <DeleteOutlineIcon color="primary"/>
       </IconButton>
     </Box>
   );

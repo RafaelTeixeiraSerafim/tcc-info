@@ -1,10 +1,11 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
-import { IProduct } from "../../../interfaces";
-import axiosInstance from "../../../config/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import ProductTable from "../../../components/ProductTable";
-import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { IProduct } from "../../../interfaces";
+import { deleteProducts, fetchProducts } from "../../../service/api";
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -17,10 +18,9 @@ export default function Products() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get("/products");
-      console.log(response);
+      const products = await fetchProducts();
 
-      setProducts(response.data);
+      setProducts(products);
     } catch (error) {
       console.error(error);
     }
@@ -28,17 +28,14 @@ export default function Products() {
 
   const deleteSelectedProducts = async () => {
     try {
-      if (!products) return;
-      const response = await axiosInstance.delete("/products/batch-delete", {
-        data: selectionModel,
-      });
-      console.log(response);
+      if (products.length === 0) return;
+      await deleteProducts(selectionModel as number[])
       setProducts(
         products.filter((product) => !selectionModel.includes(product.id))
       );
       alert("Produtos deletados com sucesso!");
     } catch (error) {
-      console.error("Error deleting products:", error);
+      alert(`Erro ao deletar produtos: ${(error as AxiosError).message}`);
     }
   };
 
@@ -72,7 +69,7 @@ export default function Products() {
         }}
       >
         <TextField
-          placeholder="Pesquise pelo nome do produto"
+          placeholder="Pesquisar produtos"
           variant="outlined"
           value={searchQuery}
           onChange={handleSearchChange}

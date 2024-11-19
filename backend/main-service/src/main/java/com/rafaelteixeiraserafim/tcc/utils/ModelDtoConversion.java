@@ -81,4 +81,8 @@ public final class ModelDtoConversion {
 
         return responses;
     }
+
+    public static NotificationResponse createNotificationResponse(Notification notification, ProductResponse product) {
+        return new NotificationResponse(notification.getId(), product, notification.getNotificationObject().getEntityType(), notification.getNotificationObject().getSeverity(), notification.getNotificationObject().getDescription() + ": " + product.name(), notification.getRead(), notification.getCreatedAt());
+    }
 }
