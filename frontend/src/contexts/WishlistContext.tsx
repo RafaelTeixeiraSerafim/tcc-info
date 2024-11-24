@@ -1,24 +1,10 @@
 import { AxiosError } from "axios";
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { WishlistContext } from ".";
 import axiosInstance from "../config/axiosInstance";
 import { useUserContext } from "../hooks";
 import { IWishlistItem } from "../interfaces";
-import { useNavigate } from "react-router-dom";
-
-interface IWishlistContext {
-  wishlist: IWishlistItem[];
-  getWishlistItem: (
-    userId: number,
-    productId: number
-  ) => IWishlistItem | undefined;
-  addItem: (e: React.MouseEvent<HTMLButtonElement>, productId: number) => void;
-  removeItem: (
-    e: React.MouseEvent<HTMLButtonElement>,
-    wishlistItemId: number
-  ) => void;
-}
-
-const WishlistContext = createContext<IWishlistContext | null>(null);
 
 interface WishlistProviderProps {
   children: React.ReactNode;
@@ -58,7 +44,7 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
       navigate("/login");
       return;
     }
-    
+
     try {
       await axiosInstance.post("/users/wishlist/item", {
         userId: user.id,
@@ -101,4 +87,4 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
   );
 };
 
-export { WishlistContext, WishlistProvider };
+export default WishlistProvider;

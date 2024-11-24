@@ -1,5 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +21,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
@@ -29,15 +31,29 @@ public class User implements UserDetails {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+
+    @NonNull
     private String username;
+
+    @NonNull
     private String email;
+
+    @NonNull
     private String password;
+
     private String profilePic;
+
+    @NonNull
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @NonNull
+    private Boolean enabled;
+
     @CreatedDate
 //    @Column(updatable = false)
     private Date createdAt;
+
     @LastModifiedDate
     private Date updatedAt;
 
@@ -46,20 +62,25 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    public User(String username, String email, String password, UserRole role) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+    @Override
+    public boolean isEnabled() {
+        System.out.println("Is enabled: " + this.enabled);
+        return this.enabled;
     }
 
-    //    @JsonManagedReference
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<WishlistItem> wishlistItems;
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Review> reviews;
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Order> orders;
+    @JsonIgnore
+    @OneToMany(mappedBy = "notified", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<WishlistItem> wishlistItems;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Review> reviews;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> orders;
 }

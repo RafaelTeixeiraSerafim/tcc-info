@@ -37,7 +37,7 @@ export default function SmallImage({
         boxShadow:
           selectedImageId === image.id
             ? `0 0 0 2px ${theme.palette.primary.main}`
-            : "none",
+            : `0 0 0 2px ${theme.palette.grey[300]}`,
         transition: "opacity 0.3s ease, border 0.3s ease",
         borderRadius: 1,
       }}

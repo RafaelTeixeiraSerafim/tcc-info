@@ -14,9 +14,10 @@ import ReviewList from "./ReviewList";
 
 interface ReviewsProps {
   productId: number;
+  onUpdate: () => void;
 }
 
-export default function Reviews({ productId }: ReviewsProps) {
+export default function Reviews({ productId, onUpdate }: ReviewsProps) {
   const [reviews, setReviews] = useState<IReview[]>([]);
   const [userReview, setUserReview] = useState<IReview | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -65,6 +66,7 @@ export default function Reviews({ productId }: ReviewsProps) {
   const handleFormUpdate = () => {
     setIsUpdating(false);
     getReviews(productId);
+    onUpdate();
   };
 
   useEffect(() => {
@@ -90,11 +92,13 @@ export default function Reviews({ productId }: ReviewsProps) {
       }}
     >
       <PageSubtitle>Avaliações</PageSubtitle>
-      <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.5rem"
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.5rem",
+        }}
+      >
         {hasBoughtProduct && (!userReview || isUpdating) && (
           <ReviewForm
             productId={productId}

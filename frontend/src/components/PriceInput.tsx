@@ -1,67 +1,17 @@
-import { TextField } from "@mui/material";
-import React, { CSSProperties } from "react";
-import { IFormProduct } from "../interfaces";
+import { InputAdornment, TextFieldProps } from "@mui/material";
+import DecimalInput from "./DecimalInput";
 
-interface PriceInputProps {
-  label: string;
-  name: string;
-  value: string;
-  setFormProduct: React.Dispatch<React.SetStateAction<IFormProduct>>;
-  style?: CSSProperties;
-  required?: boolean;
-  disabled?: boolean;
-  fullWidth?: boolean;
-}
+type PriceInputProps = TextFieldProps;
 
-export default function PriceInput({
-  label,
-  name,
-  value,
-  setFormProduct,
-  style,
-  required,
-  disabled,
-  fullWidth,
-}: PriceInputProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    // Regex to allow only numbers, commas for decimals, and periods for thousand separators
-    if (value === "" || /^\d{1,5}(,\d{0,2})?$/.test(value)) {
-      setFormProduct((prevProduct) => {
-        return {
-          ...prevProduct,
-          [name]: value,
-        };
-      });
-    } else if (/^\d{5}\d/.test(value)) {
-      const decimal = value.slice(5);
-      const newValue = value.substring(0, 5) + "," + decimal;
-
-      setFormProduct((prevProduct) => {
-        return {
-          ...prevProduct,
-          [name]: newValue,
-        };
-      });
-    }
-  };
-
+export default function PriceInput({ ...props }: PriceInputProps) {
   return (
-    <TextField
-      label={label}
-      value={value}
-      onChange={handleChange}
-      placeholder="0,00"
-      inputProps={{
-        inputMode: "decimal", // This ensures the numeric keyboard on mobile devices
+    <DecimalInput
+      slotProps={{
+        input: {
+          startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+        },
       }}
-      sx={{
-        ...style,
-      }}
-      required={required}
-      disabled={disabled}
-      fullWidth={fullWidth}
+      {...props}
     />
   );
 }

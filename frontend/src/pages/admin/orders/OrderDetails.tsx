@@ -1,12 +1,17 @@
+import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { IOrder } from "../../../interfaces";
-import axiosInstance from "../../../config/axiosInstance";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import OrderItems from "../../../components/OrderItems";
 import StatusModal from "../../../components/StatusModal";
-import { formatCurrency, translateStatus } from "../../../utils/helpers";
-import { getOrderItemPrice } from "../../../utils/helpers";
+import axiosInstance from "../../../config/axiosInstance";
 import useTotal from "../../../hooks/useTotal";
+import { IOrder } from "../../../interfaces";
+import {
+  formatCurrency,
+  formatPhone,
+  formatPostalCode,
+  translateStatus,
+} from "../../../utils/helpers";
 
 export default function OrderDetails() {
   const location = useLocation();
@@ -43,57 +48,132 @@ export default function OrderDetails() {
             display: "flex",
             flexDirection: "column",
             gap: "2rem",
-            alignItems: "center",
             width: "90%",
             textAlign: "left",
           }}
         >
-          <Typography variant="h3" component={"h1"}>
+          <Typography variant="h4" component={"h1"}>
             Detalhes do Pedido
           </Typography>
           <Paper
             sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
               width: "100%",
               padding: "1rem",
             }}
           >
-            <Typography>
-              <strong>Id:</strong> {order?.id}
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.25rem",
-              }}
-            >
-              <Typography>
-                <strong>Status:</strong> {translateStatus(order?.status)}{" "}
+            <Stack gap={"0.5rem"}>
+              <Typography color="text.secondary" fontSize={"0.875rem"}>
+                Pedido
               </Typography>
-              <Button onClick={() => setIsModalOpen(true)}>
-                Alterar status
-              </Button>
-            </Box>
-            <Typography>
-              <strong>Data do pedido:</strong>{" "}
-              {new Date(order?.datePlaced).toLocaleString()}
-            </Typography>
-            <Typography>
-              <strong>Subtotal:</strong> {formatCurrency(subtotal)}
-            </Typography>
-            <Typography>
-              <strong>Frete:</strong> {formatCurrency(order.shippingFee)}
-            </Typography>
-            <Typography>
-              <strong>Total:</strong>{" "}
-              {formatCurrency(subtotal + order.shippingFee)}
-            </Typography>
-            <Typography>
-              <strong>Nome do usuário:</strong> {order?.user.username}
-            </Typography>
-            <Typography>
-              <strong>Email:</strong> {order?.user.email}
-            </Typography>
+              <Stack direction={"row"}>
+                <Stack flex={1}>
+                  <Typography>
+                    <strong>Id:</strong> {order?.id}
+                  </Typography>
+                  <Typography>
+                    <strong>Data do pedido:</strong>{" "}
+                    {new Date(order?.datePlaced).toLocaleString()}
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    <Typography>
+                      <strong>Status:</strong> {translateStatus(order?.status)}{" "}
+                    </Typography>
+                    <Button
+                      onClick={() => setIsModalOpen(true)}
+                      sx={{ textTransform: "initial" }}
+                    >
+                      Alterar
+                    </Button>
+                  </Box>
+                </Stack>
+                <Stack flex={1}>
+                  <Typography>
+                    <strong>Subtotal:</strong> {formatCurrency(subtotal)}
+                  </Typography>
+                  <Typography>
+                    <strong>Frete:</strong> {formatCurrency(order.shippingFee)}
+                  </Typography>
+                  <Typography>
+                    <strong>Total:</strong>{" "}
+                    {formatCurrency(subtotal + order.shippingFee)}
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+            <Divider />
+
+            <Stack gap={"0.5rem"}>
+              <Typography color="text.secondary" fontSize={"0.875rem"}>
+                Usuário
+              </Typography>
+              <Stack direction={"row"}>
+                <Typography flex={1}>
+                  <strong>Nome:</strong> {order.user.username}
+                </Typography>
+                <Typography flex={1}>
+                  <strong>Email:</strong> {order.user.email}
+                </Typography>
+              </Stack>
+            </Stack>
+            <Divider />
+            <Stack gap="0.5rem">
+              <Typography color="text.secondary" fontSize={"0.875rem"}>
+                Contato
+              </Typography>
+              <Stack direction={"row"}>
+                <Typography flex={1}>
+                  <strong>Nome completo:</strong> {order.address.fullName}
+                </Typography>
+                <Typography flex={1}>
+                  <strong>Telefone de contato:</strong>{" "}
+                  {formatPhone(order.address.contactPhone)}
+                </Typography>
+              </Stack>
+            </Stack>
+            <Divider />
+            <Stack gap="0.5rem">
+              <Typography color="text.secondary" fontSize={"0.875rem"}>
+                Endereço
+              </Typography>
+              <Stack direction={"row"}>
+                <Stack flex={1}>
+                  <Typography>
+                    <strong>CEP:</strong>{" "}
+                    {formatPostalCode(order.address.postalCode)}
+                  </Typography>
+                  <Typography>
+                    <strong>Estado:</strong> {order.address.state}
+                  </Typography>
+                  <Typography>
+                    <strong>Cidade:</strong> {order.address.city}
+                  </Typography>
+                  <Typography>
+                    <strong>Bairro:</strong> {order.address.neighbourhood}
+                  </Typography>
+                </Stack>
+                <Stack flex={1}>
+                  <Typography>
+                    <strong>Rua/Avenida:</strong> {order.address.street}
+                  </Typography>
+                  <Typography>
+                    <strong>Número:</strong> {order.address.houseNumber}
+                  </Typography>
+                  <Typography>
+                    <strong>Complemento:</strong>{" "}
+                    {order.address.apartmentNumber || "-"}
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Stack>
             <StatusModal
               isOpen={isModalOpen}
               setIsOpen={setIsModalOpen}
@@ -101,60 +181,10 @@ export default function OrderDetails() {
               setOrder={setOrder}
             />
           </Paper>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              overflow: "scroll",
-              gap: "2rem",
-            }}
-          >
-            {order?.orderItems.map((orderItem) => (
-              <Paper
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "13rem",
-                  overflow: "hidden",
-                }}
-                key={orderItem.id}
-              >
-                <Box component={"img"} src={orderItem.product.images[0].url} />
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "0.1rem",
-                    paddingInline: "0.5rem",
-                    paddingBlock: "1rem",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      maxHeight: "4rem",
-                      overflow: "scroll",
-                    }}
-                  >
-                    <Typography variant="h6" fontWeight={"bold"}>
-                      {orderItem.product.name}
-                    </Typography>
-                  </Box>
-                  <Typography>Qtde: {orderItem.qty}</Typography>
-                  <Typography>
-                    Preço unit:{" "}
-                    {formatCurrency(
-                      parseFloat(orderItem.product.salePrice) ||
-                        parseFloat(orderItem.product.origPrice)
-                    )}
-                  </Typography>
-                  <Typography>
-                    Preço total: {formatCurrency(getOrderItemPrice(orderItem))}
-                  </Typography>
-                </Box>
-              </Paper>
-            ))}
-          </Box>
+          <Stack gap={"0.5rem"}>
+            <Typography variant="h4">Itens</Typography>
+            <OrderItems orderItems={order.orderItems} />
+          </Stack>
         </Box>
       )}
     </>

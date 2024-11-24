@@ -17,8 +17,17 @@ public class ShippingController {
     }
 
     @GetMapping("/calculate")
-    public ResponseEntity<?> calculateShipping(@RequestParam("userId") Long userId, @RequestParam("postalCode") String postalCode) {
-        ShippingOptionsResponseDto response = shippingService.calculateShipping(userId, postalCode);
+    public ResponseEntity<?> calculateShipping(@RequestParam(value = "userId", required = false) Long userId, @RequestParam(value = "productId", required = false) Long productId, @RequestParam(value = "qty", required = false) Integer qty, @RequestParam("postalCode") String postalCode) {
+        ShippingOptionsResponseDto response;
+
+        if (userId != null) {
+            response = shippingService.calculateShipping(userId, postalCode);
+        } else if (productId != null && qty != null) {
+            response = shippingService.calculateShipping(productId, postalCode, qty);
+        } else {
+            return ResponseEntity.badRequest().body("Missing required parameters");
+        }
+
         return ResponseEntity.ok(response);
     }
 }

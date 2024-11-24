@@ -5,6 +5,7 @@ import com.rafaelteixeiraserafim.tcc.dto.ProductResponse;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.service.BoughtProductService;
 import com.rafaelteixeiraserafim.tcc.service.ProductService;
+import com.rafaelteixeiraserafim.tcc.service.ReviewService;
 import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -25,11 +26,13 @@ import java.util.Map;
 public class ProductController {
     private final ProductService productService;
     private final BoughtProductService boughtProductService;
+    private final ReviewService reviewService;
 
     @Autowired
-    public ProductController(ProductService productService, BoughtProductService boughtProductService) {
+    public ProductController(ProductService productService, BoughtProductService boughtProductService, ReviewService reviewService) {
         this.productService = productService;
         this.boughtProductService = boughtProductService;
+        this.reviewService = reviewService;
     }
 
     @PostMapping

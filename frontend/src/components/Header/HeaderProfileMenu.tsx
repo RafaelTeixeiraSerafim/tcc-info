@@ -51,7 +51,7 @@ export default function HeaderProfileMenu({
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            navigate(`/profile`);
+            navigate(`/account/profile`);
           }}
           key={"btnProfile"}
         >

@@ -1,28 +1,10 @@
 import { AxiosError } from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAddressContext, useUserContext } from "../hooks";
 import useTotal from "../hooks/useTotal";
-import { IOrderItem, IShippingOption } from "../interfaces";
-import {
-  createCartItem,
-  deleteCartItem,
-  fetchCartItems
-} from "../service/api";
-
-interface ICartContext {
-  cartItems: IOrderItem[];
-  addedToCart: boolean;
-  setAddedToCart: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAddToCart: (productId: number, qty: number) => Promise<void>;
-  handleDeleteFromCart: (cartItemId: number) => Promise<void>;
-  hasErrorCart: boolean;
-  setHasErrorCart: React.Dispatch<React.SetStateAction<boolean>>;
-  subtotal: number;
-  total: number;
-  shippingOptions: IShippingOption[];
-}
-
-const CartContext = createContext<ICartContext | null>(null);
+import { IOrderItem } from "../interfaces";
+import { createCartItem, deleteCartItem, fetchCartItems } from "../service/api";
+import { CartContext } from ".";
 
 interface CartProviderProps {
   children: React.ReactNode;
@@ -36,7 +18,8 @@ const CartProvider = ({ children }: CartProviderProps) => {
 
   const { subtotal } = useTotal(cartItems);
   const { user } = useUserContext();
-  const { postalCode, selectedShippingOption, shippingOptions } = useAddressContext();
+  const { postalCode, selectedShippingOption, shippingOptions } =
+    useAddressContext();
 
   const getCartItems = async (userId: number) => {
     try {
@@ -84,7 +67,13 @@ const CartProvider = ({ children }: CartProviderProps) => {
     }
   };
 
-  const handleDeleteFromCart = async (cartItemId: number) => {
+  const handleDeleteFromCart = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    cartItemId: number
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     try {
       await deleteCartItem(cartItemId);
       setCartItems(cartItems.filter((cartItem) => cartItem.id !== cartItemId));
@@ -101,7 +90,6 @@ const CartProvider = ({ children }: CartProviderProps) => {
   useEffect(() => {
     if (!user || !postalCode) return;
     console.log("Getting shipping options");
-
   }, [user, cartItems, postalCode]);
 
   useEffect(() => {
@@ -131,6 +119,4 @@ const CartProvider = ({ children }: CartProviderProps) => {
   );
 };
 
-export default CartContext;
-export { CartProvider };
-
+export default CartProvider;

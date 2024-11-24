@@ -5,6 +5,7 @@ import {
   ListItem,
   ListSubheader,
   Paper,
+  useTheme,
 } from "@mui/material";
 import { CSSProperties } from "react";
 import { useAdminNotificationContext } from "../../hooks/useAdminNotificationContext";
@@ -17,6 +18,7 @@ interface DashboardNotificationDisplayProps {
 export default function DashboardNotificationDisplay({
   style,
 }: DashboardNotificationDisplayProps) {
+  const theme = useTheme()
   const { unreadNotifications } = useAdminNotificationContext();
 
   return (
@@ -26,14 +28,14 @@ export default function DashboardNotificationDisplay({
         textAlign: "left",
         display: "flex",
         flexDirection: "column",
-        bgcolor: "#121212",
+        bgcolor: theme.palette.mode === "dark" ? "#121212" : "#fafafa",
         backgroundImage: "none",
       }}
     >
       <List
         subheader={
           <ListSubheader
-            sx={{ bgcolor: "#191919", borderRadius: "4px 4px 0 0" }}
+            sx={{ bgcolor: theme.palette.mode === "dark" ? "#191919" : "#f3f3f3", borderRadius: "4px 4px 0 0" }}
           >
             Notificações
           </ListSubheader>

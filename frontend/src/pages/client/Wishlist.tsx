@@ -24,7 +24,7 @@ export default function Wishlist() {
         <Paper
           sx={{
             padding: "2rem",
-            minHeight: "15rem",
+            minHeight: "60vh",
           }}
         >
           <Typography>Parece que sua lista de desejos está vazia...</Typography>

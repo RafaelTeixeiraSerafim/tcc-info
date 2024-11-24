@@ -2,8 +2,10 @@ package com.rafaelteixeiraserafim.tcc.controller;
 
 import com.rafaelteixeiraserafim.tcc.dto.ProductReviewsDto;
 import com.rafaelteixeiraserafim.tcc.dto.ReviewDto;
+import com.rafaelteixeiraserafim.tcc.dto.ReviewResponse;
 import com.rafaelteixeiraserafim.tcc.model.Review;
 import com.rafaelteixeiraserafim.tcc.service.ReviewService;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,11 @@ public class ReviewController {
     @GetMapping("/products/{productId}/reviews")
     public ResponseEntity<ProductReviewsDto> getProductReviews(@PathVariable @Min(1) Long productId) {
         List<Review> reviews = reviewService.getProductReviews(productId);
+        List<ReviewResponse> reviewResponses = ModelDtoConversion.createReviewResponses(reviews);
 
-        return ResponseEntity.ok(new ProductReviewsDto(reviews));
+        float rating = reviewService.getAvgRating(reviews);
+
+        return ResponseEntity.ok(new ProductReviewsDto(reviewResponses, rating));
     }
 
     @PostMapping("/products/{productId}/reviews")

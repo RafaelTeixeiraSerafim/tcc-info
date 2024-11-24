@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { Box, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { ICategory, IFormCategory } from "../interfaces";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import Form from "./Form";
 import useForm from "../hooks/useForm";
 import { createCategory, updateCategory } from "../service/api";
 import { AxiosError } from "axios";
+import TitleUnderline from "./TitleUnderline";
 
 interface CategoryFormProps {
   origCategory?: ICategory;
@@ -41,17 +42,28 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
     handleTextInputChange(e, setFormCategory);
 
   return (
-    <Form onSubmit={handleSubmit} style={{ width: "60%" }}>
-      <Form.Title>{isUpdating ? "Alterar" : "Nova"} Categoria</Form.Title>
-      <TextField
-        type="text"
-        name="name"
-        label={"Nome"}
-        value={formCategory.name}
-        onChange={handleChange}
-        fullWidth
-      />
-      <TextField
+    <Form
+      onSubmit={handleSubmit}
+      style={{ width: "90%", gap: "2.5rem", height: "80vh" }}
+    >
+      <Box width={"100%"}>
+        <Form.Title>{isUpdating ? "Alterar" : "Nova"} Categoria</Form.Title>
+        <TitleUnderline style={{ marginBottom: "1rem" }} />
+      </Box>
+      <Stack width="100%" gap={"2rem"}>
+        <Typography variant="h4" textAlign={"left"}>
+          Informações gerais
+        </Typography>
+        <TextField
+          type="text"
+          name="name"
+          label={"Nome"}
+          value={formCategory.name}
+          onChange={handleChange}
+          fullWidth
+        />
+      </Stack>
+      {/* <TextField
         multiline
         minRows={4}
         label="Descrição"
@@ -59,7 +71,8 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
         value={formCategory.description}
         onChange={handleChange}
         fullWidth
-      />
+      /> */}
+      <Box flex={1} />
       <Form.Actions>
         <Form.Action
           handleClick={() => navigate("/admin/categories")}

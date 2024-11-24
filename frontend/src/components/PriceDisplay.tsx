@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import { formatCurrency } from "../utils/helpers";
+import { Box, Stack, Typography } from "@mui/material";
+import { formatCurrency, getSalePercent } from "../utils/helpers";
 import { Variant } from "@mui/material/styles/createTypography";
 
 interface PriceDisplayProps {
@@ -8,7 +8,9 @@ interface PriceDisplayProps {
   size?: "small" | "medium" | "large";
 }
 
-const sizeToVariant: {[key: string]: {newPrice: Variant, oldPrice: Variant}} = {
+const sizeToVariant: {
+  [key: string]: { newPrice: Variant; oldPrice: Variant };
+} = {
   small: {
     newPrice: "h5",
     oldPrice: "subtitle2",
@@ -35,12 +37,23 @@ export default function PriceDisplay({
           >
             {formatCurrency(parseFloat(origPrice))}
           </Typography>
-          <Typography variant={sizeToVariant[size].newPrice} fontWeight={"bold"}>
-            {formatCurrency(parseFloat(salePrice))}
-          </Typography>
+          <Stack direction={"row"} alignItems={"center"} gap={"0.5rem"}>
+            <Typography
+              variant={sizeToVariant[size].newPrice}
+            >
+              {formatCurrency(parseFloat(salePrice))}
+            </Typography>
+            <Typography color={"primary"} height={"fit-content"}>
+              {getSalePercent(
+                parseFloat(origPrice),
+                parseFloat(salePrice)
+              )}
+              % OFF
+            </Typography>
+          </Stack>
         </Box>
       ) : (
-        <Typography variant={sizeToVariant[size].newPrice} fontWeight={"bold"}>
+        <Typography variant={sizeToVariant[size].newPrice}>
           {formatCurrency(parseFloat(origPrice))}
         </Typography>
       )}

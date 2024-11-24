@@ -1,11 +1,11 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header";
 import AddedToCartBackdrop from "../components/AddedToCartPopup/AddedToCartBackdrop";
-import { AddressProvider } from "../contexts/AddressContext";
-import { CartProvider } from "../contexts/CartContext";
+import AddressProvider from "../contexts/AddressContext";
+import CartProvider from "../contexts/CartContext";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../hooks";
-import { WishlistProvider } from "../contexts/WishlistContext";
+import WishlistProvider from "../contexts/WishlistContext";
 import { Toolbar } from "@mui/material";
 import Footer from "../components/Footer";
 
@@ -29,11 +29,16 @@ export default function UserLayout() {
           <CartProvider>
             <WishlistProvider>
               <Header />
-              <main>
+              <main
+                style={{
+                  minHeight: "85vh",
+                  borderBottom: "1px solid transparent", // Prevents margin collapsing
+                }}
+              >
                 <Toolbar />
                 <Outlet />
-                <Footer />
               </main>
+              <Footer />
             </WishlistProvider>
             <AddedToCartBackdrop />
           </CartProvider>

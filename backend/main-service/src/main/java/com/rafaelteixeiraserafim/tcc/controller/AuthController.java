@@ -14,16 +14,20 @@ import com.rafaelteixeiraserafim.tcc.service.OrderService;
 import com.rafaelteixeiraserafim.tcc.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -35,21 +39,51 @@ public class AuthController {
     private final SecurityFilter securityFilter;
     private final TokenProvider tokenProvider;
     private final OrderService orderService;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(AuthService authService, UserService userService, SecurityFilter securityFilter, TokenProvider tokenProvider, OrderService orderService) {
+    public AuthController(AuthService authService, UserService userService, SecurityFilter securityFilter, TokenProvider tokenProvider, OrderService orderService, AuthenticationManager authenticationManager) {
         this.authService = authService;
         this.userService = userService;
         this.securityFilter = securityFilter;
         this.tokenProvider = tokenProvider;
         this.orderService = orderService;
+        this.authenticationManager = authenticationManager;
+    }
+
+    @PatchMapping("/{userId}/disable")
+    public ResponseEntity<?> disableUser(@PathVariable @Min(1) Long userId) {
+        User newUser = userService.disableUser(userId);
+
+        return ResponseEntity.ok(newUser);
+    }
+
+    @PatchMapping("/disable")
+    public ResponseEntity<?> disableUsers(@RequestBody List<Long> ids) {
+        userService.disableUsers(ids);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/enable")
+    public ResponseEntity<?> enableUsers(@RequestBody List<Long> ids) {
+        userService.enableUsers(ids);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/delete")
+    public ResponseEntity<?> deleteAdmins(@RequestBody List<Long> ids) {
+        userService.deleteAdmins(ids);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/signup/{role}")
     public ResponseEntity<User> signUpUser(@RequestBody @Valid SignUpDto data, @PathVariable("role") String role) {
         for (UserRole userRole : UserRole.values()) {
             if (Objects.equals(userRole.getRole(), role)) {
-                User user = authService.signUpByRole(data, userRole);
+                User user = authService.createUser(data, userRole);
                 ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
 
                 if (Objects.equals(role, UserRole.CLIENT.getRole())) {
@@ -65,20 +99,34 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
+    @PostMapping("/admin")
+    public ResponseEntity<User> createAdmin(@RequestBody @Valid SignUpDto data) {
+        User user = authService.createUser(data, UserRole.ADMIN);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(user);
+    }
+
     @PostMapping("/login/{role}")
     public ResponseEntity<User> loginUser(@RequestBody @Valid LoginDto data, @PathVariable("role") String role) {
         for (UserRole userRole : UserRole.values()) {
             if (Objects.equals(userRole.getRole(), role)) {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                data.email(),
+                                data.password()
+                        )
+                );
                 ResponseCookie jwtCookie = this.generateJwtCookie(data.email(), data.password());
                 User user = userService.getUser(data.email(), userRole);
 
-                if (authService.isValidPassword(user.getPassword(), data.password())) {
+//                if (authService.isValidPassword(user.getPassword(), data.password())) {
                     return ResponseEntity.ok()
                             .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                             .body(user);
-                }
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .build();
+//                }
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                        .build();
             }
         }
 

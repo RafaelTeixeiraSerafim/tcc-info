@@ -1,6 +1,7 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import ProductImageInput from "./ProductImageInput/ProductImageInput";
 import { IFormProduct, IImage } from "../interfaces";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { useEffect } from "react";
 
 interface ProductImageInputsProps {
@@ -48,7 +49,7 @@ export default function ProductImageInputs({
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: "0.5rem",
+        gap: "1.75rem",
         width: "100%",
       }}
     >
@@ -57,23 +58,38 @@ export default function ProductImageInputs({
           display: "flex",
           justifyContent: "left",
           alignItems: "center",
-          gap: ".25rem",
+          gap: ".5rem",
         }}
       >
-        <Typography variant="h6" sx={{ textAlign: "left" }}>
+        <Typography variant="h4" sx={{ textAlign: "left" }}>
           Imagens
         </Typography>
-        <IconButton onClick={handleAddImg} sx={{ aspectRatio: 1 }} size="small">
+        <Tooltip
+          title={
+            <>
+              <Typography fontSize={"0.75rem"}>
+                As imagens que aparecerão na página do produto
+              </Typography>
+              <br />
+              <Typography fontSize={"0.75rem"}>
+                A <b>Imagem 1</b> é a imagem principal que aparecerá na maioria dos displays do produto
+              </Typography>
+            </>
+          }
+        >
+          <HelpOutlineIcon />
+        </Tooltip>
+        <IconButton onClick={handleAddImg} sx={{ aspectRatio: 1 }}>
           +
         </IconButton>
-        <IconButton onClick={handleSubImg} sx={{ aspectRatio: 1 }}>
+        <IconButton onClick={handleSubImg} sx={{ aspectRatio: 1 }} size="large">
           -
         </IconButton>
       </Box>
       <Box
         sx={{
           display: "grid",
-          gap: "1rem",
+          gap: "1.5rem",
           justifyContent: "center",
           width: "100%",
           gridTemplateColumns: "repeat(3, 1fr)",

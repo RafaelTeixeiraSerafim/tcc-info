@@ -43,7 +43,7 @@ export default function ReadTab() {
         }}
       >
         <TextField
-          placeholder="Pesquise notificações"
+          placeholder="Pesquisar notificações"
           variant="outlined"
           value={searchQuery}
           onChange={handleSearchChange}

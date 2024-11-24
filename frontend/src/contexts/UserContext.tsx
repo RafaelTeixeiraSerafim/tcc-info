@@ -1,22 +1,12 @@
-import React, { useCallback, useEffect } from "react";
-import { createContext, useState } from "react";
+import { AxiosError } from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 import { IUser } from "../interfaces";
 import { checkToken, logout } from "../service/api";
-import { AxiosError } from "axios";
+import { UserContext } from ".";
 
 interface UserProviderProps {
   children: React.ReactNode;
 }
-
-interface IUserContextInterface {
-  user: IUser | null;
-  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-  authenticate: () => Promise<void>;
-  logoutUser: () => Promise<void>;
-  hasCheckedToken: boolean;
-}
-
-const UserContext = createContext<IUserContextInterface | null>(null);
 
 function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
@@ -56,5 +46,4 @@ function UserProvider({ children }: UserProviderProps) {
   );
 }
 
-export default UserContext;
-export { UserProvider };
+export default UserProvider;

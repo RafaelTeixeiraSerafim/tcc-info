@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IAddress, IFormAddress } from "../interfaces";
 import PostalCodeInput from "./PostalCodeInput";
@@ -9,6 +9,7 @@ import Form from "./Form";
 import { createAddress, updateAddress } from "../service/api";
 import { AxiosError } from "axios";
 import useForm from "../hooks/useForm";
+import { formatPhone, formatPostalCode } from "../utils/helpers";
 
 interface AddressModalProps {
   isOpen: boolean;
@@ -81,7 +82,7 @@ export default function AddressModal({
   return (
     <Modal handleClose={handleClose} isOpen={isOpen}>
       <Modal.Title>Adicionar Endereço</Modal.Title>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} style={{ width: "80%", alignItems: "" }}>
         <TextField
           label="Nome Completo"
           required
@@ -90,24 +91,26 @@ export default function AddressModal({
           onChange={handleChange}
         />
         <PostalCodeInput
-          postalCode={address.postalCode}
+          postalCode={formatPostalCode(address.postalCode)}
           setAddress={setAddress}
           required
         />
-        <TextField
-          label="Estado"
-          required
-          name="state"
-          value={address.state}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Cidade"
-          required
-          name="city"
-          value={address.city}
-          onChange={handleChange}
-        />
+        <Stack direction={"row"} gap="1rem">
+          <TextField
+            label="Estado"
+            required
+            name="state"
+            value={address.state}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Cidade"
+            required
+            name="city"
+            value={address.city}
+            onChange={handleChange}
+          />
+        </Stack>
         <TextField
           label="Bairro"
           required
@@ -115,20 +118,22 @@ export default function AddressModal({
           value={address.neighbourhood}
           onChange={handleChange}
         />
-        <TextField
-          label="Rua/Avenida"
-          required
-          name="street"
-          value={address.street}
-          onChange={handleChange}
-        />
-        <TextField
-          label="Número"
-          required
-          name="houseNumber"
-          value={address.houseNumber}
-          onChange={handleChange}
-        />
+        <Stack direction={"row"} gap="1rem">
+          <TextField
+            label="Rua/Avenida"
+            required
+            name="street"
+            value={address.street}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Número"
+            required
+            name="houseNumber"
+            value={address.houseNumber}
+            onChange={handleChange}
+          />
+        </Stack>
         <TextField
           label="Complemeto"
           name="apartmentNumber"
@@ -139,8 +144,11 @@ export default function AddressModal({
           label="Telefone de contato"
           required
           name="contactPhone"
-          value={address.contactPhone}
-          onChange={handleChange}
+          value={formatPhone(address.contactPhone)}
+          onChange={(e) => {
+            e.target.value = formatPhone(e.target.value);
+            handleChange(e);
+          }}
         />
         <Form.Actions>
           <Modal.CancelButton />

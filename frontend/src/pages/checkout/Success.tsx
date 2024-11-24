@@ -11,7 +11,7 @@ export default function Success() {
         display: "flex",
         flexDirection: "column",
         gap: "2.5rem",
-        mb: "3rem",
+        my: "3rem",
         width: "60%",
         minHeight: "60vh",
         marginInline: "auto",

@@ -13,7 +13,7 @@ export default function ProductInputLabel({
     <InputLabel
       sx={{
         position: "absolute",
-        top: -40,
+        top: -44,
         color: "inherit",
       }}
     >

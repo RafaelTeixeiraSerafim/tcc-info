@@ -1,4 +1,11 @@
-import { Box, FormControl, SelectChangeEvent, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Rating,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -62,38 +69,68 @@ export default function ProductDetails() {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "1.5rem",
+                gap: "1.75rem",
                 flex: 1,
               }}
             >
-              <Typography variant="h4">{product.name}</Typography>
-              <PriceDisplay
-                salePrice={product.salePrice}
-                origPrice={product.origPrice}
-              />
-              <FormControl
-                sx={{
-                  display: "flex",
-                  gap: "inherit",
-                  maxWidth: "15rem",
-                }}
-              >
-                <SelectProductQty
-                  qty={qty}
-                  onChange={handleQtyChange}
-                  stockQty={parseInt(product.stockQty)}
-                />
-                <AddToCartButton productId={product.id} productQty={qty} />
-              </FormControl>
-              <ShippingFeeDisplay />
+              <Stack gap="0.5rem">
+                <Typography
+                  component="h1"
+                  fontSize="1.875rem"
+                  fontWeight={"500"}
+                  lineHeight={"1.25"}
+                >
+                  {product.name}
+                </Typography>
+                <Stack direction={"row"} gap={"0.25rem"}>
+                  <Typography>{product.rating.toFixed(1)}</Typography>
+                  <Rating value={product.rating} precision={0.1} readOnly />
+                  <Typography>({product.numOfReviews})</Typography>
+                </Stack>
+              </Stack>
+              {product.stockQty ? (
+                <>
+                  <PriceDisplay
+                    salePrice={product.salePrice}
+                    origPrice={product.origPrice}
+                  />
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      gap: "1rem",
+                      maxWidth: "15rem",
+                    }}
+                  >
+                    <SelectProductQty
+                      qty={qty}
+                      onChange={handleQtyChange}
+                      stockQty={parseInt(product.stockQty)}
+                    />
+                    <AddToCartButton productId={product.id} productQty={qty} />
+                  </FormControl>
+                  <ShippingFeeDisplay productId={product.id} qty={qty} />
+                </>
+              ) : (
+                <Stack>
+                  <Typography variant="h5">Produto indisponível</Typography>
+                  <Typography>
+                    Este produto não está disponível no momento...
+                  </Typography>
+                </Stack>
+              )}
             </Box>
           </Box>
           <Box>
             <PageSubtitle>Descrição</PageSubtitle>
-            <Typography>{product.description}</Typography>
+            <Typography whiteSpace={"pre-wrap"}>
+              {product.description}
+            </Typography>
             <Box sx={{ height: "3rem" }} />
           </Box>
-          <Reviews productId={product.id} />
+          <Reviews
+            productId={product.id}
+            onUpdate={() => getProduct(product.id)}
+          />
         </Box>
       )}
     </>

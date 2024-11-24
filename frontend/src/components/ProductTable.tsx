@@ -12,10 +12,10 @@ import NoRowsOverlay from "./NoRowsOverlay";
 import { formatCurrency } from "../utils/helpers";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "Id", flex: 1 },
-  { field: "name", headerName: "Nome", flex: 3.5 },
-  { field: "category", headerName: "Categoria", flex: 1.7 },
-  { field: "stockQty", headerName: "Qtde. em estoque", flex: 1 },
+  { field: "id", headerName: "Id", flex: 0.8 },
+  { field: "name", headerName: "Nome", flex: 3 },
+  { field: "category", headerName: "Categoria", flex: 1.4 },
+  { field: "stockQty", headerName: "Estoque", flex: 1 },
   { field: "origPrice", headerName: "Preço orig.", flex: 1.5 },
   { field: "salePrice", headerName: "Preço oferta", flex: 1.5 },
   { field: "createdAt", headerName: "Criado em", flex: 2.5 },
@@ -74,7 +74,9 @@ export default function ProductTable({
               : formatCurrency(parseFloat(product.salePrice)),
           stockQty: product.stockQty,
           createdAt: new Date(product.createdAt).toLocaleString(),
-          updatedAt: new Date(product.updatedAt).toLocaleString(),
+          updatedAt: product.updatedAt
+            ? new Date(product.updatedAt).toLocaleString()
+            : "-",
         };
       })
     );

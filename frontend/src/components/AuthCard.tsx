@@ -1,11 +1,12 @@
 import { Paper } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 interface AuthCardProps {
   children: React.ReactNode;
+  style?: CSSProperties;
 }
 
-export default function AuthCard({ children }: AuthCardProps) {
+export default function AuthCard({ children, style }: AuthCardProps) {
   return (
     <Paper
       sx={{
@@ -14,6 +15,7 @@ export default function AuthCard({ children }: AuthCardProps) {
         width: "30%",
         paddingBlock: "2rem",
         paddingInline: "1.5rem",
+        ...style,
       }}
       elevation={5}
     >

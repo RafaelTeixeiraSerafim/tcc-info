@@ -1,36 +1,19 @@
-import React, { useCallback, useEffect } from "react";
-import { createContext, useState } from "react";
+import { AxiosError } from "axios";
+import React, { useCallback, useEffect, useState } from "react";
+import { AddressContext } from ".";
+import { useUserContext } from "../hooks";
 import { IAddress, IFormAddress, IShippingOption } from "../interfaces";
-import { emptyFormAddress } from "../utils/formDefaults";
 import {
   deleteAddress,
   fetchAddressByPostalCode,
   fetchShippingOptions,
   fetchUserAddresses,
 } from "../service/api";
-import { AxiosError } from "axios";
-import { useUserContext } from "../hooks";
+import { emptyFormAddress } from "../utils/formDefaults";
 
 interface AddressProviderProps {
   children: React.ReactElement;
 }
-
-interface AddressContextInterface {
-  incompleteAddress: IFormAddress | null;
-  selectedAddress: IAddress | null;
-  getFromLocalStorage: () => void;
-  postalCode: string | null;
-  userAddresses: IAddress[];
-  handleDelete: (addressId: number) => Promise<void>;
-  getAddresses: (userId: number) => Promise<void>;
-  changeSelectedAddressById: (id: number) => void;
-  clearSelectedAddress: () => void;
-  shippingOptions: IShippingOption[];
-  selectedShippingOption: IShippingOption | null;
-  changeSelectedShippingOption: (shippingOption: IShippingOption) => void;
-}
-
-const AddressContext = createContext<AddressContextInterface | null>(null);
 
 function AddressProvider({ children }: AddressProviderProps) {
   const [incompleteAddress, setIncompleteAddress] =
@@ -89,6 +72,7 @@ function AddressProvider({ children }: AddressProviderProps) {
 
   const setSelectedAddressById = useCallback(
     (id: number) => {
+      if (userAddresses.length === 0) return
       const address = userAddresses.find((address) => address.id === id);
       if (!address) throw Error(`Endereço com id ${id} não foi encontrado`);
 
@@ -111,10 +95,12 @@ function AddressProvider({ children }: AddressProviderProps) {
 
   const getFromLocalStorage = useCallback(() => {
     const selectedAddressId = localStorage.getItem("addressId");
+    console.log({ selectedAddressId });
     if (selectedAddressId) {
       setSelectedAddressById(parseInt(selectedAddressId));
     } else {
       const postalCode = localStorage.getItem("postalCode");
+      console.log({ postalCode });
       if (postalCode) getAddressByPostalCode(postalCode);
     }
     const selectedShippingOptionId = localStorage.getItem("shippingOptionId");
@@ -125,7 +111,7 @@ function AddressProvider({ children }: AddressProviderProps) {
           (option) => option.id === parseInt(selectedShippingOptionId)
         )!
       );
-  }, [changeSelectedAddressById, shippingOptions]);
+  }, [shippingOptions, setSelectedAddressById]);
 
   const getShippingOptions = async (userId: number, postalCode: string) => {
     try {
@@ -159,13 +145,14 @@ function AddressProvider({ children }: AddressProviderProps) {
   };
 
   useEffect(() => {
-    if (userAddresses.length > 0) getFromLocalStorage();
-  }, [getFromLocalStorage, userAddresses]);
-
-  useEffect(() => {
     if (!user) return;
     getAddresses(user.id);
   }, [user]);
+
+  useEffect(() => {
+    // if (userAddresses.length > 0)
+    getFromLocalStorage();
+  }, [getFromLocalStorage]);
 
   useEffect(() => {
     if (!user || !postalCode) return;
@@ -194,5 +181,4 @@ function AddressProvider({ children }: AddressProviderProps) {
   );
 }
 
-export default AddressContext;
-export { AddressProvider };
+export default AddressProvider;

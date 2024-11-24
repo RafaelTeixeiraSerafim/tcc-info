@@ -15,8 +15,7 @@ export default function Cart() {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        mb: "3rem",
-        mt: "3rem",
+        my: "3rem",
         width: "80%",
         marginInline: "auto",
       }}
@@ -46,7 +45,7 @@ export default function Cart() {
             <ContinueOrderButton />
           </>
         ) : (
-          <Typography>Carrinho vazio</Typography>
+          <Typography>Parece que seu carrinho está vazio...</Typography>
         )}
       </Paper>
     </Box>

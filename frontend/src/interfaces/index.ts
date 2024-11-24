@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export interface IImage {
   id: number | string;
   file: File | null | string | ArrayBuffer;
@@ -23,8 +25,10 @@ export interface IProduct {
   height: string;
   weight: string;
   images: IImage[];
+  rating: number;
+  numOfReviews: number;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 }
 
 export interface IFormProduct {
@@ -40,8 +44,6 @@ export interface IFormProduct {
   height: string;
   weight: string;
   images: IImage[];
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IFormCategory {
@@ -51,6 +53,8 @@ export interface IFormCategory {
 
 export interface ICategory extends IFormCategory {
   id: number;
+  createdAt: string;
+  updatedAt: string | null;
 }
 
 export interface IUser {
@@ -60,8 +64,9 @@ export interface IUser {
   password: string;
   profilePic: string;
   role: "CLIENT" | "ADMIN";
+  enabled: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 }
 
 export interface IUpdateUser {
@@ -84,7 +89,7 @@ export interface ISignupUser {
 export interface IOrder {
   id: number;
   user: IUser;
-  addressId: number;
+  address: IAddress;
   shippingFee: number;
   datePlaced: string;
   status: "PENDING" | "SHIPPED" | "DELIVERED";
@@ -135,7 +140,7 @@ export interface IAccountTableRow {
   id: number;
   username: string;
   email: string;
-  role: "CLIENT" | "ADMIN";
+  enabled: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -163,6 +168,8 @@ export interface ICategoryTableRow {
   id: number;
   name: string;
   description: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IFormAddress {
@@ -227,4 +234,93 @@ export interface INotification {
   description: string;
   read: boolean;
   createdAt: string;
+}
+
+export interface ICartContext {
+  cartItems: IOrderItem[];
+  addedToCart: boolean;
+  setAddedToCart: React.Dispatch<React.SetStateAction<boolean>>;
+  handleAddToCart: (productId: number, qty: number) => Promise<void>;
+  handleDeleteFromCart: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    cartItemId: number
+  ) => Promise<void>;
+  hasErrorCart: boolean;
+  setHasErrorCart: React.Dispatch<React.SetStateAction<boolean>>;
+  subtotal: number;
+  total: number;
+  shippingOptions: IShippingOption[];
+}
+
+export interface IAdminNotificationContext {
+  unreadNotifications: INotification[];
+  readNotifications: INotification[];
+  getReadNotifications: () => Promise<void>;
+  readSelectedNotifications: (ids: number[]) => Promise<void>;
+  unreadSelectedNotifications: (ids: number[]) => Promise<void>;
+}
+
+export interface IThemeContextInterface {
+  darkMode: boolean;
+  toggleTheme: () => void;
+}
+
+export interface IUserContextInterface {
+  user: IUser | null;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  authenticate: () => Promise<void>;
+  logoutUser: () => Promise<void>;
+  hasCheckedToken: boolean;
+}
+
+export interface IWishlistContext {
+  wishlist: IWishlistItem[];
+  getWishlistItem: (
+    userId: number,
+    productId: number
+  ) => IWishlistItem | undefined;
+  addItem: (e: React.MouseEvent<HTMLButtonElement>, productId: number) => void;
+  removeItem: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    wishlistItemId: number
+  ) => void;
+}
+
+export interface AddressContextInterface {
+  incompleteAddress: IFormAddress | null;
+  selectedAddress: IAddress | null;
+  getFromLocalStorage: () => void;
+  postalCode: string | null;
+  userAddresses: IAddress[];
+  handleDelete: (addressId: number) => Promise<void>;
+  getAddresses: (userId: number) => Promise<void>;
+  changeSelectedAddressById: (id: number) => void;
+  clearSelectedAddress: () => void;
+  shippingOptions: IShippingOption[];
+  selectedShippingOption: IShippingOption | null;
+  changeSelectedShippingOption: (shippingOption: IShippingOption) => void;
+}
+
+export interface IPasswordForm {
+  curPassword: string;
+  newPassword: string;
+}
+
+export interface IFieldError {
+  message: string;
+  onSubmit?: (value: string) => boolean;
+  onError?: (e: AxiosError) => boolean;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => boolean;
+}
+
+export interface IAuthErrors {
+  [key: string]: IFieldError[] | undefined;
+  root?: IFieldError[];
+}
+
+export interface IField {
+  name: string;
+  error: string;
 }

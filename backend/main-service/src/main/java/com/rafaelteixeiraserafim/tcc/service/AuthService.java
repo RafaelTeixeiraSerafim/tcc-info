@@ -5,6 +5,7 @@ import com.rafaelteixeiraserafim.tcc.dto.SignUpDto;
 import com.rafaelteixeiraserafim.tcc.dto.UpdateUserDto;
 import com.rafaelteixeiraserafim.tcc.enums.ImageCategory;
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
+import com.rafaelteixeiraserafim.tcc.exception.EmailConflictException;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,15 +32,17 @@ public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final S3Service s3Service;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${is_https}")
     private boolean isHttps;
 
     @Autowired
-    public AuthService(UserRepository userRepository, UserService userService, S3Service s3Service) {
+    public AuthService(UserRepository userRepository, UserService userService, S3Service s3Service, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.s3Service = s3Service;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -46,12 +50,12 @@ public class AuthService implements UserDetailsService {
         return userService.getUser(email);
     }
 
-    public User signUpByRole(SignUpDto data, UserRole userRole) throws ResponseStatusException {
+    public User createUser(SignUpDto data, UserRole userRole) throws ResponseStatusException {
         if (userRepository.findByEmail(data.email()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use");
+            throw new EmailConflictException("Email is already in use");
         }
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.username(), data.email(), encryptedPassword, userRole);
+        String encryptedPassword = passwordEncoder.encode(data.password());
+        User newUser = new User(data.username(), data.email(), encryptedPassword, userRole, true);
         return userRepository.save(newUser);
     }
 
@@ -66,7 +70,6 @@ public class AuthService implements UserDetailsService {
     }
 
     public ResponseCookie createCookie(String accessToken) {
-        System.out.println(isHttps);
         return ResponseCookie.from("token", accessToken)
                 .httpOnly(true)
                 .secure(isHttps) // Ensure it's sent over HTTPS
@@ -88,7 +91,7 @@ public class AuthService implements UserDetailsService {
         if (existingUser.isEmpty()) {
             user.setEmail(updateUserDto.getEmail());
         } else if (!existingUser.get().getEmail().equals(user.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use");
+            throw new EmailConflictException("Email is already in use");
         }
 
         user.setUsername(updateUserDto.getUsername());
@@ -118,9 +121,5 @@ public class AuthService implements UserDetailsService {
         }
 
         return userRepository.save(user);
-    }
-
-    public boolean isValidPassword(String passwordHash, String password) {
-        return new BCryptPasswordEncoder().matches(password, passwordHash);
     }
 }

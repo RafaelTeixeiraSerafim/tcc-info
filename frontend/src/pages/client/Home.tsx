@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ProductCarousel from "../../components/ProductCarousel";
 import axiosInstance from "../../config/axiosInstance";
 import { ICategory, IProduct } from "../../interfaces";
+import Banner from "../../assets/images/banner.png"
 
 export default function Home() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -52,7 +53,7 @@ export default function Home() {
       }}
     >
       <img
-        src="https://ss-nova.myshopify.com/cdn/shop/files/slider1.png?v=1613786027"
+        src={Banner}
         alt=""
       />
       <Box

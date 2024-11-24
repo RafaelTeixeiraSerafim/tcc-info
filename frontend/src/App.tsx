@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoadingFallback from "./components/LoadingFallback";
 import ScrollToTop from "./components/ScrollToTop";
-import { ThemeProviderWrapper } from "./contexts/ThemeContext";
-import { UserProvider } from "./contexts/UserContext";
+import ThemeProviderWrapper from "./contexts/ThemeContext";
+import UserProvider from "./contexts/UserContext";
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
 import UserLayout from "./layouts/UserLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -25,17 +25,21 @@ import ShippingOptions from "./pages/checkout/ShippingOptions";
 import Home from "./pages/client/Home";
 import NoPage from "./pages/NoPage";
 import ProductDetails from "./pages/client/ProductDetails";
-import Profile from "./pages/client/Profile";
+import Profile from "./pages/client/account/Profile";
 import Test from "./pages/Test";
 import AdminRequired from "./routeWrappers/AdminRequired";
 import LoginRequired from "./routeWrappers/LoginRequired";
 import LogoutRequired from "./routeWrappers/LogoutRequired";
-import ProfileUpdate from "./pages/client/ProfileUpdate";
+import ProfileUpdate from "./pages/client/account/ProfileUpdate";
 import Success from "./pages/checkout/Success";
 import ReviewOrder from "./pages/checkout/ReviewOrder";
 import Purchases from "./pages/client/Purchases";
 import Wishlist from "./pages/client/Wishlist";
-import Notifications from "./pages/admin/notifications/notifications";
+import Notifications from "./pages/admin/notifications/Notifications";
+import ClientAccountLayout from "./layouts/ClientAccountLayout";
+import PrivacySettings from "./pages/client/account/PrivacySettings";
+import PasswordChange from "./pages/client/account/PasswordChange";
+import Addresses from "./pages/client/account/Addresses";
 
 function App() {
   return (
@@ -64,9 +68,14 @@ function App() {
                   <Route path="success" element={<Success />} />
                 </Route>
 
-                <Route path="profile" element={<LoginRequired />}>
-                  <Route index element={<Profile />} />
-                  <Route path="update" element={<ProfileUpdate />} />
+                <Route path="account" element={<LoginRequired />}>
+                  <Route element={<ClientAccountLayout />}>
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="profile/update" element={<ProfileUpdate />} />
+                    <Route path="addresses" element={<Addresses />} />
+                    <Route path="settings/privacy" element={<PrivacySettings />} />
+                    <Route path="settings/privacy/password-change" element={<PasswordChange />} />
+                  </Route>
                 </Route>
 
                 <Route path="purchases" element={<LoginRequired />}>

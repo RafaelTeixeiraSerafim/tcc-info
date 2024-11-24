@@ -1,13 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { darkTheme, lightTheme } from "../themes";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-
-interface IThemeContextInterface {
-  darkMode: boolean;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<IThemeContextInterface | null>(null);
+import { ThemeContext } from ".";
 
 interface ThemeProviderWrapperProps {
   children: React.ReactElement;
@@ -48,4 +42,4 @@ const ThemeProviderWrapper = ({ children }: ThemeProviderWrapperProps) => {
   );
 };
 
-export { ThemeProviderWrapper, ThemeContext };
+export default ThemeProviderWrapper;

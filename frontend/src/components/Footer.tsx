@@ -13,8 +13,9 @@ export default function Footer() {
       direction={"row"}
       // gap={"8rem"}
       justifyContent={"space-evenly"}
-      sx={{ bgcolor: "#fff" }}
+      sx={{ bgcolor: "#f3f3f3" }}
       paddingBlock={"2rem"}
+      id="footer"
     >
       <Stack alignItems={"center"}>
         <Logo />
@@ -33,7 +34,7 @@ export default function Footer() {
       </Stack>
       <Stack gap={"0.75rem"}>
         <Stack direction={"row"} alignItems={"center"} gap={"0.875rem"}>
-          <PlaceIcon sx={{ opacity: "70%" }} />
+          <PlaceIcon color="secondary" />
           <Stack>
             <Typography sx={{ opacity: "70%" }} fontSize={"0.875rem"}>
               Rua Frei Caneca, 303 - Centro
@@ -43,13 +44,13 @@ export default function Footer() {
           </Stack>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} gap={"0.875rem"}>
-          <PhoneIcon sx={{ opacity: "70%" }} />
+          <PhoneIcon color="secondary" />
           <Typography sx={{ opacity: "70%" }} fontSize={"0.875rem"}>
             (48) 99933-3764
           </Typography>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} gap={"0.875rem"}>
-          <EmailIcon sx={{ opacity: "70%" }} />
+          <EmailIcon color="secondary" />
           <Typography sx={{ opacity: "70%" }} fontSize="0.875rem">
             rafael.teixeiraserafim@gmail.com
           </Typography>

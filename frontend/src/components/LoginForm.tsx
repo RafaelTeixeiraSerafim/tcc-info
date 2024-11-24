@@ -1,11 +1,21 @@
-import SignupPrompt from "./SignupPrompt";
-import AuthForm from "./AuthForm";
+import { AxiosError } from "axios";
 import { useState } from "react";
-import { useUserContext } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
-import { ILoginUser } from "../interfaces";
+import { useUserContext } from "../hooks";
 import useForm from "../hooks/useForm";
+import { ILoginUser } from "../interfaces";
+import Form from "./Form";
+import SignupPrompt from "./SignupPrompt";
+
+const errors = {
+  root: [
+    {
+      message: "Email e/ou senha inválidos",
+      onError: (error: AxiosError) => error.status === 401,
+    },
+  ],
+};
 
 export default function LoginForm() {
   const [loginUser, setLoginUser] = useState<ILoginUser>({
@@ -17,31 +27,42 @@ export default function LoginForm() {
   const { handleTextInputChange } = useForm<ILoginUser>();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginUser)
+    console.log(loginUser);
 
-    axiosInstance
-      .post("/auth/login/client", loginUser)
-      .then((response) => {
-        console.log(response);
-        setUser(response.data);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const response = await axiosInstance.post(
+        "/auth/login/client",
+        loginUser
+      );
+      console.log(response);
+      setUser(response.data);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      if ((error as AxiosError).status === 403) {
+        alert(
+          "A sua conta foi desativada. Se você deseja reativá-la, contate o número (48) 99933-3764."
+        );
+      }
+      throw error;
+    }
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => handleTextInputChange(e, setLoginUser);
 
+  const areInputsFilled = () => {
+    return loginUser.email && loginUser.password;
+  };
+
   return (
-    <AuthForm onSubmit={handleSubmit}>
-      <AuthForm.Title>Login</AuthForm.Title>
-      <AuthForm.Content>
-        <AuthForm.Input
+    <Form onSubmit={handleSubmit} errors={errors} style={{ gap: "3rem" }}>
+      <Form.Title>Login</Form.Title>
+      <Form.Inputs>
+        <Form.Input
           type="email"
           placeholder="Email"
           name="email"
@@ -49,7 +70,7 @@ export default function LoginForm() {
           onChange={handleChange}
           required
         />
-        <AuthForm.Input
+        <Form.Input
           type="password"
           placeholder="Senha"
           name="password"
@@ -57,11 +78,13 @@ export default function LoginForm() {
           onChange={handleChange}
           required
         />
-      </AuthForm.Content>
-      <AuthForm.Actions>
-        <AuthForm.SubmitButton>Entrar</AuthForm.SubmitButton>
+      </Form.Inputs>
+      <Form.Actions style={{ flexDirection: "column", alignItems: "center" }}>
+        <Form.SubmitButton disabled={!areInputsFilled()}>
+          Entrar
+        </Form.SubmitButton>
         <SignupPrompt />
-      </AuthForm.Actions>
-    </AuthForm>
+      </Form.Actions>
+    </Form>
   );
 }

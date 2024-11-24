@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosInstance";
 import { useUserContext } from "../hooks";
-import AuthForm from "./AuthForm";
 import { ILoginUser } from "../interfaces";
 import useForm from "../hooks/useForm";
+import { AxiosError } from "axios";
+import Form from "./Form";
+
+const errors = {
+  root: [
+    {
+      message: "Email e/ou senha inválidos",
+      onError: (error: AxiosError) => error.status === 401,
+    },
+  ],
+};
 
 export default function AdminLoginForm() {
   const [loginUser, setLoginUser] = useState<ILoginUser>({
@@ -16,19 +26,18 @@ export default function AdminLoginForm() {
   const { handleTextInputChange } = useForm<ILoginUser>();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axiosInstance
-      .post("/auth/login/admin", loginUser)
-      .then((response) => {
-        console.log(response);
-        setUser(response.data);
-        navigate("dashboard");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const response = await axiosInstance.post("/auth/login/admin", loginUser);
+      console.log(response);
+      setUser(response.data);
+      navigate("dashboard");
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   const handleChange = (
@@ -36,10 +45,10 @@ export default function AdminLoginForm() {
   ) => handleTextInputChange(e, setLoginUser);
 
   return (
-    <AuthForm onSubmit={handleSubmit}>
-      <AuthForm.Title>Admin</AuthForm.Title>
-      <AuthForm.Content>
-        <AuthForm.Input
+    <Form onSubmit={handleSubmit} errors={errors} style={{ gap: "3rem" }}>
+      <Form.Title>Admin</Form.Title>
+      <Form.Inputs>
+        <Form.Input
           type="email"
           placeholder="Email"
           name="email"
@@ -47,7 +56,7 @@ export default function AdminLoginForm() {
           onChange={handleChange}
           required
         />
-        <AuthForm.Input
+        <Form.Input
           type="password"
           placeholder="Senha"
           name="password"
@@ -55,10 +64,10 @@ export default function AdminLoginForm() {
           onChange={handleChange}
           required
         />
-      </AuthForm.Content>
-      <AuthForm.Actions>
-        <AuthForm.SubmitButton>Entrar</AuthForm.SubmitButton>
-      </AuthForm.Actions>
-    </AuthForm>
+      </Form.Inputs>
+      <Form.Actions>
+        <Form.SubmitButton>Entrar</Form.SubmitButton>
+      </Form.Actions>
+    </Form>
   );
 }

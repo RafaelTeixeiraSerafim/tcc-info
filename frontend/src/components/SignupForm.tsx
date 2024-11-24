@@ -1,12 +1,29 @@
+import { AxiosError } from "axios";
 import React, { useState } from "react";
-import AuthForm from "./AuthForm";
-import LoginPrompt from "./LoginPrompt";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../hooks";
-import { ISignupUser } from "../interfaces";
 import useForm from "../hooks/useForm";
-import { createUser } from "../service/api";
-import { AxiosError } from "axios";
+import { ISignupUser } from "../interfaces";
+import { signup } from "../service/api";
+import Form from "./Form";
+import LoginPrompt from "./LoginPrompt";
+
+const errors = {
+  email: [
+    {
+      message: "Esse email já está em uso",
+      onError: (e: AxiosError) => e.status === 409,
+    },
+  ],
+  password: [
+    {
+      message: "Sua senha deve conter pelo menos 8 caracteres",
+      onChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => e.target.value.length < 8,
+    },
+  ],
+};
 
 export default function SignupForm() {
   const [signupUser, setSignupUser] = useState<ISignupUser>({
@@ -23,22 +40,28 @@ export default function SignupForm() {
     e.preventDefault();
 
     try {
-      const user = await createUser(signupUser, "CLIENT");
+      const user = await signup(signupUser, "CLIENT");
       setUser(user);
       navigate("/");
     } catch (error) {
-      alert(`Erro ao criar conta: ${(error as AxiosError).message}`);
+      console.error(error);
+      throw error;
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    handleTextInputChange(e, setSignupUser);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => handleTextInputChange(e, setSignupUser);
+
+  const areInputsFilled = () => {
+    return signupUser.email && signupUser.password && signupUser.username;
+  };
 
   return (
-    <AuthForm onSubmit={handleSubmit}>
-      <AuthForm.Title>Signup</AuthForm.Title>
-      <AuthForm.Content>
-        <AuthForm.Input
+    <Form onSubmit={handleSubmit} errors={errors} style={{ gap: "3rem" }}>
+      <Form.Title>Signup</Form.Title>
+      <Form.Inputs>
+        <Form.Input
           type="text"
           placeholder="Nome de usuário"
           name="username"
@@ -46,7 +69,7 @@ export default function SignupForm() {
           onChange={handleChange}
           required
         />
-        <AuthForm.Input
+        <Form.Input
           type="email"
           placeholder="Email"
           name="email"
@@ -54,7 +77,7 @@ export default function SignupForm() {
           onChange={handleChange}
           required
         />
-        <AuthForm.Input
+        <Form.Input
           type="password"
           placeholder="Senha"
           name="password"
@@ -62,11 +85,13 @@ export default function SignupForm() {
           onChange={handleChange}
           required
         />
-      </AuthForm.Content>
-      <AuthForm.Actions>
-        <AuthForm.SubmitButton>Cadastrar</AuthForm.SubmitButton>
+      </Form.Inputs>
+      <Form.Actions style={{ flexDirection: "column", alignItems: "center" }}>
+        <Form.SubmitButton disabled={!areInputsFilled()}>
+          Cadastrar
+        </Form.SubmitButton>
         <LoginPrompt />
-      </AuthForm.Actions>
-    </AuthForm>
+      </Form.Actions>
+    </Form>
   );
 }

@@ -1,16 +1,36 @@
-import { TextField } from "@mui/material";
+import { AxiosError } from "axios";
 import React, { useState } from "react";
+import { ISignupUser } from "../interfaces";
+import { createAdmin } from "../service/api";
 import Form from "./Form";
 import Modal from "./Modal";
-import { ISignupUser } from "../interfaces";
-import { AxiosError } from "axios";
-import { createUser } from "../service/api";
 
 interface NewAdminModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onUpdate: () => void;
 }
+
+const errors = {
+  email: [
+    {
+      message: "Esse email já está em uso",
+      onError: (e: AxiosError) => e.status === 409,
+    },
+  ],
+  password: [
+    {
+      message: "A senha deve conter pelo menos 8 caracteres",
+      onChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => e.target.value.length < 8,
+    },
+    {
+      message: "A senha deve conter pelo menos 8 caracteres",
+      onSubmit: (value: string) => value.length < 8,
+    },
+  ],
+};
 
 export default function NewAdminModal({
   isOpen,
@@ -29,11 +49,17 @@ export default function NewAdminModal({
     e.preventDefault();
 
     try {
-      await createUser(admin, "ADMIN");
+      await createAdmin(admin);
       onUpdate();
       setIsOpen(false);
+      setAdmin({
+        username: "",
+        email: "",
+        password: "",
+      });
     } catch (error) {
-      alert(`Erro ao criar novo usuário: ${(error as AxiosError).message}`);
+      console.log(error);
+      throw error;
     }
   };
 
@@ -45,34 +71,40 @@ export default function NewAdminModal({
 
   return (
     <Modal isOpen={isOpen} handleClose={handleClose}>
-      <Form onSubmit={handleSubmit}>
+      <Form
+        onSubmit={handleSubmit}
+        errors={errors}
+        style={{ width: "80%", gap: "3rem" }}
+      >
         <Form.Title variant="h4">Novo Admin</Form.Title>
-        <TextField
-          label="Nome de usuário"
-          name="username"
-          value={admin.username}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="Email"
-          type="email"
-          name="email"
-          value={admin.email}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
-        <TextField
-          label="Senha"
-          type="password"
-          name="password"
-          value={admin.password}
-          onChange={handleChange}
-          fullWidth
-          required
-        />
+        <Form.Inputs>
+          <Form.Input
+            label="Nome de usuário"
+            name="username"
+            value={admin.username}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+          <Form.Input
+            label="Email"
+            type="email"
+            name="email"
+            value={admin.email}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+          <Form.Input
+            label="Senha"
+            type="password"
+            name="password"
+            value={admin.password}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+        </Form.Inputs>
         <Form.Actions>
           <Modal.CancelButton />
           <Form.SubmitButton>Criar</Form.SubmitButton>

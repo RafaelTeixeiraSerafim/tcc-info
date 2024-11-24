@@ -1,6 +1,6 @@
-import { Box, Avatar, Typography, Rating, Button, Stack } from "@mui/material";
+import { Avatar, Box, Button, Rating, Stack, Typography } from "@mui/material";
 import { IReview } from "../../interfaces";
-import { formatDate, formatDatetime } from "../../utils/helpers";
+import { formatDate } from "../../utils/helpers";
 
 interface ReviewCardProps {
   review: IReview;

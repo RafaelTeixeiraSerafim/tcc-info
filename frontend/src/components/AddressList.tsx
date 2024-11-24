@@ -2,6 +2,7 @@ import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useAddressContext } from "../hooks";
 import { IAddress } from "../interfaces";
+import { formatPhone, formatPostalCode } from "../utils/helpers";
 
 interface AddressListProps {
   onUpdate: (addressToUpdate: IAddress) => void;
@@ -15,7 +16,7 @@ export default function AddressList({
   onUpdate,
 }: AddressListProps) {
   const { userAddresses, handleDelete } = useAddressContext();
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <>
@@ -52,10 +53,11 @@ export default function AddressList({
                 {address.neighbourhood}
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                {address.city}, {address.state} - {address.postalCode}
+                {address.city}, {address.state} -{" "}
+                {formatPostalCode(address.postalCode)}
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                {address.fullName}
+                {address.fullName} - {formatPhone(address.contactPhone)}
               </Typography>
             </Box>
             <Stack>

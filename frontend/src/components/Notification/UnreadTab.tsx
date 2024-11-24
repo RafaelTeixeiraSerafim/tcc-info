@@ -36,7 +36,7 @@ export default function UnreadTab() {
         }}
       >
         <TextField
-          placeholder="Pesquise notificações"
+          placeholder="Pesquisar notificações"
           variant="outlined"
           value={searchQuery}
           onChange={handleSearchChange}

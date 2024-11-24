@@ -6,7 +6,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 
 export default function AddressDisplay() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { selectedAddress, incompleteAddress, getFromLocalStorage } =
+  const { selectedAddress, incompleteAddress } =
     useAddressContext();
 
   return (
@@ -32,7 +32,6 @@ export default function AddressDisplay() {
       <SelectAddressModal
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
-        updateFunction={getFromLocalStorage}
       />
     </>
   );

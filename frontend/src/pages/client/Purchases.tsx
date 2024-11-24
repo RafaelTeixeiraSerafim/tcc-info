@@ -88,7 +88,7 @@ export default function Purchases() {
               <Typography>
                 Pedido feito no dia {formatDate(purchase.datePlaced)}
               </Typography>
-              {purchase.dateDelivered ? (
+              {purchase.dateDelivered && purchase.status === "DELIVERED" ? (
                 <Typography>
                   Chegou no dia {formatDate(purchase.dateDelivered)}
                 </Typography>

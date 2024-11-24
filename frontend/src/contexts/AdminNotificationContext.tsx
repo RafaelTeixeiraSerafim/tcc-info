@@ -1,23 +1,13 @@
 import { AxiosError } from "axios";
-import { createContext, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { AdminNotificationContext } from ".";
+import axiosInstance from "../config/axiosInstance";
 import { useUserContext } from "../hooks";
 import { INotification } from "../interfaces";
 import {
   fetchAdminReadNotifications,
   fetchAdminUnreadNotifications,
 } from "../service/api";
-import axiosInstance from "../config/axiosInstance";
-
-interface IAdminNotificationContext {
-  unreadNotifications: INotification[];
-  readNotifications: INotification[];
-  getReadNotifications: () => Promise<void>;
-  readSelectedNotifications: (ids: number[]) => Promise<void>;
-  unreadSelectedNotifications: (ids: number[]) => Promise<void>;
-}
-
-const AdminNotificationContext =
-  createContext<IAdminNotificationContext | null>(null);
 
 interface AdminNotificationProviderProps {
   children: React.ReactNode;
@@ -107,4 +97,4 @@ const AdminNotificationProvider = ({
   );
 };
 
-export { AdminNotificationContext, AdminNotificationProvider };
+export default AdminNotificationProvider;

@@ -1,11 +1,13 @@
 package com.rafaelteixeiraserafim.tcc.controller;
 
+import com.rafaelteixeiraserafim.tcc.dto.ChangePasswordRequest;
+import com.rafaelteixeiraserafim.tcc.dto.UserResponse;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.service.UserService;
+import com.rafaelteixeiraserafim.tcc.utils.ModelDtoConversion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,12 +22,30 @@ public class UserController {
     }
 
     @GetMapping("/clients")
-    public List<User> getClients() {
-        return userService.getClients();
+    public List<UserResponse> getClients() {
+        List<User> clients =  userService.getClients();
+
+        return ModelDtoConversion.createUserResponses(clients);
     }
 
     @GetMapping("/admins")
-    public List<User> getAdmins() {
-        return userService.getAdmins();
+    public List<UserResponse> getAdmins() {
+        List<User> admins = userService.getAdmins();
+
+        return ModelDtoConversion.createUserResponses(admins);
+    }
+
+    @PatchMapping("/{userId}/password")
+    public ResponseEntity<?> changePassword(@PathVariable Long userId, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(userId, changePasswordRequest.curPassword(), changePasswordRequest.newPassword());
+
+        return ResponseEntity.ok("Password changed successfully");
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+
+        return ResponseEntity.noContent().build();
     }
 }

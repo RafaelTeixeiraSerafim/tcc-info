@@ -59,7 +59,7 @@ export default function ReviewOrder() {
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
-        mb: "3rem",
+        my: "3rem",
         width: "80%",
         marginInline: "auto",
       }}

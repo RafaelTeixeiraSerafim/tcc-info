@@ -4,7 +4,7 @@ import { IOrder } from "../interfaces";
 import { fetchStatusList, updateOrder } from "../service/api";
 import Form from "./Form";
 import Modal from "./Modal";
-import StatusSelect from "./StatusSelect";
+import OrderStatusStepper from "./OrderStatusStepper";
 
 interface StatusModalProps {
   isOpen: boolean;
@@ -19,8 +19,10 @@ export default function StatusModal({
   order,
   setOrder,
 }: StatusModalProps) {
-  const [statusList, setStatusList] = useState<string[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<string>(order.status);
+  const [statusList, setStatusList] = useState<IOrder["status"][]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<IOrder["status"]>(
+    order.status
+  );
 
   const handleClose = () => setIsOpen(false);
 
@@ -55,13 +57,24 @@ export default function StatusModal({
   }, []);
 
   return (
-    <Modal handleClose={handleClose} isOpen={isOpen}>
-      <Modal.Title>Alterar Inputs</Modal.Title>
-      <Form onSubmit={handleSubmit}>
-        <StatusSelect
-          selectedStatus={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
+    <Modal
+      handleClose={handleClose}
+      isOpen={isOpen}
+      style={{
+        width: "50%",
+        minHeight: "70vh",
+        gap: "5rem",
+      }}
+    >
+      <Modal.Title>Alterar Status</Modal.Title>
+      <Form
+        onSubmit={handleSubmit}
+        style={{ flex: 1, justifyContent: "space-between", width: "100%" }}
+      >
+        <OrderStatusStepper
+          value={order.status}
           statusList={statusList}
+          onChange={(value) => setSelectedStatus(value)}
         />
         <Form.Actions>
           <Modal.CancelButton />

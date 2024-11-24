@@ -39,7 +39,7 @@ export default function ImageInputMenu({
       onClose={onClose}
     >
       <MenuItem onClick={handleMenuItemClick} key={"btnUploadPhoto"}>
-        Nova Foto
+        Nova imagem
         <TextField
           type="file"
           required={required}
@@ -53,7 +53,7 @@ export default function ImageInputMenu({
           }}
         />
       </MenuItem>
-      <MenuItem onClick={onPhotoRemove}>Remover Foto</MenuItem>
+      <MenuItem onClick={onPhotoRemove}>Remover imagem</MenuItem>
     </Menu>
   );
 }

@@ -12,7 +12,7 @@ export default function useDashboardLayout() {
     return {
       pathname: location.pathname,
       searchParams: new URLSearchParams(),
-      navigate: (path) => navigate(String(path)),
+      navigate: (path) => navigate(String(path).slice(9)), // ignore "tcc-info/" if navigating directly
     };
   }, [location.pathname, navigate]);
 

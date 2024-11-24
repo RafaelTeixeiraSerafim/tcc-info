@@ -8,17 +8,16 @@ import AddressModal from "./AddressModal";
 import Form from "./Form";
 import Modal from "./Modal";
 import PostalCodeInput from "./PostalCodeInput";
+import { formatPostalCode, sanitizePostalCode } from "../utils/helpers";
 
 interface SelectAddressModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  updateFunction: () => void;
 }
 
 export default function SelectAddressModal({
   isOpen,
   closeModal,
-  updateFunction,
 }: SelectAddressModalProps) {
   const [addressToUpdate, setAddressToUpdate] = useState<IAddress | null>(null);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -37,6 +36,7 @@ export default function SelectAddressModal({
     changeSelectedAddressById,
     clearSelectedAddress,
     userAddresses,
+    getFromLocalStorage,
   } = useAddressContext();
 
   const handleNewAddress = () => {
@@ -44,15 +44,18 @@ export default function SelectAddressModal({
     setIsAddressModalOpen(true);
   };
 
-  const handleSave = () => {
-    if (!tempSelectedAddress) return;
-    changeSelectedAddressById(tempSelectedAddress.id);
-    localStorage.removeItem("postalCode");
-    localStorage.setItem(
-      "selectedAddressId",
-      tempSelectedAddress.id.toString()
-    );
-    updateFunction();
+  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (tempSelectedAddress) {
+      changeSelectedAddressById(tempSelectedAddress.id);
+      localStorage.removeItem("postalCode");
+      localStorage.setItem(
+        "addressId",
+        tempSelectedAddress.id.toString()
+      );
+    }
+    getFromLocalStorage();
     closeModal();
   };
 
@@ -62,8 +65,11 @@ export default function SelectAddressModal({
     e.stopPropagation();
     clearSelectedAddress();
     localStorage.removeItem("addressId");
-    localStorage.setItem("postalCode", formAddress.postalCode);
-    updateFunction();
+    localStorage.setItem(
+      "postalCode",
+      sanitizePostalCode(formAddress.postalCode)
+    );
+    getFromLocalStorage();
     closeModal();
   };
 
@@ -146,7 +152,7 @@ export default function SelectAddressModal({
             }}
           >
             <PostalCodeInput
-              postalCode={formAddress.postalCode}
+              postalCode={formatPostalCode(formAddress.postalCode)}
               setAddress={setFormAddress}
             />
             <Button
@@ -167,7 +173,7 @@ export default function SelectAddressModal({
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
                 {formAddress.city}, {formAddress.state} -{" "}
-                {formAddress.postalCode}
+                {formatPostalCode(formAddress.postalCode)}
               </Typography>
             </Box>
           )}

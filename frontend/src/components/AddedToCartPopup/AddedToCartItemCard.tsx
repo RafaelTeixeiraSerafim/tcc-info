@@ -1,11 +1,14 @@
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Stack } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { IOrderItem } from "../../interfaces";
 import { formatCurrency } from "../../utils/helpers";
 
 interface AddedToCartItemCardProps {
   cartItem: IOrderItem;
-  onDelete: (cartItemId: number) => void;
+  onDelete: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    cartItemId: number
+  ) => void;
 }
 
 export default function AddedToCartItemCard({
@@ -26,25 +29,38 @@ export default function AddedToCartItemCard({
         src={cartItem.product.images[0].url}
         width={"100%"}
       />
-      <Box>
+      <Stack justifyContent={"space-between"}>
         <Box
           sx={{
             width: "80%",
-            height: "3rem",
-            overflow: "scroll",
           }}
         >
-          <Typography fontWeight={"bold"}>{cartItem.product.name}</Typography>
+          <Typography
+            sx={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              fontWeight: "bold",
+            }}
+          >
+            {cartItem.product.name}
+          </Typography>
         </Box>
-        <Typography>
-          {formatCurrency(
-            parseFloat(cartItem.product.salePrice || cartItem.product.origPrice)
-          )}
-        </Typography>
-        <Typography>Qtde: {cartItem.qty}</Typography>
-      </Box>
+        <Box>
+          <Typography>
+            {formatCurrency(
+              parseFloat(
+                cartItem.product.salePrice || cartItem.product.origPrice
+              )
+            )}
+          </Typography>
+          <Typography>Qtde: {cartItem.qty}</Typography>
+        </Box>
+      </Stack>
       <IconButton
-        onClick={() => onDelete(cartItem.id)}
+        onClick={(e) => onDelete(e, cartItem.id)}
         sx={{ position: "absolute", right: 0 }}
       >
         <DeleteOutlineIcon />

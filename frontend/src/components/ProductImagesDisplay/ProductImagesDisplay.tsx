@@ -47,7 +47,7 @@ export default function ProductImagesDisplay({ images }: ProductImagesDisplay) {
               display: "flex",
               flexDirection: "column",
               width: "5rem",
-              gap: "0.5rem",
+              gap: "1rem",
             }}
           >
             {images.map((image) => (

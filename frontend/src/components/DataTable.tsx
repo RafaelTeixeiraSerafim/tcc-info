@@ -1,10 +1,19 @@
-import { DataGrid, GridColDef, GridValidRowModel } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRowSelectionModel,
+  GridValidRowModel,
+} from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import NoRowsOverlay from "./NoRowsOverlay";
 
 interface DataTableProps {
   rows: GridValidRowModel[];
   columns: GridColDef[];
+  selectionModel: GridRowSelectionModel;
+  setSelectionModel: React.Dispatch<
+    React.SetStateAction<GridRowSelectionModel>
+  >;
 }
 
 const noRowsOverlay = () => (
@@ -13,7 +22,16 @@ const noRowsOverlay = () => (
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function DataTable({ rows, columns }: DataTableProps) {
+export default function DataTable({
+  rows,
+  columns,
+  selectionModel,
+  setSelectionModel,
+}: DataTableProps) {
+  const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
+    setSelectionModel(newSelection);
+  };
+
   return (
     <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
@@ -25,6 +43,9 @@ export default function DataTable({ rows, columns }: DataTableProps) {
         slots={{
           noRowsOverlay: noRowsOverlay,
         }}
+        onRowSelectionModelChange={handleSelectionChange}
+        checkboxSelection
+        rowSelectionModel={selectionModel}
       />
     </Paper>
   );

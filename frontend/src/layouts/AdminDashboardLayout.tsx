@@ -15,7 +15,7 @@ import Logo from "../assets/images/small_logo.png";
 import useDashboardLayout from "../hooks/useDashboardLayout";
 import { dashboardTheme } from "../themes";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { AdminNotificationProvider } from "../contexts/AdminNotificationContext";
+import AdminNotificationProvider from "../contexts/AdminNotificationContext";
 
 const NAVIGATION: Navigation = [
   {
@@ -23,25 +23,16 @@ const NAVIGATION: Navigation = [
     title: "Geral",
   },
   {
-    segment: "admin/dashboard",
+    segment: "tcc-info/admin/dashboard",
     title: "Painel",
     icon: <DashboardIcon />,
+    pattern: "admin/dashboard",
   },
   {
-    segment: "admin/orders",
-    title: "Pedidos",
-    icon: <ShoppingCartIcon />,
-    pattern: "admin/orders{/:segment}*",
-  },
-  {
-    segment: "admin/users",
-    title: "Usuários",
-    icon: <GroupIcon />,
-  },
-  {
-    segment: "admin/notifications",
+    segment: "tcc-info/admin/notifications",
     title: "Notificações",
     icon: <NotificationsIcon />,
+    pattern: "admin/notifications",
   },
   // {
   //   kind: "divider",
@@ -77,16 +68,35 @@ const NAVIGATION: Navigation = [
   },
   {
     kind: "header",
+    title: "Gerenciamento",
+  },
+  {
+    segment: "tcc-info/admin/orders",
+    title: "Pedidos",
+    icon: <ShoppingCartIcon />,
+    pattern: "admin/orders{/:segment}*",
+  },
+  {
+    segment: "tcc-info/admin/users",
+    title: "Usuários",
+    icon: <GroupIcon />,
+    pattern: "admin/users",
+  },
+  {
+    kind: "divider",
+  },
+  {
+    kind: "header",
     title: "Inventário",
   },
   {
-    segment: "admin/products",
+    segment: "tcc-info/admin/products",
     title: "Produtos",
     icon: <InventoryIcon />,
     pattern: "admin/products{/:segment}*",
   },
   {
-    segment: "admin/categories",
+    segment: "tcc-info/admin/categories",
     title: "Categorias",
     icon: <CategoryIcon />,
     pattern: "admin/categories{/:segment}*",

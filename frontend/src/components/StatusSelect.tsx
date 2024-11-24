@@ -30,7 +30,7 @@ export default function StatusSelect({
         onChange={onChange}
       >
         {statusList?.map((status) => (
-          <MenuItem value={status}>{translateStatus(status)}</MenuItem>
+          <MenuItem value={status} key={status}>{translateStatus(status)}</MenuItem>
         ))}
       </Select>
     </FormControl>

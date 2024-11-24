@@ -19,9 +19,11 @@ interface CategoryTableProps {
 }
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "Id", flex: 1 },
-  { field: "name", headerName: "Nome", flex: 2 },
-  { field: "description", headerName: "Descrição", flex: 7 },
+  { field: "id", headerName: "Id", flex: 0.5 },
+  { field: "name", headerName: "Nome", flex: 3 },
+  // { field: "description", headerName: "Descrição", flex: 7 },
+  { field: "createdAt", headerName: "Criado em", flex: 1.5 },
+  { field: "updatedAt", headerName: "Atualizado em", flex: 1.5 },
 ];
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -49,7 +51,19 @@ export default function CategoryTable({
   };
 
   useEffect(() => {
-    setRows(categories);
+    setRows(
+      categories.map((category) => {
+        return {
+          id: category.id,
+          name: category.name,
+          description: category.description,
+          createdAt: new Date(category.createdAt).toLocaleString(),
+          updatedAt: category.updatedAt
+            ? new Date(category.updatedAt).toLocaleString()
+            : "-",
+        };
+      })
+    );
   }, [categories]);
 
   return (

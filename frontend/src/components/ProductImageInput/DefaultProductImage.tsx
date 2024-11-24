@@ -8,9 +8,8 @@ export default function DefaultProductImage() {
     <Box
       sx={{
         display: "flex",
-        minHeight: "10rem",
         minWidth: "14rem",
-        height: "100%",
+        aspectRatio: "1 / 1.1",
         flex: 1,
         borderRadius: theme.shape.borderRadius,
       }}

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,5 +68,15 @@ public class ReviewService {
         review.setComment(reviewDto.comment());
 
         return reviewRepository.save(review);
+    }
+
+    public static float getAvgRating(List<Review> reviews) {
+        float avgRating = 0;
+        for (Review review : reviews) {
+            avgRating += review.getRating();
+        }
+
+        if (!reviews.isEmpty()) return avgRating / reviews.size();
+        else return 0f;
     }
 }

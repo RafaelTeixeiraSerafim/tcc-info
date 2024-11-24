@@ -3,7 +3,7 @@ import AdminLoginForm from '../../../components/AdminLoginForm'
 
 export default function AdminLogin() {
   return (
-    <AuthCard>
+    <AuthCard style={{marginTop: "8%"}}>
       <AdminLoginForm />
     </AuthCard>
   )

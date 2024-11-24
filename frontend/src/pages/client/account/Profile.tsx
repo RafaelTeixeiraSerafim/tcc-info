@@ -1,37 +1,26 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
-import ProfileImage from "../../components/ProfilePicInput/ProfileImage";
-import { useUserContext } from "../../hooks";
+import { Box, Breadcrumbs, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ProfileImage from "../../../components/ProfilePicInput/ProfileImage";
+import { useUserContext } from "../../../hooks";
 
 export default function Profile() {
   const { user } = useUserContext();
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        mb: "3rem",
-        mt: "3rem",
-        width: "80%",
-        marginInline: "auto",
-      }}
-    >
-      <Typography component="h1" variant="h4">
-        Meu Perfil
-      </Typography>
+    <>
       {user && (
-        <Paper
+        <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             gap: "2.5rem",
-            minHeight: "60vh",
             padding: "2rem",
           }}
         >
+          <Breadcrumbs aria-label="breadcrumb">
+            <Typography sx={{ color: "text.primary" }}>Meu Perfil</Typography>
+          </Breadcrumbs>
           <Box
             sx={{
               display: "flex",
@@ -41,7 +30,7 @@ export default function Profile() {
           >
             <ProfileImage previewImage={user.profilePic} />
             <Box>
-              <Typography variant="h6">{user.username}</Typography>
+              <Typography variant="h4">{user.username}</Typography>
               <Typography variant="h6">{user.email}</Typography>
             </Box>
           </Box>
@@ -49,8 +38,8 @@ export default function Profile() {
           <Button variant="outlined" onClick={() => navigate("update")}>
             Alterar Perfil
           </Button>
-        </Paper>
+        </Box>
       )}
-    </Box>
+    </>
   );
 }

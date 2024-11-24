@@ -11,6 +11,7 @@ import {
   IShippingOptions,
   ISignupUser,
 } from "../../interfaces";
+import { AxiosError } from "axios";
 
 export const checkToken = async () => {
   try {
@@ -18,7 +19,7 @@ export const checkToken = async () => {
     console.log(response);
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error((error as AxiosError).message);
   }
 };
 
@@ -206,7 +207,7 @@ export const fetchCategories = async () => {
   try {
     const response = await axiosInstance.get("/categories");
     console.log(response);
-    return response.data;
+    return response.data.categories;
   } catch (error) {
     console.error(error);
     throw error;
@@ -244,7 +245,7 @@ export const updateCategory = async (
   category: IFormCategory
 ) => {
   try {
-    const response = await axiosInstance.post(
+    const response = await axiosInstance.put(
       `/categories/${categoryId}`,
       category
     );
@@ -330,13 +331,29 @@ export const deleteProducts = async (ids: number[]) => {
   }
 };
 
-export const createUser = async (
+export const signup = async (
   user: ISignupUser,
   role: "CLIENT" | "ADMIN"
 ) => {
   try {
     const response = await axiosInstance.post(
       `/auth/signup/${role === "CLIENT" ? "client" : "admin"}`,
+      user
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createAdmin = async (
+  user: ISignupUser,
+) => {
+  try {
+    const response = await axiosInstance.post(
+      `/auth/admin`,
       user
     );
     console.log(response);
@@ -461,7 +478,9 @@ export const fetchBoughtProduct = async (productId: number, userId: number) => {
 
 export const fetchAdminUnreadNotifications = async (userId: number) => {
   try {
-    const response = await axiosInstance.get(`/users/${userId}/notifications/unread`);
+    const response = await axiosInstance.get(
+      `/users/${userId}/notifications/unread`
+    );
     console.log(response);
     return response.data.notifications;
   } catch (error) {
@@ -472,7 +491,9 @@ export const fetchAdminUnreadNotifications = async (userId: number) => {
 
 export const fetchAdminReadNotifications = async (userId: number) => {
   try {
-    const response = await axiosInstance.get(`/users/${userId}/notifications/read`);
+    const response = await axiosInstance.get(
+      `/users/${userId}/notifications/read`
+    );
     console.log(response);
     return response.data.notifications;
   } catch (error) {

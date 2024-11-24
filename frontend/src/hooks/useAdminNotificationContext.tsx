@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AdminNotificationContext } from '../contexts/AdminNotificationContext';
+import { AdminNotificationContext } from '../contexts';
 
 export const useAdminNotificationContext = () => {
   const context = useContext(AdminNotificationContext)

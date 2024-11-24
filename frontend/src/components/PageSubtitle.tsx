@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import TitleUnderline from "./TitleUnderline";
 import React from "react";
 
@@ -7,6 +7,8 @@ interface PageSubtitleProps {
 }
 
 export default function PageSubtitle({ children }: PageSubtitleProps) {
+  const theme = useTheme()
+  
   return (
     <Box>
       <Typography
@@ -15,7 +17,7 @@ export default function PageSubtitle({ children }: PageSubtitleProps) {
       >
         {children}
       </Typography>
-      <TitleUnderline />
+      <TitleUnderline style={{color: theme.palette.primary.main}} />
     </Box>
   );
 }

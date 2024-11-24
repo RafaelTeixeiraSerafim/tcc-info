@@ -26,15 +26,13 @@ const PieChart = ({ style }: PieChartProps) => {
   );
 
   const labels = mostBoughtProducts.map(
-    (boughtProduct) => boughtProduct.product.name
+    (boughtProduct) => boughtProduct.product.name.slice(0, 30) + "..."
   );
 
   useEffect(() => {
     const getMostBoughtProducts = async () => {
       try {
-        const response = await axiosInstance.get(
-          "/products/most-bought"
-        );
+        const response = await axiosInstance.get("/products/most-bought");
         console.log(response);
         setMostBoughtProducts(response.data.mostBoughtProducts);
       } catch (error) {
@@ -53,14 +51,13 @@ const PieChart = ({ style }: PieChartProps) => {
         plugins: {
           legend: {
             display: true,
-            position: "top",
           },
           title: {
             display: true,
             text: "Produtos mais vendidos",
             font: {
-              size: 16
-            }
+              size: 16,
+            },
           },
         },
       }}
@@ -71,20 +68,20 @@ const PieChart = ({ style }: PieChartProps) => {
             label: "Qtde vendida",
             data: filteredData,
             backgroundColor: [
+              "rgba(255, 159, 64, 0.2)",
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
               "rgba(255, 206, 86, 0.2)",
               "rgba(75, 192, 192, 0.2)",
               "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
             ],
             borderColor: [
+              "rgba(255, 159, 64, 1)",
               "rgba(255, 99, 132, 1)",
               "rgba(54, 162, 235, 1)",
               "rgba(255, 206, 86, 1)",
               "rgba(75, 192, 192, 1)",
               "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
             ],
             borderWidth: 1,
           },

@@ -38,7 +38,7 @@ public class Product {
     private String about;
 
     @NotNull
-    @Column(length = 2000)
+    @Column(length = 5000)
     private String description;
 
     @NotNull
@@ -75,6 +75,10 @@ public class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> images;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Review> reviews;
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    private List<WishlistItem> wishlistItems;

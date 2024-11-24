@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import AddressContext from "../contexts/AddressContext";
+import { AddressContext } from "../contexts";
 
 const useAddressContext = () => {
   const context = useContext(AddressContext);
