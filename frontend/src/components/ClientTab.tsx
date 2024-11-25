@@ -1,10 +1,11 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import axiosInstance from "../config/axiosInstance";
 import { IUser } from "../interfaces";
 import ClientTable from "./ClientTable";
-import { AxiosError } from "axios";
+import DisableClientsButton from "./DisableClientsButton";
+import EnableClientsButton from "./EnableClientsButton";
 
 export default function ClientTab() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,26 +18,6 @@ export default function ClientTab() {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setSearchQuery(event.target.value);
-  };
-
-  const disableClients = async (ids: number[]) => {
-    try {
-      const response = await axiosInstance.patch(`/auth/disable`, ids);
-      console.log(response);
-      getClients();
-    } catch (error) {
-      alert(`Erro ao desabilitar usuários: ${(error as AxiosError).message}`);
-    }
-  };
-
-  const enableClients = async (ids: number[]) => {
-    try {
-      const response = await axiosInstance.patch(`/auth/enable`, ids);
-      console.log(response);
-      getClients();
-    } catch (error) {
-      alert(`Erro ao habilitar usuários: ${(error as AxiosError).message}`);
-    }
   };
 
   const getClients = () => {
@@ -86,22 +67,14 @@ export default function ClientTab() {
             gap: "1rem",
           }}
         >
-          <Button
-            onClick={() => disableClients(selectionModel as number[])}
-            variant="outlined"
-            color={"error"}
-            disabled={selectionModel.length === 0}
-          >
-            Desabilitar usuários
-          </Button>
-          <Button
-            onClick={() => enableClients(selectionModel as number[])}
-            variant="outlined"
-            color={"success"}
-            disabled={selectionModel.length === 0}
-          >
-            Habilitar usuários
-          </Button>
+          <DisableClientsButton
+            selectionModel={selectionModel}
+            onUpdate={getClients}
+          />
+          <EnableClientsButton
+            selectionModel={selectionModel}
+            onUpdate={getClients}
+          />
         </Box>
       </Box>
 

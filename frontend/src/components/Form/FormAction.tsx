@@ -1,24 +1,14 @@
-import { Button } from "@mui/material";
-import React from "react";
+import { Button, ButtonProps } from "@mui/material";
 
-interface FormActionProps {
-  children: React.ReactNode;
-  handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  variant?: "text" | "outlined" | "contained";
-}
+type FormActionProps = ButtonProps;
 
-export default function FormAction({
-  children,
-  handleClick,
-  variant,
-}: FormActionProps) {
+export default function FormAction({ children, ...rest }: FormActionProps) {
   return (
     <Button
-      variant={variant}
-      onClick={handleClick}
       sx={{
         flex: 1,
       }}
+      {...rest}
     >
       {children}
     </Button>

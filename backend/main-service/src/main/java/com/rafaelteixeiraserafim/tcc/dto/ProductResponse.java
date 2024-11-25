@@ -21,6 +21,7 @@ public record ProductResponse(
         BigDecimal weight,
         Date createdAt,
         Date updatedAt,
+        boolean deactivated,
         List<ProductImageResponse> images,
         float rating,
         int numOfReviews

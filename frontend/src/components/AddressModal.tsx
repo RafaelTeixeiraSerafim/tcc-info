@@ -34,7 +34,7 @@ export default function AddressModal({
     addressToUpdate || newAddressDefaultValues || emptyFormAddress
   );
 
-  const { user } = useUserContext();
+  const { user, newAlert } = useUserContext();
   const { handleTextInputChange } = useForm<IFormAddress>();
 
   const isUpdating = Boolean(addressToUpdate);
@@ -54,6 +54,7 @@ export default function AddressModal({
 
       setAddress(emptyFormAddress);
 
+      newAlert("Endereço criado com sucesso!");
       onUpdateAddresses();
       handleClose();
     } catch (error) {
@@ -80,7 +81,7 @@ export default function AddressModal({
   }, [newAddressDefaultValues]);
 
   return (
-    <Modal handleClose={handleClose} isOpen={isOpen}>
+    <Modal onClose={handleClose} isOpen={isOpen}>
       <Modal.Title>Adicionar Endereço</Modal.Title>
       <Form onSubmit={handleSubmit} style={{ width: "80%", alignItems: "" }}>
         <TextField
@@ -153,7 +154,7 @@ export default function AddressModal({
         <Form.Actions>
           <Modal.CancelButton />
           <Form.SubmitButton>
-            {isUpdating ? "Alterar" : "Criar"}
+            {isUpdating ? "Alterar" : "Adicionar"}
           </Form.SubmitButton>
         </Form.Actions>
       </Form>

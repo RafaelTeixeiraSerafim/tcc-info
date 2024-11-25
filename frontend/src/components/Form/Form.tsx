@@ -8,10 +8,11 @@ import FormSubmitButton from "./FormSubmitButton";
 import FormTitle from "./FormTitle";
 import FormInputs from "./FormInputs";
 import FormInput from "./FormInput";
+import FormCancelButton from "./FormCancelButton";
 
 interface FormProps {
   children: React.ReactNode;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void> | void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement> , signal: AbortSignal) => Promise<void> | void;
   errors?: IAuthErrors;
   style?: CSSProperties;
 }
@@ -21,6 +22,7 @@ type FormComponents = {
   Actions: typeof FormActions;
   Action: typeof FormAction;
   SubmitButton: typeof FormSubmitButton;
+  CancelButton: typeof FormCancelButton;
   Inputs: typeof FormInputs;
   Input: typeof FormInput;
 };
@@ -44,6 +46,7 @@ Form.Title = FormTitle;
 Form.Actions = FormActions;
 Form.Action = FormAction;
 Form.SubmitButton = FormSubmitButton;
+Form.CancelButton = FormCancelButton;
 Form.Inputs = FormInputs;
 Form.Input = FormInput;
 

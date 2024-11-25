@@ -1,13 +1,13 @@
+import { Toolbar } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Header from "../components/Header/Header";
 import AddedToCartBackdrop from "../components/AddedToCartPopup/AddedToCartBackdrop";
+import Footer from "../components/Footer";
+import Header from "../components/Header/Header";
 import AddressProvider from "../contexts/AddressContext";
 import CartProvider from "../contexts/CartContext";
-import { useEffect, useState } from "react";
-import { useUserContext } from "../hooks";
 import WishlistProvider from "../contexts/WishlistContext";
-import { Toolbar } from "@mui/material";
-import Footer from "../components/Footer";
+import { useUserContext } from "../hooks";
 
 export default function UserLayout() {
   const [isClient, setIsClient] = useState(false);

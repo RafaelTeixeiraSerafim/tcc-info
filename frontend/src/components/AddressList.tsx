@@ -3,6 +3,7 @@ import React from "react";
 import { useAddressContext } from "../hooks";
 import { IAddress } from "../interfaces";
 import { formatPhone, formatPostalCode } from "../utils/helpers";
+import DeleteAddressButton from "./DeleteAddressButton";
 
 interface AddressListProps {
   onUpdate: (addressToUpdate: IAddress) => void;
@@ -15,11 +16,16 @@ export default function AddressList({
   onChange,
   onUpdate,
 }: AddressListProps) {
-  const { userAddresses, handleDelete } = useAddressContext();
+  const { userAddresses } = useAddressContext();
   const theme = useTheme();
 
   return (
     <>
+      {userAddresses.length === 0 && (
+        <Typography>
+          Parece que você não possui nenhum endereço cadastrado...
+        </Typography>
+      )}
       {userAddresses.map((address) => (
         <Box
           sx={{
@@ -64,9 +70,7 @@ export default function AddressList({
               <Button color="warning" onClick={() => onUpdate(address)}>
                 Alterar
               </Button>
-              <Button color="error" onClick={() => handleDelete(address.id)}>
-                Excluir
-              </Button>
+              <DeleteAddressButton addressId={address.id} />
             </Stack>
           </Box>
         </Box>

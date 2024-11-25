@@ -3,10 +3,7 @@ package com.rafaelteixeiraserafim.tcc.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Category {
     @Id
@@ -28,9 +26,11 @@ public class Category {
     )
     private Long id;
 
+    @NonNull
     @NotNull
     private String name;
 
+    @NonNull
     @NotNull
     private String description;
 
@@ -43,12 +43,11 @@ public class Category {
     @LastModifiedDate
     private Date updatedAt;
 
+    @NonNull
+    @NotNull
+    private Boolean deactivated;
+
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
-
-    public Category(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 }

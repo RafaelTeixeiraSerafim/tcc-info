@@ -1,10 +1,4 @@
-import {
-  Box,
-  Breadcrumbs,
-  Link,
-  Stack,
-  Typography
-} from "@mui/material";
+import { Box, Breadcrumbs, Link, Stack, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
@@ -73,7 +67,7 @@ export default function ProfileUpdate() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: "2.5rem",
+        gap: "3rem",
         width: "100%",
         padding: "2rem",
         marginInline: "auto",
@@ -94,7 +88,10 @@ export default function ProfileUpdate() {
           </Breadcrumbs>
           <Form
             onSubmit={handleSubmit}
-            style={{ alignItems: "", height: "fit-content", gap: "inherit" }}
+            style={{
+              height: "fit-content",
+              gap: "inherit",
+            }}
             errors={errors}
           >
             <Stack direction={"row"} gap={"3rem"} sx={{ alignItems: "center" }}>
@@ -124,7 +121,12 @@ export default function ProfileUpdate() {
                 />
               </Stack>
             </Stack>
-            <Form.SubmitButton style={{ flex: 0 }}>Alterar</Form.SubmitButton>
+            <Form.Actions style={{ justifyContent: "start" }}>
+              <Form.Action onClick={() => navigate(-1)} variant="outlined">
+                Cancelar
+              </Form.Action>
+              <Form.SubmitButton>Alterar</Form.SubmitButton>
+            </Form.Actions>
           </Form>
         </>
       )}

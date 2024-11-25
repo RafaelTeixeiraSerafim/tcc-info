@@ -1,4 +1,10 @@
-import { Stack, TextField, TextFieldProps, Typography } from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
+import {
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IField, IFieldError } from "../../interfaces";
 import useFormContext from "./useFormContext";
@@ -55,18 +61,22 @@ export default function FormInput({ name, onChange, ...rest }: FormInputProps) {
   }, [errors, name]);
 
   return (
-    <Stack>
+    <Stack gap="0.175rem">
       <TextField
         variant="standard"
         fullWidth
         name={name}
         onChange={handleChange}
         {...rest}
+        error={Boolean(input?.error)}
       />
       {input?.error && (
-        <Typography color="error" fontSize={"0.875rem"}>
-          {input.error}
-        </Typography>
+        <Stack direction={"row"} gap={"0.25rem"} alignItems={"center"}>
+          <ErrorIcon fontSize="small" color="error" />
+          <Typography color="error" fontSize={"0.75rem"}>
+            {input.error}
+          </Typography>
+        </Stack>
       )}
     </Stack>
   );

@@ -1,14 +1,18 @@
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-import { ICategory } from "../../../interfaces";
-import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CategoryTable from "../../../components/CategoryTable";
-import { GridRowSelectionModel } from "@mui/x-data-grid";
-import { deleteCategories, fetchCategories } from "../../../service/api";
-import { AxiosError } from "axios";
+import DeleteCategoriesButton from "../../../components/DeleteCategoriesButton";
+import { ICategory } from "../../../interfaces";
+import { fetchAllCategories } from "../../../service/api";
+import DeactivateCategoriesButton from "../../../components/DeactivateCategoriesButton";
+import ReactivateCategoriesButton from "../../../components/ReactivateCategoriesButton";
 
 export default function Categories() {
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>(
     []
   );
@@ -17,7 +21,7 @@ export default function Categories() {
 
   const getCategories = async () => {
     try {
-      const categories = await fetchCategories();
+      const categories = await fetchAllCategories();
 
       setCategories(categories);
     } catch (error) {
@@ -25,17 +29,10 @@ export default function Categories() {
     }
   };
 
-  const deleteSelectedCategories = async () => {
-    try {
-      await deleteCategories(selectionModel);
-
-      setCategories(
-        categories.filter((category) => !selectionModel.includes(category.id))
-      );
-      alert("Categorias deletadas com sucesso!");
-    } catch (error) {
-      alert(`Erro ao deletar categorias: ${(error as AxiosError).message}`);
-    }
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearchQuery(event.target.value);
   };
 
   useEffect(() => {
@@ -49,32 +46,45 @@ export default function Categories() {
         textAlign: "left",
         display: "flex",
         flexDirection: "column",
-        gap: "1.5rem",
+        gap: "1rem",
       }}
     >
+      <Typography variant="h4" component={"h1"}>
+        Categorias
+      </Typography>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h4" component={"h1"}>
-          Categorias
-        </Typography>
+        <TextField
+          placeholder="Pesquisar categorias"
+          variant="outlined"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          sx={{
+            width: "40%",
+          }}
+        />
         <Box
           sx={{
             display: "flex",
             gap: "1rem",
           }}
         >
-          <Button
-            onClick={deleteSelectedCategories}
-            variant="outlined"
-            color={"error"}
-            disabled={selectionModel.length === 0}
-          >
-            Deletar
-          </Button>
+          <DeleteCategoriesButton
+            selectionModel={selectionModel}
+            onUpdate={getCategories}
+          />
+          <DeactivateCategoriesButton
+            selectionModel={selectionModel}
+            onUpdate={getCategories}
+          />
+          <ReactivateCategoriesButton
+            selectionModel={selectionModel}
+            onUpdate={getCategories}
+          />
           <Button variant="outlined" onClick={() => navigate("new")}>
             Nova Categoria
           </Button>
@@ -82,6 +92,7 @@ export default function Categories() {
       </Box>
       <CategoryTable
         categories={categories}
+        searchQuery={searchQuery}
         selectionModel={selectionModel}
         setSelectionModel={setSelectionModel}
       />

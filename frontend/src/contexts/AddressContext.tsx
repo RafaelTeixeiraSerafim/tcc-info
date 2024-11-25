@@ -24,7 +24,7 @@ function AddressProvider({ children }: AddressProviderProps) {
   const [selectedShippingOption, setSelectedShippingOption] =
     useState<IShippingOption | null>(null);
 
-  const { user } = useUserContext();
+  const { user, newAlert } = useUserContext();
 
   const postalCode =
     incompleteAddress?.postalCode || selectedAddress?.postalCode || null;
@@ -46,6 +46,7 @@ function AddressProvider({ children }: AddressProviderProps) {
       setUserAddresses((prevAddresses) =>
         prevAddresses.filter((address) => address.id !== addressId)
       );
+      newAlert("Endereço excluido", "filled", "error")
     } catch (error) {
       alert(`Erro ao deletar endereço: ${(error as AxiosError).message}`);
     }

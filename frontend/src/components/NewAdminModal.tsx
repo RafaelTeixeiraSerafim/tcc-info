@@ -70,11 +70,11 @@ export default function NewAdminModal({
   };
 
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={handleClose}>
       <Form
         onSubmit={handleSubmit}
         errors={errors}
-        style={{ width: "80%", gap: "3rem" }}
+        style={{ width: "80%", gap: "2.5rem" }}
       >
         <Form.Title variant="h4">Novo Admin</Form.Title>
         <Form.Inputs>
@@ -85,6 +85,7 @@ export default function NewAdminModal({
             onChange={handleChange}
             fullWidth
             required
+            variant={"outlined"}
           />
           <Form.Input
             label="Email"
@@ -94,6 +95,7 @@ export default function NewAdminModal({
             onChange={handleChange}
             fullWidth
             required
+            variant={"outlined"}
           />
           <Form.Input
             label="Senha"
@@ -103,6 +105,7 @@ export default function NewAdminModal({
             onChange={handleChange}
             fullWidth
             required
+            variant={"outlined"}
           />
         </Form.Inputs>
         <Form.Actions>

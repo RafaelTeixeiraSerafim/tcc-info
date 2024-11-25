@@ -1,11 +1,13 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
-import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DeleteProductsButton from "../../../components/DeleteProductsButton";
 import ProductTable from "../../../components/ProductTable";
 import { IProduct } from "../../../interfaces";
-import { deleteProducts, fetchProducts } from "../../../service/api";
+import { fetchAllProducts } from "../../../service/api";
+import DeactivateProductsButton from "../../../components/DeactivateProductsButton";
+import ReactivateProductsButton from "../../../components/ReactivateProductsButton";
 
 export default function Products() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -18,24 +20,11 @@ export default function Products() {
 
   const getProducts = async () => {
     try {
-      const products = await fetchProducts();
+      const products = await fetchAllProducts();
 
       setProducts(products);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const deleteSelectedProducts = async () => {
-    try {
-      if (products.length === 0) return;
-      await deleteProducts(selectionModel as number[])
-      setProducts(
-        products.filter((product) => !selectionModel.includes(product.id))
-      );
-      alert("Produtos deletados com sucesso!");
-    } catch (error) {
-      alert(`Erro ao deletar produtos: ${(error as AxiosError).message}`);
     }
   };
 
@@ -83,14 +72,18 @@ export default function Products() {
             gap: "1rem",
           }}
         >
-          <Button
-            onClick={deleteSelectedProducts}
-            variant="outlined"
-            color={"error"}
-            disabled={selectionModel.length === 0}
-          >
-            Deletar
-          </Button>
+          <DeleteProductsButton
+            selectionModel={selectionModel}
+            onUpdate={getProducts}
+          />
+          <DeactivateProductsButton
+            selectionModel={selectionModel}
+            onUpdate={getProducts}
+          />
+          <ReactivateProductsButton
+            selectionModel={selectionModel}
+            onUpdate={getProducts}
+          />
           <Button variant="outlined" onClick={() => navigate("new")}>
             Novo Produto
           </Button>

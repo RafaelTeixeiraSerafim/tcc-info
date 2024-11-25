@@ -2,13 +2,23 @@ import { Box, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import OrderStatus from "../../../components/OrderStatus";
 import axiosInstance from "../../../config/axiosInstance";
 import { IOrder, IOrderTableRow } from "../../../interfaces";
-import { translateStatus } from "../../../utils/helpers";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", flex: 1 },
-  { field: "status", headerName: "Status", flex: 3 },
+  {
+    field: "status",
+    headerName: "Status",
+    flex: 3,
+    renderCell: (params) => (
+      <OrderStatus
+        status={params.value}
+        style={{ fontSize: "inherit", alignContent: "center", height: "100%" }}
+      />
+    ),
+  },
   { field: "userEmail", headerName: "Email do Usuário", flex: 6 },
   {
     field: "datePlaced",
@@ -51,7 +61,7 @@ export default function Orders() {
           response.data.map((order: IOrder) => {
             return {
               id: order.id,
-              status: translateStatus(order.status),
+              status: order.status,
               userEmail: order.user.email,
               datePlaced: new Date(order.datePlaced),
             };

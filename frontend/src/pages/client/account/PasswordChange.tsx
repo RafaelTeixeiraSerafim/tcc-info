@@ -1,11 +1,28 @@
-import { Box, Breadcrumbs, Link, TextField, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
+import { AxiosError } from "axios";
+import { useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import Form from "../../../components/Form";
-import { useForm, useUserContext } from "../../../hooks";
-import { useState } from "react";
-import { IPasswordForm } from "../../../interfaces";
 import axiosInstance from "../../../config/axiosInstance";
-import { AxiosError } from "axios";
+import { useForm, useUserContext } from "../../../hooks";
+import { IPasswordForm } from "../../../interfaces";
+
+const errors = {
+  curPassword: [
+    {
+      message: "Senha inválida",
+      onError: (error: AxiosError) => error.status === 401,
+    },
+  ],
+  newPassword: [
+    {
+      message: "Sua senha deve conter pelo menos 8 caracteres",
+      onChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => e.target.value.length < 8,
+    },
+  ],
+};
 
 export default function PasswordChange() {
   const [form, setForm] = useState<IPasswordForm>({
@@ -13,8 +30,8 @@ export default function PasswordChange() {
     newPassword: "",
   });
   const { handleTextInputChange } = useForm<IPasswordForm>();
-  const { user } = useUserContext();
-  const navigate = useNavigate()
+  const { user, newAlert } = useUserContext();
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -32,11 +49,11 @@ export default function PasswordChange() {
         form
       );
       console.log(response);
-      alert("Senha alterada com sucesso")
-      navigate("/account/settings/privacy")
+      newAlert("Senha alterada com sucesso!");
+      navigate("/account/settings/privacy");
     } catch (error) {
       console.error(error);
-      alert(`Erro ao alterar senha: ${(error as AxiosError).message}`);
+      throw error;
     }
   };
 
@@ -68,23 +85,28 @@ export default function PasswordChange() {
           <Form
             onSubmit={(e) => handleSubmit(e, user.id)}
             style={{ alignItems: "start" }}
+            errors={errors}
           >
-            <TextField
-              label="Senha atual"
-              name="curPassword"
-              value={form.curPassword}
-              onChange={handleChange}
-              type="password"
-              required
-            />
-            <TextField
-              label="Senha nova"
-              name="newPassword"
-              value={form.newPassword}
-              onChange={handleChange}
-              type="password"
-              required
-            />
+            <Form.Inputs style={{ width: "40%" }}>
+              <Form.Input
+                label="Senha atual"
+                name="curPassword"
+                value={form.curPassword}
+                onChange={handleChange}
+                type="password"
+                required
+                variant="outlined"
+              />
+              <Form.Input
+                label="Senha nova"
+                name="newPassword"
+                value={form.newPassword}
+                onChange={handleChange}
+                type="password"
+                required
+                variant="outlined"
+              />
+            </Form.Inputs>
             <Form.Actions>
               <Form.SubmitButton>Alterar</Form.SubmitButton>
             </Form.Actions>

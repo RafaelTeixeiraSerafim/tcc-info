@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { ICategory, IFormProduct } from "../interfaces";
 import {
   FormControl,
   InputLabel,
@@ -7,7 +5,9 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { fetchCategories } from "../service/api";
+import React, { useEffect, useState } from "react";
+import { ICategory, IFormProduct } from "../interfaces";
+import { fetchAllCategories } from "../service/api";
 
 interface SelectCategoriesProps {
   setFormProduct: React.Dispatch<React.SetStateAction<IFormProduct>>;
@@ -31,7 +31,7 @@ export default function SelectCategories({
 
   const getCategories = async () => {
     try {
-      const categories = await fetchCategories();
+      const categories = await fetchAllCategories();
       setCategories(categories);
     } catch (error) {
       alert(`Erro ao pegar as categorias: ${error}`);
@@ -54,11 +54,18 @@ export default function SelectCategories({
         onChange={handleChange}
         required
       >
-        {categories.map((category) => (
-          <MenuItem value={category.id} key={category.id}>
-            {category.name}
-          </MenuItem>
-        ))}
+        {categories.map((category) => {
+          if (
+            !category.deactivated ||
+            category.id === parseInt(formProduct.categoryId)
+          ) {
+            return (
+              <MenuItem value={category.id} key={category.id}>
+                {category.name}
+              </MenuItem>
+            );
+          } else return undefined;
+        })}
       </Select>
     </FormControl>
   );

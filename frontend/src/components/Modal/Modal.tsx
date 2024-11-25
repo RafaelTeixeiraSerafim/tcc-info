@@ -6,7 +6,7 @@ import ModalCancelButton from "./ModalCancelButton";
 
 interface ModalProps {
   isOpen: boolean;
-  handleClose: () => void;
+  onClose: () => void;
   children: React.ReactNode;
   style?: CSSProperties;
 }
@@ -18,13 +18,13 @@ type ModalComponents = {
 
 const Modal: React.FC<ModalProps> & ModalComponents = ({
   isOpen,
-  handleClose,
+  onClose,
   children,
   style,
 }) => {
   return (
-    <ModalContext.Provider value={{ isOpen, handleClose }}>
-      <ModalBase isOpen={isOpen} handleClose={handleClose} style={style}>
+    <ModalContext.Provider value={{ isOpen, onClose }}>
+      <ModalBase isOpen={isOpen} onClose={onClose} style={style}>
         {children}
       </ModalBase>
     </ModalContext.Provider>

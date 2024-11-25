@@ -2,17 +2,19 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Box, Paper, Typography, useTheme } from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-import { useAddressContext, useUserContext } from "../../hooks";
+import { useAddressContext, useCartContext, useUserContext } from "../../hooks";
 import { createPreference } from "../../service/api";
 import { formatCurrency } from "../../utils/helpers";
 import CartSubtotal from "../../components/CartSubtotal";
 import CartShippingFee from "../../components/CartShippingFee";
 import CartTotal from "../../components/CartTotal";
 import { Link } from "react-router-dom";
+import CartCard from "../../components/CartCard";
 
 export default function ReviewOrder() {
   const [preferenceId, setPreferenceId] = useState("");
   const { selectedAddress, selectedShippingOption } = useAddressContext();
+  const { cartItems } = useCartContext();
   const { user } = useUserContext();
   const theme = useTheme();
 
@@ -79,6 +81,13 @@ export default function ReviewOrder() {
       >
         {preferenceId.length > 0 && (
           <>
+            {cartItems.map((cartItem) => (
+              <CartCard
+                cartItem={cartItem}
+                key={cartItem.id}
+                canRemove={false}
+              />
+            ))}
             <Box
               sx={{
                 display: "flex",
@@ -106,7 +115,7 @@ export default function ReviewOrder() {
                   textDecoration: "none",
                   color: theme.palette.primary.main,
                   width: "fit-content",
-                  fontSize: "0.875rem"
+                  fontSize: "0.875rem",
                 }}
               >
                 Editar
@@ -154,7 +163,7 @@ export default function ReviewOrder() {
                   textDecoration: "none",
                   color: theme.palette.primary.main,
                   width: "fit-content",
-                  fontSize: "0.875rem"
+                  fontSize: "0.875rem",
                 }}
               >
                 Editar

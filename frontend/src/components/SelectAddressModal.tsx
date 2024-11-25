@@ -9,6 +9,7 @@ import Form from "./Form";
 import Modal from "./Modal";
 import PostalCodeInput from "./PostalCodeInput";
 import { formatPostalCode, sanitizePostalCode } from "../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 interface SelectAddressModalProps {
   isOpen: boolean;
@@ -28,6 +29,8 @@ export default function SelectAddressModal({
   const [tempSelectedAddress, setTempSelectedAddress] =
     useState<IAddress | null>(null);
 
+  const navigate = useNavigate();
+
   const { user } = useUserContext();
   const {
     getAddresses,
@@ -40,6 +43,11 @@ export default function SelectAddressModal({
   } = useAddressContext();
 
   const handleNewAddress = () => {
+    if (!user) {
+      navigate("/login");
+      closeModal();
+      return;
+    }
     setNewAddressDefaultValues(formAddress);
     setIsAddressModalOpen(true);
   };
@@ -50,10 +58,7 @@ export default function SelectAddressModal({
     if (tempSelectedAddress) {
       changeSelectedAddressById(tempSelectedAddress.id);
       localStorage.removeItem("postalCode");
-      localStorage.setItem(
-        "addressId",
-        tempSelectedAddress.id.toString()
-      );
+      localStorage.setItem("addressId", tempSelectedAddress.id.toString());
     }
     getFromLocalStorage();
     closeModal();
@@ -120,7 +125,7 @@ export default function SelectAddressModal({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={closeModal}
+      onClose={closeModal}
       style={{
         width: "35rem",
         paddingBlock: "2rem",
@@ -177,7 +182,7 @@ export default function SelectAddressModal({
               </Typography>
             </Box>
           )}
-          <Form.Action handleClick={handleNewAddress}>
+          <Form.Action onClick={handleNewAddress}>
             Adicionar endereço completo
           </Form.Action>
         </Box>

@@ -89,6 +89,7 @@ const ProductImageInput = memo(
           onChange={handleChange}
           onClose={handleClose}
           onPhotoRemove={handlePhotoRemove}
+          required={required}
         />
       </ProductImageInputContainer>
     );

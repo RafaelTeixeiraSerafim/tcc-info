@@ -12,7 +12,7 @@ interface WishlistProviderProps {
 
 const WishlistProvider = ({ children }: WishlistProviderProps) => {
   const [wishlist, setWishlist] = useState<IWishlistItem[]>([]);
-  const { user } = useUserContext();
+  const { user, newAlert } = useUserContext();
   const navigate = useNavigate();
 
   const getWishlist = useCallback(async (userId: number) => {
@@ -50,6 +50,7 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
         userId: user.id,
         productId,
       });
+      newAlert("Adicionado a Lista de Desejos");
       await getWishlist(user.id);
     } catch (error) {
       alert(`Erro ao adicionar favorito: ${(error as AxiosError).message}`);
@@ -66,11 +67,12 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
         setWishlist((prevWishlist) =>
           prevWishlist.filter((item) => item.id !== wishlistItemId)
         );
+        newAlert("Removido da Lista de Desejos", "filled", "warning");
       } catch (error) {
         alert(`Erro ao adicionar favorito: ${(error as AxiosError).message}`);
       }
     },
-    []
+    [newAlert]
   );
 
   useEffect(() => {

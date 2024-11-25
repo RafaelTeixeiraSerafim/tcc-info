@@ -17,7 +17,7 @@ export default function ShippingOptionsModal({
   const { shippingOptions } = useAddressContext();
 
   return (
-    <Modal isOpen={isOpen} handleClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <Modal.Title>Opções de entrega</Modal.Title>
       {data
         ? data.map((option) => (

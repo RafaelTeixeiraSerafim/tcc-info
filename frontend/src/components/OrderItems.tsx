@@ -2,22 +2,36 @@ import { Box, Paper, Stack, Typography, useTheme } from "@mui/material";
 import { IOrderItem } from "../interfaces";
 import { formatCurrency, getOrderItemPrice } from "../utils/helpers";
 import RouterLink from "./RouterLink";
+import { To } from "react-router-dom";
 
 interface OrderItemsProps {
   orderItems: IOrderItem[];
+  size?: "small" | "medium" | "large";
+  to?: To;
 }
 
-export default function OrderItems({ orderItems }: OrderItemsProps) {
+export default function OrderItems({
+  orderItems,
+  size = "medium",
+  to,
+}: OrderItemsProps) {
   const theme = useTheme();
 
   return (
     <Stack gap={"1rem"}>
       {orderItems.map((orderItem) => (
-        <RouterLink to={`/admin/products/${orderItem.product.id}/update`} key={orderItem.id}>
+        <RouterLink
+          to={
+            to
+              ? to.toString().replace(":id", `${orderItem.product.id}`)
+              : `/admin/products/${orderItem.product.id}/update`
+          }
+          key={orderItem.id}
+        >
           <Paper
             sx={{
               display: "grid",
-              gridTemplateColumns: "20% 80%",
+              gridTemplateColumns: size === "medium" ? "20% 80%" : "15% 85%",
               overflow: "hidden",
               padding: "1rem",
               gap: "1rem",
@@ -42,16 +56,14 @@ export default function OrderItems({ orderItems }: OrderItemsProps) {
                   overflow: "scroll",
                 }}
               >
-                <Typography variant="h6">
-                  {orderItem.product.name}
-                </Typography>
+                <Typography variant="h6">{orderItem.product.name}</Typography>
               </Box>
               <Box>
                 <Typography>Qtde: {orderItem.qty}</Typography>
                 <Typography>
                   Preço unit:{" "}
                   {formatCurrency(
-                    parseFloat(orderItem.product.salePrice) ||
+                    parseFloat(orderItem.product.salePrice || "0") ||
                       parseFloat(orderItem.product.origPrice)
                   )}
                 </Typography>

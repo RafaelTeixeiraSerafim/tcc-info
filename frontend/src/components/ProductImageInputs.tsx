@@ -1,8 +1,7 @@
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-import ProductImageInput from "./ProductImageInput/ProductImageInput";
-import { IFormProduct, IImage } from "../interfaces";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { useEffect } from "react";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { IFormProduct, IImage } from "../interfaces";
+import ProductImageInput from "./ProductImageInput/ProductImageInput";
 
 interface ProductImageInputsProps {
   images: IImage[];
@@ -35,10 +34,6 @@ export default function ProductImageInputs({
       setNumOfImages((prevNum) => prevNum + 1);
     }
   };
-
-  useEffect(() => {
-    console.log(images);
-  }, [numOfImages, images]);
 
   const handleSubImg = () => {
     if (numOfImages > 1) setNumOfImages((prevNum) => prevNum - 1);
@@ -105,6 +100,7 @@ export default function ProductImageInputs({
               setFormProduct={setFormProduct}
               key={image.id}
               label={"Imagem " + (index + 1)}
+              required={index === 0}
             />
           );
         })}

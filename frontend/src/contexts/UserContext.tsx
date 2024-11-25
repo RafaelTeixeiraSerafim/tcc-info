@@ -1,8 +1,9 @@
 import { AxiosError } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import { IUser } from "../interfaces";
+import { IUser, IUserContextInterface } from "../interfaces";
 import { checkToken, logout } from "../service/api";
 import { UserContext } from ".";
+import { AlertProps } from "@mui/material";
 
 interface UserProviderProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface UserProviderProps {
 function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const [hasCheckedToken, setHasCheckedToken] = useState(false);
+  const [alert, setAlert] = useState<IUserContextInterface["alert"]>(null);
 
   const authenticate = useCallback(async () => {
     const user = await checkToken();
@@ -23,9 +25,22 @@ function UserProvider({ children }: UserProviderProps) {
       await logout();
       setUser(null);
     } catch (error) {
-      alert(`Erro ao deslogar o usuário: ${(error as AxiosError).message}`);
+      window.alert(
+        `Erro ao deslogar o usuário: ${(error as AxiosError).message}`
+      );
     }
   }, []);
+
+  const newAlert = useCallback(
+    (
+      message: string,
+      variant?: AlertProps["variant"],
+      severity?: AlertProps["severity"]
+    ) => setAlert({ message, variant, severity }),
+    []
+  );
+
+  const clearAlert = () => setAlert(null);
 
   useEffect(() => {
     authenticate();
@@ -39,6 +54,9 @@ function UserProvider({ children }: UserProviderProps) {
         authenticate,
         logoutUser,
         hasCheckedToken,
+        alert,
+        newAlert,
+        clearAlert,
       }}
     >
       {children}

@@ -8,7 +8,7 @@ def get_addresses(user_id: int) -> list[dict]:
     return [address.to_dict() for address in data]
 
 def get_active_addresses(user_id: int) -> list[dict]:
-    data: list[Address] = Address.query.filter(Address.user_id == user_id and Address.deactivated != True).all()
+    data: list[Address] = Address.query.filter(Address.user_id == user_id, Address.deactivated != True).all()
 
     return [address.to_dict() for address in data]
 

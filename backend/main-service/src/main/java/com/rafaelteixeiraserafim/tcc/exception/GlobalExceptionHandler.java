@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", ex.getMessage()));
     }
 
+    @ExceptionHandler(AdminAccountDeletionException.class)
+    public ResponseEntity<Map<String, String>> handleResponseStatusExceptions(AdminAccountDeletionException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
+    }
+
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<Map<String, String>> handleResponseStatusExceptions(InternalAuthenticationServiceException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", ex.getMessage()));

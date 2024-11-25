@@ -1,6 +1,7 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
+import com.rafaelteixeiraserafim.tcc.exception.AdminAccountDeletionException;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,10 @@ public class UserService {
     }
 
     public void deleteUser(Long userId) {
+        User user = this.getUser(userId);
+        if (user.getRole().equals(UserRole.ADMIN) && getAdmins().size() == 1) {
+            throw new AdminAccountDeletionException("Cannot delete the only admin account. At least one admin is required.");
+        }
         userRepository.deleteById(userId);
     }
 
@@ -107,7 +112,7 @@ public class UserService {
         if (passwordEncoder.matches(curPassword, user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
         } else {
-            throw new IllegalArgumentException("Invalid password");
+            throw new BadCredentialsException("Invalid password");
         }
 
         userRepository.save(user);

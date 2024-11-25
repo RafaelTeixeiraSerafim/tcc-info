@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
-import FormContext from "./FormContext";
+import { useCallback, useRef, useState } from "react";
 import { IAuthErrors, IField } from "../../interfaces";
+import FormContext from "./FormContext";
 
 interface FormProviderProps {
   children: React.ReactNode;
@@ -10,6 +10,8 @@ export default function FormProvider({ children }: FormProviderProps) {
   const [inputs, setInputs] = useState<IField[]>([]);
   const [root, setRoot] = useState<IField>({ name: "root", error: "" });
   const [errors, setErrors] = useState<IAuthErrors | null>(null);
+  const [loading, setLoading] = useState(false);
+  const abortController = useRef(new AbortController());
 
   const registerInput = useCallback((name: string) => {
     setInputs((prevFields) => [...prevFields, { name, error: "" }]);
@@ -57,8 +59,23 @@ export default function FormProvider({ children }: FormProviderProps) {
     );
   };
 
+  const initializeAbortController = () => {
+    if (abortController.current) {
+      abortController.current.abort(); // Cancel any ongoing request
+    }
+    abortController.current = new AbortController(); // Create a new controller
+  };
+
   const registerErrors = useCallback((errors: IAuthErrors) => {
     setErrors(errors);
+  }, []);
+
+  const startLoading = useCallback(() => {
+    setLoading(true);
+  }, []);
+
+  const endLoading = useCallback(() => {
+    setLoading(false);
   }, []);
 
   return (
@@ -72,6 +89,11 @@ export default function FormProvider({ children }: FormProviderProps) {
         root,
         errors,
         registerErrors,
+        loading,
+        startLoading, 
+        endLoading,
+        abortController,
+        initializeAbortController
       }}
     >
       {children}

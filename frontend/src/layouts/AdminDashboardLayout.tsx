@@ -4,18 +4,20 @@ import Box from "@mui/material/Box";
 // import BarChartIcon from "@mui/icons-material/BarChart";
 // import DescriptionIcon from "@mui/icons-material/Description";
 // import LayersIcon from "@mui/icons-material/Layers";
+import { AccountCircle } from "@mui/icons-material";
 import CategoryIcon from "@mui/icons-material/Category";
 import GroupIcon from "@mui/icons-material/Group";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import type { Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { Outlet } from "react-router-dom";
 import Logo from "../assets/images/small_logo.png";
+import DashboardNotificationIcon from "../components/Notification/DashboardNotificationIcon";
+import AdminNotificationProvider from "../contexts/AdminNotificationContext";
 import useDashboardLayout from "../hooks/useDashboardLayout";
 import { dashboardTheme } from "../themes";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import AdminNotificationProvider from "../contexts/AdminNotificationContext";
 
 const NAVIGATION: Navigation = [
   {
@@ -31,7 +33,7 @@ const NAVIGATION: Navigation = [
   {
     segment: "tcc-info/admin/notifications",
     title: "Notificações",
-    icon: <NotificationsIcon />,
+    icon: <DashboardNotificationIcon />,
     pattern: "admin/notifications",
   },
   // {
@@ -100,6 +102,25 @@ const NAVIGATION: Navigation = [
     title: "Categorias",
     icon: <CategoryIcon />,
     pattern: "admin/categories{/:segment}*",
+  },
+  {
+    kind: "divider",
+  },
+  {
+    kind: "header",
+    title: "Configurações",
+  },
+  {
+    segment: "tcc-info/admin/settings/account",
+    title: "Minha conta",
+    icon: <AccountCircle />,
+    pattern: "admin/settings/account{/:segment}*",
+  },
+  {
+    segment: "tcc-info/admin/settings/privacy",
+    title: "Privacidade e segurança",
+    icon: <PrivacyTipIcon />,
+    pattern: "admin/settings/privacy{/:segment}*",
   },
 ];
 

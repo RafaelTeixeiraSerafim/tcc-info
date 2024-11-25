@@ -4,39 +4,17 @@ import {
   Button,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from "@mui/material";
-import { AxiosError } from "axios";
 import { Link } from "react-router-dom";
+import DeactivateAccountButton from "../../../components/DeactivateAccountButton";
+import DeleteAccountButton from "../../../components/DeleteAccountButton";
 import TitleUnderline from "../../../components/TitleUnderline";
-import axiosInstance from "../../../config/axiosInstance";
 import { useUserContext } from "../../../hooks";
 
 export default function PrivacySettings() {
-  const { user, logoutUser } = useUserContext();
+  const { user } = useUserContext();
   const theme = useTheme();
-
-  const disableAccount = async (userId: number) => {
-    try {
-      const response = await axiosInstance.patch(`/auth/${userId}/disable`);
-      console.log(response);
-      logoutUser();
-    } catch (error) {
-      console.log(error);
-      alert(`Erro ao desativar conta: ${(error as AxiosError).message}`);
-    }
-  };
-
-  const deleteAccount = async (userId: number) => {
-    try {
-      const response = await axiosInstance.delete(`/users/${userId}`);
-      console.log(response);
-      logoutUser();
-    } catch (error) {
-      console.log(error);
-      alert(`Erro ao deletar conta: ${(error as AxiosError).message}`);
-    }
-  };
 
   return (
     <>
@@ -93,13 +71,7 @@ export default function PrivacySettings() {
                   </a>{" "}
                   conosco por telefone ou por email.
                 </Typography>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => disableAccount(user.id)}
-                >
-                  Desativar minha conta
-                </Button>
+                <DeactivateAccountButton />
               </Stack>
             </Box>
             <Box width={"100%"}>
@@ -119,13 +91,7 @@ export default function PrivacySettings() {
                   Essa é uma ação <strong>irreversível</strong> e não poderá ser
                   desfeita.
                 </Typography>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => deleteAccount(user.id)}
-                >
-                  Deletar minha conta
-                </Button>
+                <DeleteAccountButton />
               </Stack>
             </Box>
           </Stack>

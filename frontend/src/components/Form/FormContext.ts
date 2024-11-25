@@ -10,6 +10,11 @@ interface IFormContext {
   root: IField;
   errors: IAuthErrors | null;
   registerErrors: (errors: IAuthErrors) => void;
+  loading: boolean;
+  startLoading: () => void;
+  endLoading: () => void;
+  abortController: React.MutableRefObject<AbortController>;
+  initializeAbortController: () => void;
 }
 
 const FormContext = createContext<IFormContext | null>(null);

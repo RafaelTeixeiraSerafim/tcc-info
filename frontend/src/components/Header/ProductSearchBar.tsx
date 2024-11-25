@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IProduct } from "../../interfaces";
-import { fetchProducts } from "../../service/api";
+import { fetchActiveProducts } from "../../service/api";
 import SearchBar from "../SearchBar";
 
 export default function ProductSearchBar() {
@@ -12,7 +12,7 @@ export default function ProductSearchBar() {
 
   const getProducts = async () => {
     try {
-      const products = await fetchProducts();
+      const products = await fetchActiveProducts();
 
       setProducts(products);
     } catch (error) {

@@ -1,3 +1,4 @@
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import {
   Box,
   Checkbox,
@@ -7,25 +8,24 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { AxiosError } from "axios";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { IFormProduct, IProduct } from "../../interfaces";
 import { createProduct, updateProduct } from "../../service/api";
 import { defaultFormProduct } from "../../utils/formDefaults";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import {
   formatPriceInputForBackend,
   formatPriceInputForFrontend,
 } from "../../utils/helpers";
+import DecimalInput from "../DecimalInput";
 import Form from "../Form";
 import PriceInput from "../PriceInput";
 import ProductImageInputs from "../ProductImageInputs";
 import SelectCategories from "../SelectCategories";
-import FormRow from "./FormRow";
-import DecimalInput from "../DecimalInput";
 import TitleUnderline from "../TitleUnderline";
+import FormRow from "./FormRow";
 
 interface ProductFormProps {
   origProduct?: IProduct;
@@ -43,13 +43,13 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
             origProduct.origPrice.toString()
           ),
           salePrice: formatPriceInputForFrontend(
-            origProduct.salePrice.toString()
+            origProduct.salePrice?.toString() || ""
           ),
         }
       : defaultFormProduct
   );
   const [sale, setSale] = useState(Boolean(formProduct.salePrice));
-  const [numOfImages, setNumOfImages] = useState(formProduct.images.length);
+  const [numOfImages, setNumOfImages] = useState(3);
   const navigate = useNavigate();
 
   const { handleTextInputChange } = useForm<IFormProduct>();
@@ -58,7 +58,10 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => handleTextInputChange(e, setFormProduct);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    signal: AbortSignal
+  ) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -71,7 +74,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       "origPrice",
       formatPriceInputForBackend(formProduct.origPrice.toString())
     );
-    if (sale) {
+    if (sale && formProduct.salePrice) {
       formData.append(
         "salePrice",
         formatPriceInputForBackend(formProduct.salePrice.toString())
@@ -102,16 +105,20 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     }
 
     try {
-      if (isUpdating) await updateProduct(origProduct!.id, formData);
-      else await createProduct(formData);
+      if (isUpdating) await updateProduct(origProduct!.id, formData, signal);
+      else await createProduct(formData, signal);
 
       navigate("/admin/products/");
     } catch (error) {
-      alert(
-        `Erro ao ${isUpdating ? "alterar" : "criar"} o produto: ${(error as AxiosError).message}`
-      );
+      if (!axios.isCancel(error)) console.error(error);
+      throw error;
     }
   };
+
+  useEffect(() => {
+    if (formProduct.images.length > 3)
+      setNumOfImages(formProduct.images.length);
+  }, [formProduct]);
 
   return (
     <Form onSubmit={handleSubmit} style={{ width: "90%", gap: "3rem" }}>
@@ -285,12 +292,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       />
 
       <Form.Actions>
-        <Form.Action
-          variant="outlined"
-          handleClick={() => navigate("/admin/products")}
-        >
-          Cancelar
-        </Form.Action>
+        <Form.CancelButton onClick={() => navigate(-1)} />
         <Form.SubmitButton>
           {isUpdating ? "Alterar" : "Criar"}
         </Form.SubmitButton>

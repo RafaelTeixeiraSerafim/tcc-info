@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { IProduct, IProductTableRow } from "../interfaces";
 import NoRowsOverlay from "./NoRowsOverlay";
 import { formatCurrency } from "../utils/helpers";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box } from "@mui/material";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "Id", flex: 0.8 },
@@ -18,6 +21,21 @@ const columns: GridColDef[] = [
   { field: "stockQty", headerName: "Estoque", flex: 1 },
   { field: "origPrice", headerName: "Preço orig.", flex: 1.5 },
   { field: "salePrice", headerName: "Preço oferta", flex: 1.5 },
+  {
+    field: "deactivated",
+    headerName: "Ativo",
+    flex: 1,
+    renderCell: (params) =>
+      !params.value ? (
+        <Box sx={{ display: "flex", height: "100%", alignItems: "center" }}>
+          <CheckIcon color="success" sx={{ justifySelf: "center" }} />
+        </Box>
+      ) : (
+        <Box sx={{ display: "flex", height: "100%", alignItems: "center" }}>
+          <CloseIcon color="error" />
+        </Box>
+      ),
+  },
   { field: "createdAt", headerName: "Criado em", flex: 2.5 },
   { field: "updatedAt", headerName: "Atualizado em", flex: 2.5 },
 ];
@@ -73,6 +91,7 @@ export default function ProductTable({
               ? "-"
               : formatCurrency(parseFloat(product.salePrice)),
           stockQty: product.stockQty,
+          deactivated: product.deactivated,
           createdAt: new Date(product.createdAt).toLocaleString(),
           updatedAt: product.updatedAt
             ? new Date(product.updatedAt).toLocaleString()

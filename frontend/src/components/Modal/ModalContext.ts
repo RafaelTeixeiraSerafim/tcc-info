@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 interface ModalContext {
   isOpen: boolean;
-  handleClose: () => void;
+  onClose: () => void;
 }
 
 const ModalContext = createContext<ModalContext | null>(null);

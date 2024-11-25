@@ -40,6 +40,12 @@ import ClientAccountLayout from "./layouts/ClientAccountLayout";
 import PrivacySettings from "./pages/client/account/PrivacySettings";
 import PasswordChange from "./pages/client/account/PasswordChange";
 import Addresses from "./pages/client/account/Addresses";
+import PurchaseDetails from "./pages/client/PurchaseDetails";
+import AdminProfile from "./pages/admin/account/AdminProfile";
+import AdminProfileUpdate from "./pages/admin/account/AdminProfileUpdate";
+import AdminPrivacySettings from "./pages/admin/account/AdminPrivacySettings";
+import AdminPasswordChange from "./pages/admin/account/AdminPasswordChange";
+import AppLayout from "./layouts/AppLayout";
 
 function App() {
   return (
@@ -49,72 +55,112 @@ function App() {
           <BrowserRouter basename="/tcc-info">
             <ScrollToTop />
             <Routes>
-              <Route path="/" element={<UserLayout />}>
-                <Route index element={<Home />} />
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<UserLayout />}>
+                  <Route index element={<Home />} />
 
-                <Route path="product/:productId" element={<ProductDetails />} />
-
-                <Route path="cart" element={<Cart />} />
-
-                <Route path="wishlist" element={<Wishlist />} />
-
-                <Route path="checkout" element={<LoginRequired />}>
-                  <Route path="address-options" element={<AddressOptions />} />
                   <Route
-                    path="shipping-options"
-                    element={<ShippingOptions />}
+                    path="product/:productId"
+                    element={<ProductDetails />}
                   />
-                  <Route path="review" element={<ReviewOrder />} />
-                  <Route path="success" element={<Success />} />
-                </Route>
 
-                <Route path="account" element={<LoginRequired />}>
-                  <Route element={<ClientAccountLayout />}>
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="profile/update" element={<ProfileUpdate />} />
-                    <Route path="addresses" element={<Addresses />} />
-                    <Route path="settings/privacy" element={<PrivacySettings />} />
-                    <Route path="settings/privacy/password-change" element={<PasswordChange />} />
-                  </Route>
-                </Route>
+                  <Route path="cart" element={<Cart />} />
 
-                <Route path="purchases" element={<LoginRequired />}>
-                  <Route index element={<Purchases />} />
-                </Route>
+                  <Route path="wishlist" element={<Wishlist />} />
 
-                <Route element={<LogoutRequired />}>
-                  <Route path="login" element={<Login />} />
-                  <Route path="signup" element={<Signup />} />
-                </Route>
-
-                <Route path="test" element={<Test />} />
-              </Route>
-              <Route path="admin">
-                <Route element={<LogoutRequired />}>
-                  <Route index element={<AdminLogin />} />
-                </Route>
-                <Route element={<AdminRequired />}>
-                  <Route element={<AdminDashboardLayout />}>
-                    <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="users" element={<Users />} />
-                    <Route path="notifications" element={<Notifications />} />
-                    <Route path="orders" element={<Orders />} />
-                    <Route path="orders/:orderId" element={<OrderDetails />} />
-                    <Route path="categories" element={<Categories />} />
-                    <Route path="categories/new" element={<CreateCategory />} />
-                    <Route path="categories/:categoryId">
-                      <Route path="update" element={<UpdateCategory />} />
-                    </Route>
-                    <Route path="products" element={<Products />} />
-                    <Route path="products/new" element={<CreateProduct />} />
+                  <Route path="checkout" element={<LoginRequired />}>
                     <Route
-                      path="products/:productId/update"
-                      element={<UpdateProduct />}
+                      path="address-options"
+                      element={<AddressOptions />}
                     />
+                    <Route
+                      path="shipping-options"
+                      element={<ShippingOptions />}
+                    />
+                    <Route path="review" element={<ReviewOrder />} />
+                    <Route path="success" element={<Success />} />
+                  </Route>
+
+                  <Route path="account" element={<LoginRequired />}>
+                    <Route element={<ClientAccountLayout />}>
+                      <Route path="profile" element={<Profile />} />
+                      <Route
+                        path="profile/update"
+                        element={<ProfileUpdate />}
+                      />
+                      <Route path="addresses" element={<Addresses />} />
+                      <Route
+                        path="settings/privacy"
+                        element={<PrivacySettings />}
+                      />
+                      <Route
+                        path="settings/privacy/password-change"
+                        element={<PasswordChange />}
+                      />
+                    </Route>
+                  </Route>
+
+                  <Route path="purchases" element={<LoginRequired />}>
+                    <Route index element={<Purchases />} />
+                    <Route path=":purchaseId" element={<PurchaseDetails />} />
+                  </Route>
+
+                  <Route element={<LogoutRequired />}>
+                    <Route path="login" element={<Login />} />
+                    <Route path="signup" element={<Signup />} />
+                  </Route>
+
+                  <Route path="test" element={<Test />} />
+                </Route>
+                <Route path="admin">
+                  <Route element={<LogoutRequired />}>
+                    <Route index element={<AdminLogin />} />
+                  </Route>
+                  <Route element={<AdminRequired />}>
+                    <Route element={<AdminDashboardLayout />}>
+                      <Route path="dashboard" element={<AdminDashboard />} />
+                      <Route path="users" element={<Users />} />
+                      <Route path="notifications" element={<Notifications />} />
+                      <Route path="orders" element={<Orders />} />
+                      <Route
+                        path="orders/:orderId"
+                        element={<OrderDetails />}
+                      />
+                      <Route path="categories" element={<Categories />} />
+                      <Route
+                        path="categories/new"
+                        element={<CreateCategory />}
+                      />
+                      <Route path="categories/:categoryId">
+                        <Route path="update" element={<UpdateCategory />} />
+                      </Route>
+                      <Route path="products" element={<Products />} />
+                      <Route path="products/new" element={<CreateProduct />} />
+                      <Route
+                        path="products/:productId/update"
+                        element={<UpdateProduct />}
+                      />
+                      <Route
+                        path="settings/account"
+                        element={<AdminProfile />}
+                      />
+                      <Route
+                        path="settings/account/update"
+                        element={<AdminProfileUpdate />}
+                      />
+                      <Route
+                        path="settings/privacy"
+                        element={<AdminPrivacySettings />}
+                      />
+                      <Route
+                        path="settings/privacy/password-change"
+                        element={<AdminPasswordChange />}
+                      />
+                    </Route>
                   </Route>
                 </Route>
+                <Route path="*" element={<NoPage />} />
               </Route>
-              <Route path="*" element={<NoPage />} />
             </Routes>
           </BrowserRouter>
         </Suspense>

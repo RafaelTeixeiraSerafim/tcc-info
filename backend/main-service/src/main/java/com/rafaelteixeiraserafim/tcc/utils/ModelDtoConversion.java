@@ -70,6 +70,7 @@ public final class ModelDtoConversion {
                 product.getWeight(),
                 product.getCreatedAt(),
                 getReturnUpdatedAt(product.getCreatedAt(), product.getUpdatedAt()),
+                product.getDeactivated(),
                 imageResponses,
                 rating,
                 product.getReviews().size()
@@ -134,6 +135,7 @@ public final class ModelDtoConversion {
                 category.getId(),
                 category.getName(),
                 category.getDescription(),
+                category.getDeactivated(),
                 category.getCreatedAt(),
                 getReturnUpdatedAt(category.getCreatedAt(), category.getUpdatedAt())
         );

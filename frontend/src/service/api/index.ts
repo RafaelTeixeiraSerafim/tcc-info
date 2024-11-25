@@ -1,4 +1,4 @@
-import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { AxiosError } from "axios";
 import axiosInstance from "../../config/axiosInstance";
 import {
   IAddress,
@@ -11,7 +11,6 @@ import {
   IShippingOptions,
   ISignupUser,
 } from "../../interfaces";
-import { AxiosError } from "axios";
 
 export const checkToken = async () => {
   try {
@@ -203,7 +202,18 @@ export const updateOrder = async (orderId: number, selectedStatus: string) => {
   }
 };
 
-export const fetchCategories = async () => {
+export const fetchActiveCategories = async () => {
+  try {
+    const response = await axiosInstance.get("/categories/active");
+    console.log(response);
+    return response.data.categories;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchAllCategories = async () => {
   try {
     const response = await axiosInstance.get("/categories");
     console.log(response);
@@ -214,12 +224,10 @@ export const fetchCategories = async () => {
   }
 };
 
-export const deleteCategories = async (
-  selectionModel: GridRowSelectionModel
-) => {
+export const deleteCategories = async (ids: number[]) => {
   try {
     const response = await axiosInstance.delete("/categories/batch-delete", {
-      data: selectionModel,
+      data: ids,
     });
     console.log(response);
     return response.data;
@@ -257,7 +265,38 @@ export const updateCategory = async (
   }
 };
 
-export const fetchProducts = async () => {
+export const deactivateCategories = async (ids: number[]) => {
+  try {
+    const response = await axiosInstance.patch("/categories/deactivate", ids);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao desativar categorias:", error);
+  }
+};
+
+export const reactivateCategories = async (ids: number[]) => {
+  try {
+    const response = await axiosInstance.patch("/categories/reactivate", ids);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao reativar categorias:", error);
+  }
+};
+
+export const fetchActiveProducts = async () => {
+  try {
+    const response = await axiosInstance.get<IProduct[]>(`/products/active`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchAllProducts = async () => {
   try {
     const response = await axiosInstance.get<IProduct[]>(`/products`);
     console.log(response);
@@ -279,12 +318,13 @@ export const fetchProduct = async (productId: number) => {
   }
 };
 
-export const createProduct = async (formData: FormData) => {
+export const createProduct = async (formData: FormData, signal?: AbortSignal) => {
   try {
     const config = {
       headers: {
         "Content-type": "multipart/form-data",
       },
+      signal
     };
 
     const response = await axiosInstance.post("/products", formData, config);
@@ -297,12 +337,13 @@ export const createProduct = async (formData: FormData) => {
   }
 };
 
-export const updateProduct = async (productId: number, formData: FormData) => {
+export const updateProduct = async (productId: number, formData: FormData, signal?: AbortSignal) => {
   try {
     const config = {
       headers: {
         "Content-type": "multipart/form-data",
       },
+      signal
     };
 
     const response = await axiosInstance.put(
@@ -331,10 +372,27 @@ export const deleteProducts = async (ids: number[]) => {
   }
 };
 
-export const signup = async (
-  user: ISignupUser,
-  role: "CLIENT" | "ADMIN"
-) => {
+export const deactivateProducts = async (ids: number[]) => {
+  try {
+    const response = await axiosInstance.patch("/products/deactivate", ids);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao desativar produtos:", error);
+  }
+};
+
+export const reactivateProducts = async (ids: number[]) => {
+  try {
+    const response = await axiosInstance.patch("/products/reactivate", ids);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao reativar produtos:", error);
+  }
+};
+
+export const signup = async (user: ISignupUser, role: "CLIENT" | "ADMIN") => {
   try {
     const response = await axiosInstance.post(
       `/auth/signup/${role === "CLIENT" ? "client" : "admin"}`,
@@ -348,14 +406,9 @@ export const signup = async (
   }
 };
 
-export const createAdmin = async (
-  user: ISignupUser,
-) => {
+export const createAdmin = async (user: ISignupUser) => {
   try {
-    const response = await axiosInstance.post(
-      `/auth/admin`,
-      user
-    );
+    const response = await axiosInstance.post(`/auth/admin`, user);
     console.log(response);
     return response.data;
   } catch (error) {

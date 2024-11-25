@@ -3,7 +3,7 @@ import React from "react";
 import { useModalContext } from "./ModalContext";
 
 export default function ModalCancelButton() {
-  const { handleClose } = useModalContext();
+  const { onClose: handleClose } = useModalContext();
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

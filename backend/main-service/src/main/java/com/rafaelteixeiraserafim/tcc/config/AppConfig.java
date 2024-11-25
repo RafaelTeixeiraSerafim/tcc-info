@@ -1,8 +1,6 @@
 package com.rafaelteixeiraserafim.tcc.config;
 
-import com.rafaelteixeiraserafim.tcc.enums.NotificationEntity;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
-import com.rafaelteixeiraserafim.tcc.enums.ProductNotificationType;
 import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.*;
@@ -31,7 +29,8 @@ public class AppConfig {
             if (categoryRepository.findAll().isEmpty()) {
                 Category category = new Category(
                         "Mel",
-                        "sopd"
+                        "sopd",
+                        false
                 );
                 categoryRepository.save(category);
 
@@ -73,7 +72,7 @@ public class AppConfig {
                         "Importante\n" +
                         "\n" +
                         "Mel puro cristaliza. Para liquidificá-lo, aqueça em “banho maria” com água quente (máximo 45°C). Esse produto não deve ser consumido por crianças menores de 01 (um) ano de idade.";
-                Product product = new Product(category, name, "", description, new BigDecimal("94.52"), new BigDecimal("75.83"), 7, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2));
+                Product product = new Product(category, name, description, new BigDecimal("94.52"), new BigDecimal("75.83"), 7, new BigDecimal(10), new BigDecimal(5), new BigDecimal(7), new BigDecimal(2), false);
                 productRepository.save(product);
 
                 ProductImage productImage1 = new ProductImage("https://images.tcdn.com.br/img/img_prod/761170/kit_beeva_masterchef_mel_flores_de_juazeiro_da_caatinga_560g_mel_silvestre_da_caatinga_560g_1737_1_92e411091a3aa9100c2035d02d45028c.jpg", product);

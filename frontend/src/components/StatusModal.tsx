@@ -58,11 +58,11 @@ export default function StatusModal({
 
   return (
     <Modal
-      handleClose={handleClose}
+      onClose={handleClose}
       isOpen={isOpen}
       style={{
         width: "50%",
-        minHeight: "70vh",
+        minHeight: "60vh",
         gap: "5rem",
       }}
     >

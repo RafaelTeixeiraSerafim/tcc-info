@@ -3,21 +3,21 @@ import React, { CSSProperties } from "react";
 
 interface FormModalProps {
   isOpen: boolean;
-  handleClose: () => void;
+  onClose: () => void;
   children: React.ReactNode;
   style?: CSSProperties;
 }
 
 export default function ModalBase({
   isOpen,
-  handleClose,
+  onClose,
   children,
   style,
 }: FormModalProps) {
   return (
     <Modal
       open={isOpen}
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

@@ -2,15 +2,16 @@ import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import OrderItems from "../../../components/OrderItems";
+import OrderStatus from "../../../components/OrderStatus";
 import StatusModal from "../../../components/StatusModal";
 import axiosInstance from "../../../config/axiosInstance";
 import useTotal from "../../../hooks/useTotal";
 import { IOrder } from "../../../interfaces";
 import {
   formatCurrency,
+  formatDatetime,
   formatPhone,
-  formatPostalCode,
-  translateStatus,
+  formatPostalCode
 } from "../../../utils/helpers";
 
 export default function OrderDetails() {
@@ -75,7 +76,7 @@ export default function OrderDetails() {
                   </Typography>
                   <Typography>
                     <strong>Data do pedido:</strong>{" "}
-                    {new Date(order?.datePlaced).toLocaleString()}
+                    {formatDatetime(order.datePlaced)}
                   </Typography>
                   <Box
                     sx={{
@@ -85,7 +86,7 @@ export default function OrderDetails() {
                     }}
                   >
                     <Typography>
-                      <strong>Status:</strong> {translateStatus(order?.status)}{" "}
+                      <strong>Status:</strong> <OrderStatus status={order.status} display={"inline"}/>
                     </Typography>
                     <Button
                       onClick={() => setIsModalOpen(true)}

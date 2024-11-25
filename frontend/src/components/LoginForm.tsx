@@ -7,6 +7,7 @@ import useForm from "../hooks/useForm";
 import { ILoginUser } from "../interfaces";
 import Form from "./Form";
 import SignupPrompt from "./SignupPrompt";
+import DisabledUserLoginDialog from "./Dialogs/DisabledUserLoginDialog";
 
 const errors = {
   root: [
@@ -22,6 +23,7 @@ export default function LoginForm() {
     email: "",
     password: "",
   });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { setUser } = useUserContext();
   const { handleTextInputChange } = useForm<ILoginUser>();
@@ -42,9 +44,7 @@ export default function LoginForm() {
     } catch (error) {
       console.error(error);
       if ((error as AxiosError).status === 403) {
-        alert(
-          "A sua conta foi desativada. Se você deseja reativá-la, contate o número (48) 99933-3764."
-        );
+        setIsDialogOpen(true);
       }
       throw error;
     }
@@ -85,6 +85,10 @@ export default function LoginForm() {
         </Form.SubmitButton>
         <SignupPrompt />
       </Form.Actions>
+      <DisabledUserLoginDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </Form>
   );
 }

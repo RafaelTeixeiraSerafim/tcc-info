@@ -108,9 +108,7 @@ public class OrderService {
     public List<BigDecimal> getMonthlySales() {
         List<Order> orders = this.getPlacedOrders();
 
-        System.out.println(orders);
         orders.sort(Comparator.comparing(Order::getDatePlaced));
-        System.out.println(orders);
 
         List<BigDecimal> sales = new ArrayList<>();
 

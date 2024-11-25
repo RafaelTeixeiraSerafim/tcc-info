@@ -7,14 +7,21 @@ import RouterLink from "./RouterLink";
 
 interface CartCardProps {
   cartItem: IOrderItem;
+  canRemove?: boolean;
 }
 
-export default function CartCard({ cartItem }: CartCardProps) {
+export default function CartCard({
+  cartItem,
+  canRemove = true,
+}: CartCardProps) {
   const { handleDeleteFromCart } = useCartContext();
   const theme = useTheme();
 
   return (
-    <RouterLink to={`/product/${cartItem.product.id}`} style={{color: "inherit"}}>
+    <RouterLink
+      to={`/product/${cartItem.product.id}`}
+      style={{ color: "inherit" }}
+    >
       <Box
         sx={{
           position: "relative",
@@ -81,12 +88,14 @@ export default function CartCard({ cartItem }: CartCardProps) {
           </Box>
           <Typography>Qtde: {cartItem.qty}</Typography>
         </Box>
-        <IconButton
-          onClick={(e) => handleDeleteFromCart(e, cartItem.id)}
-          sx={{ position: "absolute", right: 0, top: 0 }}
-        >
-          <DeleteOutlineIcon color="primary" />
-        </IconButton>
+        {canRemove && (
+          <IconButton
+            onClick={(e) => handleDeleteFromCart(e, cartItem.id)}
+            sx={{ position: "absolute", right: 0, top: 0 }}
+          >
+            <DeleteOutlineIcon color="primary" />
+          </IconButton>
+        )}
       </Box>
     </RouterLink>
   );

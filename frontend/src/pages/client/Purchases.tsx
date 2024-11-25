@@ -6,6 +6,7 @@ import axiosInstance from "../../config/axiosInstance";
 import { useUserContext } from "../../hooks";
 import { IOrderResponse } from "../../interfaces";
 import { formatDate } from "../../utils/helpers";
+import RouterLink from "../../components/RouterLink";
 
 export default function Purchases() {
   const [purchases, setPurchases] = useState<IOrderResponse[]>([]);
@@ -54,75 +55,76 @@ export default function Purchases() {
         Compras
       </Typography>
       {purchases.map((purchase) => (
-        <Paper
-          sx={{
-            display: "grid",
-            // gridTemplateColumns: "0.2fr 1fr",
-            gridTemplateColumns: "15% 85%",
-            padding: "2rem",
-            gap: "1rem",
-          }}
-          key={purchase.id}
-        >
-          <Box
-            component={"img"}
-            src={purchase.orderItems[0].product.images[0].url}
-            sx={(theme) => {
-              return {
-                width: "100%",
-                outline: "solid 1px",
-                outlineColor: "#b3b3b3",
-                borderRadius: theme.shape.borderRadius / 4,
-              };
-            }}
-          />
-          <Box
+        <RouterLink to={`${purchase.id}`} key={purchase.id}>
+          <Paper
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              display: "grid",
+              // gridTemplateColumns: "0.2fr 1fr",
+              gridTemplateColumns: "15% 85%",
+              padding: "2rem",
+              gap: "1rem",
             }}
           >
-            <OrderStatus status={purchase.status} />
-            <Box>
-              <Typography>
-                Pedido feito no dia {formatDate(purchase.datePlaced)}
-              </Typography>
-              {purchase.dateDelivered && purchase.status === "DELIVERED" ? (
+            <Box
+              component={"img"}
+              src={purchase.orderItems[0].product.images[0].url}
+              sx={(theme) => {
+                return {
+                  width: "100%",
+                  outline: "solid 1px",
+                  outlineColor: "#b3b3b3",
+                  borderRadius: theme.shape.borderRadius / 4,
+                };
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <OrderStatus status={purchase.status} />
+              <Box>
                 <Typography>
-                  Chegou no dia {formatDate(purchase.dateDelivered)}
+                  Pedido feito no dia {formatDate(purchase.datePlaced)}
+                </Typography>
+                {purchase.dateDelivered && purchase.status === "DELIVERED" ? (
+                  <Typography>
+                    Chegou no dia {formatDate(purchase.dateDelivered)}
+                  </Typography>
+                ) : (
+                  <>
+                    {purchase.status === "SHIPPED" && (
+                      <Typography>
+                        Chegará entre{" "}
+                        {getRemainingDays(
+                          purchase.deliveryMinDays,
+                          purchase.datePlaced
+                        )}{" "}
+                        e{" "}
+                        {getRemainingDays(
+                          purchase.deliveryMaxDays,
+                          purchase.datePlaced
+                        )}{" "}
+                        dias
+                      </Typography>
+                    )}
+                  </>
+                )}
+              </Box>
+              {purchase.orderItems.length > 1 ? (
+                <Typography color="gray">
+                  {purchase.orderItems.length} produtos
                 </Typography>
               ) : (
-                <>
-                  {purchase.status === "SHIPPED" && (
-                    <Typography>
-                      Chegará entre{" "}
-                      {getRemainingDays(
-                        purchase.deliveryMinDays,
-                        purchase.datePlaced
-                      )}{" "}
-                      e{" "}
-                      {getRemainingDays(
-                        purchase.deliveryMaxDays,
-                        purchase.datePlaced
-                      )}{" "}
-                      dias
-                    </Typography>
-                  )}
-                </>
+                <Typography color="gray">
+                  {purchase.orderItems[0].product.name}
+                </Typography>
               )}
             </Box>
-            {purchase.orderItems.length > 1 ? (
-              <Typography color="gray">
-                {purchase.orderItems.length} produtos
-              </Typography>
-            ) : (
-              <Typography color="gray">
-                {purchase.orderItems[0].product.name}
-              </Typography>
-            )}
-          </Box>
-        </Paper>
+          </Paper>
+        </RouterLink>
       ))}
     </Box>
   );

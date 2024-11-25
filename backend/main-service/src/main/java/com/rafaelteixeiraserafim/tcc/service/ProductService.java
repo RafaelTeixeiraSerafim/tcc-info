@@ -20,18 +20,24 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final CategoryService categoryService;
     private final ProductImageService productImageService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, ProductImageService productImageService) {
+    public ProductService(ProductRepository productRepository, ProductImageService productImageService) {
         this.productRepository = productRepository;
-        this.categoryService = categoryService;
         this.productImageService = productImageService;
     }
 
     public List<Product> getProducts() {
         return productRepository.findAll();
+    }
+
+    public List<Product> getActiveProducts() {
+        return productRepository.findByDeactivated(false);
+    }
+
+    public List<Product> getProducts(Category category) {
+        return productRepository.findByCategory(category);
     }
 
     public Product getProduct(Long productId) {
@@ -44,26 +50,39 @@ public class ProductService {
         return product.get();
     }
 
-    public void deleteProduct(Long productId) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-
-        if (optionalProduct.isEmpty()) {
-            throw new IllegalStateException("product with id " + productId + " does not exist");
+    public static boolean hasBeenBought(Product product) {
+        for (OrderItem orderItem : product.getOrderItems()) {
+            if (orderItem.getPrice() != null) {
+            System.out.println("Já foi comprado: " + product.getName() + orderItem.getPrice());
+                return true;
+            }
         }
 
-        Product product = optionalProduct.get();
+        return false;
+    }
+
+    @Transactional
+    public void deleteProduct(Long productId) {
+        Product product = getProduct(productId);
+
+        if (hasBeenBought(product)) {
+            product.setDeactivated(true);
+            productRepository.save(product);
+            return;
+        }
 
         for (ProductImage productImage : product.getImages()) {
             productImageService.handleDeleteImage(productImage);
         }
 
+        System.out.println("Deleting product: " + product.getName());
         productRepository.delete(product);
     }
 
     @Transactional
-    public Product createProductRequest(ProductRequest productRequest) {
+    public Product createProduct(ProductRequest productRequest, Category category) {
         Product newProduct = new Product();
-        Product product = populateProductFromDto(productRequest, newProduct);
+        Product product = populateProductFromDto(productRequest, newProduct, category);
 
         productRepository.save(product);
 
@@ -83,9 +102,9 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(Long productId, ProductRequest productRequest) {
+    public Product updateProduct(Long productId, ProductRequest productRequest, Category category) {
         Product product = getProduct(productId);
-        populateProductFromDto(productRequest, product);
+        populateProductFromDto(productRequest, product, category);
 
         List<ImageDto> images = productRequest.getImages();
 
@@ -110,8 +129,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    private Product populateProductFromDto(ProductRequest productRequest, Product product) {
-        Category category = categoryService.getCategory(productRequest.getCategoryId());
+    private Product populateProductFromDto(ProductRequest productRequest, Product product, Category category) {
+//        Category category = categoryService.getCategory(productRequest.getCategoryId());
 
         product.setName(productRequest.getName());
         product.setAbout(productRequest.getAbout());
@@ -124,11 +143,13 @@ public class ProductService {
         product.setHeight(productRequest.getHeight());
         product.setWidth(productRequest.getWidth());
         product.setWeight(productRequest.getWeight());
+        product.setDeactivated(false);
 
         return product;
     }
 
-    public void deleteProductsById(List<Long> productIds) {
+    @Transactional
+    public void deleteProducts(List<Long> productIds) {
         for (Long productId : productIds) {
             deleteProduct(productId);
         }
@@ -145,6 +166,36 @@ public class ProductService {
 
             product.setStockQty(stockQty);
             productRepository.save(product);
+        }
+    }
+
+    @Transactional
+    public void deactivate(Long productId) {
+        Product product = getProduct(productId);
+        product.setDeactivated(true);
+        productRepository.save(product);
+    }
+
+    @Transactional
+    public void deactivate(List<Long> productIds) {
+        for (Long productId : productIds) {
+            deactivate(productId);
+        }
+    }
+
+    @Transactional
+    public void reactivate(Long productId) {
+        Product product = getProduct(productId);
+        if (!product.getCategory().getDeactivated()) {
+            product.setDeactivated(false);
+            productRepository.save(product);
+        }
+    }
+
+    @Transactional
+    public void reactivate(List<Long> productIds) {
+        for (Long productId : productIds) {
+            reactivate(productId);
         }
     }
 }

@@ -29,21 +29,39 @@ export default function OrderStatusStepper({
     () => [
       {
         label: statusList[0],
-        description: `For each ad campaign that you create, you can control how much
-                you're willing to spend on clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`,
+        description: (
+          <Typography fontSize={"0.75rem"}>
+            O pedido foi recebido e está sendo processado. Isso inclui separar
+            os produtos no estoque, embalar os itens e preparar a documentação
+            necessária para envio (como notas fiscais ou etiquetas).
+          </Typography>
+        ),
       },
       {
         label: statusList[1],
-        description:
-          "An ad group contains one or more ads which target a shared set of keywords.",
+        description: (
+          <Typography fontSize={"0.75rem"}>
+            O pedido já foi despachado e está em trânsito para o endereço do
+            cliente. <br />
+            <br />
+            <strong>Quando mudar para este status:</strong> Assim que o pedido
+            for entregue à transportadora ou estiver com o entregador
+            responsável.
+          </Typography>
+        ),
       },
       {
         label: statusList[2],
-        description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
+        description: (
+          <Typography fontSize={"0.75rem"}>
+            O pedido foi entregue com sucesso ao cliente no endereço informado.
+            <br />
+            <br />
+            <strong>Quando mudar para este status:</strong> Assim que houver a
+            confirmação da entrega, seja pelo rastreamento do transportador ou
+            por outro meio de verificação.
+          </Typography>
+        ),
       },
     ],
     [statusList]
@@ -96,20 +114,7 @@ export default function OrderStatusStepper({
                 }}
               >
                 {translateStatus(step.label)}
-                <Tooltip
-                  title={
-                    <>
-                      <Typography fontSize={"0.75rem"}>
-                        As dimensões da <b>caixa</b> em que o produto será
-                        transportado
-                      </Typography>
-                      <br />
-                      <Typography fontSize={"0.75rem"}>
-                        Elas serão utilizadas para o cálculo do frete do produto
-                      </Typography>
-                    </>
-                  }
-                >
+                <Tooltip title={step.description}>
                   <HelpOutlineIcon
                     fontSize="small"
                     sx={{ alignContent: "end" }}

@@ -6,6 +6,7 @@ public record CategoryResponse(
         Long id,
         String name,
         String description,
+        boolean deactivated,
         Date createdAt,
         Date updatedAt
 ) {

@@ -18,6 +18,7 @@ import { Reviews } from "../../components/Reviews";
 import SelectProductQty from "../../components/SelectProductQty";
 import { IProduct } from "../../interfaces";
 import { fetchProduct } from "../../service/api";
+import AddToWishlistButton from "../../components/Wishlist/AddToWishlistButton";
 
 export default function ProductDetails() {
   const productState: IProduct = useLocation().state;
@@ -91,7 +92,7 @@ export default function ProductDetails() {
               {product.stockQty ? (
                 <>
                   <PriceDisplay
-                    salePrice={product.salePrice}
+                    salePrice={product.salePrice || ""}
                     origPrice={product.origPrice}
                   />
                   <FormControl
@@ -119,6 +120,10 @@ export default function ProductDetails() {
                 </Stack>
               )}
             </Box>
+            <AddToWishlistButton
+              productId={product.id}
+              style={{ alignSelf: "start" }}
+            />
           </Box>
           <Box>
             <PageSubtitle>Descrição</PageSubtitle>

@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
+import Banner from "../../assets/images/banner.png";
 import ProductCarousel from "../../components/ProductCarousel";
-import axiosInstance from "../../config/axiosInstance";
 import { ICategory, IProduct } from "../../interfaces";
-import Banner from "../../assets/images/banner.png"
+import { fetchActiveProducts } from "../../service/api";
 
 export default function Home() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -11,10 +11,8 @@ export default function Home() {
 
   const getProducts = async () => {
     try {
-      const response = await axiosInstance.get<IProduct[]>("/products");
-      console.log(response);
-
-      setProducts(response.data);
+      const products = await fetchActiveProducts();
+      setProducts(products);
     } catch (error) {
       console.error(error);
     }

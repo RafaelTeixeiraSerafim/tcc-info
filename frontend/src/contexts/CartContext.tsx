@@ -17,7 +17,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
   const [total, setTotal] = useState(0);
 
   const { subtotal } = useTotal(cartItems);
-  const { user } = useUserContext();
+  const { user, newAlert } = useUserContext();
   const { postalCode, selectedShippingOption, shippingOptions } =
     useAddressContext();
 
@@ -77,6 +77,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
     try {
       await deleteCartItem(cartItemId);
       setCartItems(cartItems.filter((cartItem) => cartItem.id !== cartItemId));
+      newAlert("Removido do Carrinho", "filled", "warning")
     } catch (error) {
       alert(`Erro excluindo o item: ${(error as AxiosError).message}`);
     }

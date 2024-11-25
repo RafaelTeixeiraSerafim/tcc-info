@@ -60,6 +60,7 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
           label={"Nome"}
           value={formCategory.name}
           onChange={handleChange}
+          required
           fullWidth
         />
       </Stack>
@@ -75,7 +76,7 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
       <Box flex={1} />
       <Form.Actions>
         <Form.Action
-          handleClick={() => navigate("/admin/categories")}
+          onClick={() => navigate("/admin/categories")}
           variant="outlined"
         >
           Cancelar

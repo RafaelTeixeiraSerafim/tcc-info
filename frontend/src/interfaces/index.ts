@@ -1,3 +1,4 @@
+import { AlertProps } from "@mui/material";
 import { AxiosError } from "axios";
 
 export interface IImage {
@@ -18,7 +19,7 @@ export interface IProduct {
   description: string;
   category: ICategory;
   origPrice: string;
-  salePrice: string;
+  salePrice: string | null;
   stockQty: string;
   length: string;
   width: string;
@@ -29,6 +30,7 @@ export interface IProduct {
   numOfReviews: number;
   createdAt: string;
   updatedAt: string | null;
+  deactivated: boolean;
 }
 
 export interface IFormProduct {
@@ -37,7 +39,7 @@ export interface IFormProduct {
   description: string;
   categoryId: string;
   origPrice: string;
-  salePrice: string;
+  salePrice: string | null;
   stockQty: string;
   length: string;
   width: string;
@@ -53,6 +55,7 @@ export interface IFormCategory {
 
 export interface ICategory extends IFormCategory {
   id: number;
+  deactivated: boolean;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -152,6 +155,7 @@ export interface IProductTableRow {
   origPrice: string;
   salePrice: string;
   stockQty: string;
+  deactivated: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -168,6 +172,7 @@ export interface ICategoryTableRow {
   id: number;
   name: string;
   description: string;
+  deactivated: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -271,6 +276,17 @@ export interface IUserContextInterface {
   authenticate: () => Promise<void>;
   logoutUser: () => Promise<void>;
   hasCheckedToken: boolean;
+  alert: {
+    message: string;
+    variant?: AlertProps["variant"];
+    severity?: AlertProps["severity"];
+  } | null;
+  newAlert: (
+    message: string,
+    variant?: AlertProps["variant"],
+    severity?: AlertProps["severity"]
+  ) => void;
+  clearAlert: () => void;
 }
 
 export interface IWishlistContext {
