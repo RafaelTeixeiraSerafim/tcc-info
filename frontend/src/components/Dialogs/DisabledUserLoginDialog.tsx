@@ -36,7 +36,7 @@ export default function DisabledUserLoginDialog({
           </Typography>{" "}
           ou pelo telefone{" "}
           <Typography color="secondary" display={"inline"}>
-            (48) 99933-3764
+            (48) 99631-2562
           </Typography>
         </DialogContentText>
       </DialogContent>

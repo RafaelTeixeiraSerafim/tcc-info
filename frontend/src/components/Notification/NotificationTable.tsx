@@ -1,7 +1,4 @@
-import InfoIcon from "@mui/icons-material/Info";
-import ReportIcon from "@mui/icons-material/Report";
-import WarningIcon from "@mui/icons-material/Warning";
-import { Chip, ChipOwnProps, Paper } from "@mui/material";
+import { Chip, Paper } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
@@ -12,37 +9,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IAdminNotificationTableRow, INotification } from "../../interfaces";
 import { formatDatetime } from "../../utils/helpers";
+import { severityMap } from "../../utils/maps";
 import NoRowsOverlay from "../NoRowsOverlay";
-
-const translateSeverity: { [key: string]: string } = {
-  LOW: "Baixa",
-  MEDIUM: "Média",
-  HIGH: "Alta",
-};
-
-const severityMap: {
-  [key: string]: {
-    color: ChipOwnProps["color"];
-    label: string;
-    icon: React.ReactElement;
-  };
-} = {
-  LOW: {
-    color: "info",
-    label: translateSeverity["LOW"],
-    icon: <InfoIcon fontSize="small" />,
-  },
-  MEDIUM: {
-    color: "warning",
-    label: translateSeverity["MEDIUM"],
-    icon: <WarningIcon fontSize="small" />,
-  },
-  HIGH: {
-    color: "error",
-    label: translateSeverity["HIGH"],
-    icon: <ReportIcon fontSize="small" />,
-  },
-};
 
 const columns: GridColDef[] = [
   {
@@ -119,7 +87,7 @@ export default function NotificationTable({
   }, [notifications]);
 
   return (
-    <Paper sx={{ height: 400, width: "100%" }}>
+    <Paper sx={{ height: "23.1rem", width: "100%" }}>
       <DataGrid
         rows={filteredRows}
         columns={columns}

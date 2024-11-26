@@ -1,7 +1,7 @@
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { IFormProduct, IImage } from "../interfaces";
-import ProductImageInput from "./ProductImageInput/ProductImageInput";
+import ProductImageInput from "./ProductImageInput";
 
 interface ProductImageInputsProps {
   images: IImage[];
@@ -67,7 +67,8 @@ export default function ProductImageInputs({
               </Typography>
               <br />
               <Typography fontSize={"0.75rem"}>
-                A <b>Imagem 1</b> é a imagem principal que aparecerá na maioria dos displays do produto
+                A <b>Imagem 1</b> é a imagem principal que aparecerá na maioria
+                dos displays do produto
               </Typography>
             </>
           }

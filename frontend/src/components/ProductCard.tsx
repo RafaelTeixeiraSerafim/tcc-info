@@ -15,10 +15,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         display: "flex",
         flexDirection: "column",
         width: "14rem",
+        height: "24rem",
         gap: "0.25rem",
         bgcolor: "#fff",
         paddingBottom: "1rem",
-        // textAlign: "center",
       }}
     >
       <AddToWishlistButton
@@ -36,7 +36,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       />
       <Stack
         sx={{
-          gap: "1rem",
+          flex: 1,
           paddingInline: "1rem",
         }}
       >
@@ -61,14 +61,17 @@ export default function ProductCard({ product }: ProductCardProps) {
               readOnly
               size="small"
             />
-            <Typography fontSize={"0.875rem"}>({product.numOfReviews})</Typography>
+            <Typography fontSize={"0.875rem"}>
+              ({product.numOfReviews})
+            </Typography>
           </Stack>
         </Stack>
         <Box
           sx={{
             display: "flex",
+            flex: 1,
+            alignItems: "center"
             // justifyContent: "center",
-            alignItems: "flex-end",
             // height: "3rem",
           }}
         >

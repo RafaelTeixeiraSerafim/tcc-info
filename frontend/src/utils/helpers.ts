@@ -36,11 +36,11 @@ export const formatCurrency = (value: number) => {
   }).format(value);
 };
 
-export const formatPriceInputForBackend = (value: string) => {
+export const formatDecimalInputForBackend = (value: string) => {
   return value.replace(",", ".");
 };
 
-export const formatPriceInputForFrontend = (value: string) => {
+export const formatDecimalInputForFrontend = (value: string) => {
   return value.replace(".", ",");
 };
 
@@ -98,7 +98,7 @@ export const getSalePercent = (origPrice: number, salePrice: number) => {
 
 export const formatPhone = (phone: string) => {
   const sanitizedPhone = phone.replace(/\D/g, "").slice(0, 11);
-  
+
   if (sanitizedPhone.length === 0) return sanitizedPhone;
 
   if (sanitizedPhone.length <= 2) {

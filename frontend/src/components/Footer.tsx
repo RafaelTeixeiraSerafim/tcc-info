@@ -37,16 +37,16 @@ export default function Footer() {
           <PlaceIcon color="secondary" />
           <Stack>
             <Typography sx={{ opacity: "70%" }} fontSize={"0.875rem"}>
-              Rua Frei Caneca, 303 - Centro
+              Rodovia Antônio Darós, 2440 - São João
               <br />
-              Criciúma, SC - 88801-650
+              Criciúma, SC - 88816-195
             </Typography>
           </Stack>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} gap={"0.875rem"}>
           <PhoneIcon color="secondary" />
           <Typography sx={{ opacity: "70%" }} fontSize={"0.875rem"}>
-            (48) 99933-3764
+            (48) 99631-2562
           </Typography>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} gap={"0.875rem"}>

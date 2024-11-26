@@ -16,8 +16,8 @@ import { IFormProduct, IProduct } from "../../interfaces";
 import { createProduct, updateProduct } from "../../service/api";
 import { defaultFormProduct } from "../../utils/formDefaults";
 import {
-  formatPriceInputForBackend,
-  formatPriceInputForFrontend,
+  formatDecimalInputForBackend,
+  formatDecimalInputForFrontend,
 } from "../../utils/helpers";
 import DecimalInput from "../DecimalInput";
 import Form from "../Form";
@@ -39,12 +39,16 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
       ? {
           ...origProduct,
           categoryId: origProduct.category.id.toString(),
-          origPrice: formatPriceInputForFrontend(
+          origPrice: formatDecimalInputForFrontend(
             origProduct.origPrice.toString()
           ),
-          salePrice: formatPriceInputForFrontend(
+          salePrice: formatDecimalInputForFrontend(
             origProduct.salePrice?.toString() || ""
           ),
+          length: formatDecimalInputForFrontend(origProduct.length.toString()),
+          width: formatDecimalInputForFrontend(origProduct.width.toString()),
+          height: formatDecimalInputForFrontend(origProduct.height.toString()),
+          weight: formatDecimalInputForFrontend(origProduct.weight.toString()),
         }
       : defaultFormProduct
   );
@@ -63,6 +67,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     signal: AbortSignal
   ) => {
     e.preventDefault();
+    console.log("submitting");
 
     const formData = new FormData();
 
@@ -72,19 +77,19 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
     formData.append("categoryId", formProduct.categoryId.toString());
     formData.append(
       "origPrice",
-      formatPriceInputForBackend(formProduct.origPrice.toString())
+      formatDecimalInputForBackend(formProduct.origPrice.toString())
     );
     if (sale && formProduct.salePrice) {
       formData.append(
         "salePrice",
-        formatPriceInputForBackend(formProduct.salePrice.toString())
+        formatDecimalInputForBackend(formProduct.salePrice.toString())
       );
     }
     formData.append("stockQty", formProduct.stockQty);
-    formData.append("length", formProduct.length);
-    formData.append("width", formProduct.width);
-    formData.append("height", formProduct.height);
-    formData.append("weight", formProduct.weight);
+    formData.append("length", formatDecimalInputForBackend(formProduct.length));
+    formData.append("width", formatDecimalInputForBackend(formProduct.width));
+    formData.append("height", formatDecimalInputForBackend(formProduct.height));
+    formData.append("weight", formatDecimalInputForBackend(formProduct.weight));
 
     for (let i = 0; i < formProduct.images.length; i++) {
       const image = formProduct.images[i];
@@ -167,9 +172,6 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
               sx={{
                 flex: 1,
               }}
-              // inputProps={{
-              //   inputMode: "decimal",
-              // }}
             />
           </FormRow>
 

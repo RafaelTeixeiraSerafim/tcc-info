@@ -22,16 +22,8 @@ export default function SmallImage({
 
   return (
     <Box
-      component={"img"}
-      src={image.url}
-      alt=""
-      onMouseEnter={onHoverEnter}
-      onMouseLeave={onHoverLeave}
-      onClick={onClick}
-      data-id={image.id}
-      key={image.id}
-      width={"100%"}
       sx={{
+        position: "relative",
         cursor: "pointer",
         opacity: hoveredImageId === image.id ? 0.7 : 1,
         boxShadow:
@@ -40,7 +32,27 @@ export default function SmallImage({
             : `0 0 0 2px ${theme.palette.grey[300]}`,
         transition: "opacity 0.3s ease, border 0.3s ease",
         borderRadius: 1,
+        width: "100%",
+        aspectRatio: "1",
       }}
-    />
+      onMouseEnter={onHoverEnter}
+      onMouseLeave={onHoverLeave}
+      onClick={onClick}
+      data-id={image.id}
+    >
+      <Box
+        component={"img"}
+        src={image.url}
+        alt=""
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          maxWidth: "100%",
+          maxHeight: "100%",
+        }}
+      />
+    </Box>
   );
 }

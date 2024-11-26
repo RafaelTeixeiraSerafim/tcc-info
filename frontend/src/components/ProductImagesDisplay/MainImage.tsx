@@ -3,5 +3,5 @@ interface MainImageProps {
 }
 
 export default function MainImage({ imageUrl }: MainImageProps) {
-  return <img src={imageUrl} alt="" width={"100%"} />;
+  return <img src={imageUrl} alt="" style={{width: "100%"}} />;
 }

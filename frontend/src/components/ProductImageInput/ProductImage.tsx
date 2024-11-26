@@ -1,12 +1,10 @@
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface ProductImage {
   previewImage: string | ArrayBuffer;
 }
 
 export default function ProductImage({ previewImage }: ProductImage) {
-  const theme = useTheme();
-
   return (
     <Box
       component={"img"}
@@ -14,8 +12,12 @@ export default function ProductImage({ previewImage }: ProductImage) {
       loading="lazy"
       alt=""
       sx={{
-        width: "100%",
-        borderRadius: theme.shape.borderRadius,
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        maxHeight: "100%",
+        maxWidth: "100%",
       }}
     />
   );

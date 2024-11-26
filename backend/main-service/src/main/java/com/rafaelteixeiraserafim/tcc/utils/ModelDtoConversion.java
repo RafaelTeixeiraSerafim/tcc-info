@@ -26,7 +26,7 @@ public final class ModelDtoConversion {
 
     public static OrderResponse createActiveOrderResponse(Order order) {
         List<OrderItemResponse> orderItems = ModelDtoConversion.createOrderItemResponses(order.getOrderItems());
-        return new OrderResponse(order.getId(), order.getUser(), order.getDatePlaced(), order.getDateDelivered(), order.getStatus(), null, order.getShippingFee(), order.getDeliveryMinDays(), order.getDeliveryMaxDays(), null, orderItems);
+        return new OrderResponse(order.getId(), order.getUser(), order.getDatePlaced(), order.getDateDelivered(), order.getStatus(), null, order.getShippingFee(), order.getDeliveryMinDays(), order.getDeliveryMaxDays(), null, orderItems, order.getUpdatedAt());
     }
 
     public static List<ProductImageResponse> createProductImageResponses(List<ProductImage> productImages) {

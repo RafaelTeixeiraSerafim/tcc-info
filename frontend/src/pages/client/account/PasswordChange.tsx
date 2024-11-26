@@ -108,6 +108,9 @@ export default function PasswordChange() {
               />
             </Form.Inputs>
             <Form.Actions>
+              <Form.CancelButton onClick={() => navigate(-1)}>
+                Cancelar
+              </Form.CancelButton>
               <Form.SubmitButton>Alterar</Form.SubmitButton>
             </Form.Actions>
           </Form>

@@ -37,16 +37,15 @@ export default function ProductImagesDisplay({ images }: ProductImagesDisplay) {
       {selectedImage && (
         <Box
           sx={{
-            display: "flex",
+            display: "grid",
             gap: "inherit",
-            width: "52%",
+            gridTemplateColumns: "0.13fr 1fr",
           }}
         >
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "5rem",
               gap: "1rem",
             }}
           >

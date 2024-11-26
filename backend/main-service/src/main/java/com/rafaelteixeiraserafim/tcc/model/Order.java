@@ -3,7 +3,10 @@ package com.rafaelteixeiraserafim.tcc.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rafaelteixeiraserafim.tcc.enums.OrderStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +46,10 @@ public class Order {
     @NonNull
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @NotNull
+    @LastModifiedDate
+    private Date updatedAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

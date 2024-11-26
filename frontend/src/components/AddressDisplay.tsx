@@ -6,8 +6,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 
 export default function AddressDisplay() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { selectedAddress, incompleteAddress } =
-    useAddressContext();
+  const { selectedAddress, incompleteAddress } = useAddressContext();
 
   return (
     <>
@@ -21,7 +20,9 @@ export default function AddressDisplay() {
           <PlaceIcon fontSize="small" />
           {selectedAddress
             ? selectedAddress.street + ", " + selectedAddress.houseNumber
-            : incompleteAddress?.street}
+            : (incompleteAddress?.street || "").length > 0
+              ? incompleteAddress?.street
+              : incompleteAddress?.city}
         </Button>
       ) : (
         <Button onClick={() => setIsModalOpen(true)}>

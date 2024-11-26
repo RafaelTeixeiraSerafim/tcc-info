@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton, Stack } from "@mui/material";
+import { Box, Typography, IconButton, Stack, useTheme } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { IOrderItem } from "../../interfaces";
 import { formatCurrency } from "../../utils/helpers";
@@ -15,6 +15,8 @@ export default function AddedToCartItemCard({
   cartItem,
   onDelete,
 }: AddedToCartItemCardProps) {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -22,6 +24,8 @@ export default function AddedToCartItemCard({
         display: "grid",
         gridTemplateColumns: "35% 65%",
         gap: "0.5rem",
+        paddingBottom: "0.75rem",
+        borderBottom: "1px solid " + theme.palette.divider,
       }}
     >
       <Box

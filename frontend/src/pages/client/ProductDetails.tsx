@@ -61,8 +61,9 @@ export default function ProductDetails() {
         >
           <Box
             sx={{
-              display: "flex",
+              display: "grid",
               gap: "2rem",
+              gridTemplateColumns: "1fr 0.8fr 0.05fr",
             }}
           >
             <ProductImagesDisplay images={product.images} />

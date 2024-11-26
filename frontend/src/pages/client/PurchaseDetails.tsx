@@ -2,6 +2,7 @@ import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import OrderItems from "../../components/OrderItems";
+import OrderStatus from "../../components/OrderStatus";
 import axiosInstance from "../../config/axiosInstance";
 import { useTotal } from "../../hooks";
 import { IOrder } from "../../interfaces";
@@ -9,8 +10,7 @@ import {
   formatCurrency,
   formatDatetime,
   formatPhone,
-  formatPostalCode,
-  translateStatus,
+  formatPostalCode
 } from "../../utils/helpers";
 
 export default function PurchaseDetails() {
@@ -86,7 +86,11 @@ export default function PurchaseDetails() {
                     }}
                   >
                     <Typography>
-                      <strong>Status:</strong> {translateStatus(order?.status)}{" "}
+                      <strong>Status:</strong>{" "}
+                      <OrderStatus
+                        status={order.status}
+                        style={{ display: "inline" }}
+                      />{" "}
                     </Typography>
                   </Box>
                 </Stack>
@@ -157,7 +161,11 @@ export default function PurchaseDetails() {
           </Paper>
           <Stack gap={"0.5rem"}>
             <Typography variant="h4">Itens</Typography>
-            <OrderItems orderItems={order.orderItems} size="small" to={`/product/:id`} />
+            <OrderItems
+              orderItems={order.orderItems}
+              size="small"
+              to={`/product/:id`}
+            />
           </Stack>
         </Box>
       )}

@@ -5,7 +5,7 @@ import OrderStatus from "../../components/OrderStatus";
 import axiosInstance from "../../config/axiosInstance";
 import { useUserContext } from "../../hooks";
 import { IOrderResponse } from "../../interfaces";
-import { formatDate } from "../../utils/helpers";
+import { daysIn, formatDate } from "../../utils/helpers";
 import RouterLink from "../../components/RouterLink";
 
 export default function Purchases() {
@@ -24,12 +24,12 @@ export default function Purchases() {
           `/users/${userId}/orders`
         );
         console.log(response);
-        // setPurchases(
-        //   response.data.sort(
-        //     (a, b) =>
-        //       daysIn(new Date(a.datePlaced)) - daysIn(new Date(b.datePlaced))
-        //   )
-        // );
+        setPurchases(
+          response.data.sort(
+            (a, b) =>
+              daysIn(new Date(a.updatedAt)) - daysIn(new Date(b.updatedAt))
+          )
+        );
         setPurchases(response.data);
       } catch (error) {
         alert(`Erro ao pegar compras: ${(error as AxiosError).message}`);

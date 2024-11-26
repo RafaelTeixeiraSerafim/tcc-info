@@ -110,6 +110,7 @@ export interface IOrderResponse {
   deliveryMaxDays: number;
   totalPrice: number;
   orderItems: IOrderItemResponse[];
+  updatedAt: string;
 }
 
 export interface IOrderItemResponse {

@@ -5,11 +5,13 @@ import {
   ListItem,
   ListSubheader,
   Paper,
+  Typography,
   useTheme,
 } from "@mui/material";
 import { CSSProperties } from "react";
 import { useAdminNotificationContext } from "../../hooks/useAdminNotificationContext";
 import RouterLink from "../RouterLink";
+import { severityMap } from "../../utils/maps";
 
 interface DashboardNotificationDisplayProps {
   style?: CSSProperties;
@@ -18,7 +20,7 @@ interface DashboardNotificationDisplayProps {
 export default function DashboardNotificationDisplay({
   style,
 }: DashboardNotificationDisplayProps) {
-  const theme = useTheme()
+  const theme = useTheme();
   const { unreadNotifications } = useAdminNotificationContext();
 
   return (
@@ -35,18 +37,35 @@ export default function DashboardNotificationDisplay({
       <List
         subheader={
           <ListSubheader
-            sx={{ bgcolor: theme.palette.mode === "dark" ? "#191919" : "#f3f3f3", borderRadius: "4px 4px 0 0" }}
+            sx={{
+              bgcolor: theme.palette.mode === "dark" ? "#191919" : "#f3f3f3",
+              borderRadius: "4px 4px 0 0",
+            }}
           >
             Notificações
           </ListSubheader>
         }
       >
         <Divider />
-        {unreadNotifications.length === 0 && <ListItem>Nenhuma notificação não lida</ListItem>}
+        {unreadNotifications.length === 0 && (
+          <ListItem>Nenhuma notificação não lida</ListItem>
+        )}
         {unreadNotifications.map((notification) => (
           <>
-            <ListItem key={notification.id} sx={{ fontSize: "0.875rem" }}>
-              {notification.description}
+            <ListItem component={Box} key={notification.id}>
+              <Typography
+                color={severityMap[notification.severity].color}
+                sx={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  fontSize: "0.875rem",
+                }}
+              >
+                {notification.description}
+              </Typography>
             </ListItem>
             <Divider />
           </>

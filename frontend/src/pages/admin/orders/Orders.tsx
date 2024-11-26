@@ -97,7 +97,7 @@ export default function Orders() {
         Pedidos
       </Typography>
       {rows && (
-        <Paper sx={{ height: 400, width: "100%" }}>
+        <Paper sx={{ height: "23.1rem", width: "100%" }}>
           <DataGrid
             rows={rows}
             columns={columns}

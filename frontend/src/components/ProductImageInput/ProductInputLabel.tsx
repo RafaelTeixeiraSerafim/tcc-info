@@ -1,4 +1,5 @@
-import { InputLabel } from "@mui/material";
+import { InputLabel, useTheme } from "@mui/material";
+import useProductImageInputContext from "./useProductImageInputContext";
 
 interface ProductInputLabel {
   label: string;
@@ -9,12 +10,19 @@ export default function ProductInputLabel({
   label,
   required,
 }: ProductInputLabel) {
+  const { isHovering, setIsHovering } = useProductImageInputContext();
+  const theme = useTheme();
+
   return (
     <InputLabel
+      component={"label"}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       sx={{
-        position: "absolute",
-        top: -44,
-        color: "inherit",
+        top: "-1rem",
+        color: isHovering
+          ? `${theme.palette.text.primary} !important`
+          : `rgba(${theme.palette.text.secondary} / 0.23) !important`,
       }}
     >
       {label}

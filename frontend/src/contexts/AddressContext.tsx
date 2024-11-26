@@ -46,7 +46,7 @@ function AddressProvider({ children }: AddressProviderProps) {
       setUserAddresses((prevAddresses) =>
         prevAddresses.filter((address) => address.id !== addressId)
       );
-      newAlert("Endereço excluido", "filled", "error")
+      newAlert("Endereço excluido", "filled", "error");
     } catch (error) {
       alert(`Erro ao deletar endereço: ${(error as AxiosError).message}`);
     }
@@ -73,9 +73,13 @@ function AddressProvider({ children }: AddressProviderProps) {
 
   const setSelectedAddressById = useCallback(
     (id: number) => {
-      if (userAddresses.length === 0) return
+      if (userAddresses.length === 0) return;
+      
       const address = userAddresses.find((address) => address.id === id);
-      if (!address) throw Error(`Endereço com id ${id} não foi encontrado`);
+      if (!address) {
+        localStorage.removeItem("addressId");
+        return;
+      }
 
       setSelectedAddress(address);
       setIncompleteAddress(null);

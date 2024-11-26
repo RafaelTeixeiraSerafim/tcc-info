@@ -24,7 +24,7 @@ export default function Success() {
       </Typography>
       <Typography>
         Você pode conferir o status da sua compra{" "}
-        <RouterLink to={"/purchases"}>aqui</RouterLink>
+        <RouterLink to={`/purchases`}>aqui</RouterLink>
       </Typography>
       <Box flex={1} />
       <Button variant="contained" onClick={() => navigate("/")}>

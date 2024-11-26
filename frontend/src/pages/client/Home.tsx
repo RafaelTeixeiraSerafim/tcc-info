@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import Banner from "../../assets/images/banner.png";
 import ProductCarousel from "../../components/ProductCarousel";
@@ -54,9 +54,10 @@ export default function Home() {
         src={Banner}
         alt=""
       />
-      <Box
+      <Stack
         sx={{
           marginInline: "1.5rem",
+          gap: "3rem"
         }}
       >
         {filteredCategories.map((category) => (
@@ -66,7 +67,7 @@ export default function Home() {
             key={category.id}
           />
         ))}
-      </Box>
+      </Stack>
     </Box>
   );
 }

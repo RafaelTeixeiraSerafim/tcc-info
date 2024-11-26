@@ -19,6 +19,7 @@ public record OrderResponse(
         int deliveryMinDays,
         int deliveryMaxDays,
         BigDecimal totalPrice,
-        List<OrderItemResponse> orderItems
+        List<OrderItemResponse> orderItems,
+        Date updatedAt
 ) {
 }

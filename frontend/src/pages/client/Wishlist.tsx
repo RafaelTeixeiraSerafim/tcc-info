@@ -1,6 +1,7 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import WishlistCard from "../../components/Wishlist/WishlistCard";
 import useWishlistContext from "../../hooks/useWishlistContext";
+import EmptyWishlistImg from "../../assets/images/empty_wishlist.png";
 
 export default function Wishlist() {
   const { wishlist } = useWishlistContext();
@@ -23,11 +24,17 @@ export default function Wishlist() {
       {wishlist.length === 0 && (
         <Paper
           sx={{
-            padding: "2rem",
-            minHeight: "60vh",
+            display: "flex",
+            flexDirection: "row",
+            gap: "3rem",
+            justifyContent: "center",
+            padding: "1rem",
           }}
         >
-          <Typography>Parece que sua lista de desejos está vazia...</Typography>
+          <Typography variant="h6" alignSelf={"center"} color="text.secondary">
+            Parece que sua lista de desejos está vazia...
+          </Typography>
+          <img src={EmptyWishlistImg} alt="" width={"40%"} />
         </Paper>
       )}
       <Stack gap={"0.5rem"}>

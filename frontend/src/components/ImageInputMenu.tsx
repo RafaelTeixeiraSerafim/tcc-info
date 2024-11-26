@@ -42,6 +42,7 @@ export default function ImageInputMenu({
         Nova imagem
         <TextField
           type="file"
+          id="imgInput"
           required={required}
           inputRef={fileInputRef}
           inputProps={{

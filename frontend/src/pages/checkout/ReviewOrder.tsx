@@ -1,15 +1,22 @@
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-import { Box, Paper, Typography, useTheme } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  Paper,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import CartCard from "../../components/CartCard";
+import CartShippingFee from "../../components/CartShippingFee";
+import CartSubtotal from "../../components/CartSubtotal";
+import CartTotal from "../../components/CartTotal";
 import { useAddressContext, useCartContext, useUserContext } from "../../hooks";
 import { createPreference } from "../../service/api";
 import { formatCurrency } from "../../utils/helpers";
-import CartSubtotal from "../../components/CartSubtotal";
-import CartShippingFee from "../../components/CartShippingFee";
-import CartTotal from "../../components/CartTotal";
-import { Link } from "react-router-dom";
-import CartCard from "../../components/CartCard";
 
 export default function ReviewOrder() {
   const [preferenceId, setPreferenceId] = useState("");
@@ -56,31 +63,38 @@ export default function ReviewOrder() {
   }, [user, selectedAddress, selectedShippingOption]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        my: "3rem",
-        width: "80%",
-        marginInline: "auto",
-      }}
-    >
-      <Typography component="h1" variant="h4">
-        Revise seu pedido
-      </Typography>
-      <Paper
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1.5rem",
-          mb: "3rem",
-          minHeight: "60vh",
-          padding: "2rem",
-        }}
-      >
-        {preferenceId.length > 0 && (
-          <>
+    <>
+      {preferenceId.length === 0 ? (
+        <Backdrop
+          sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+          open={true}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            my: "3rem",
+            width: "80%",
+            marginInline: "auto",
+          }}
+        >
+          <Typography component="h1" variant="h4">
+            Revise seu pedido
+          </Typography>
+          <Paper
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5rem",
+              mb: "3rem",
+              minHeight: "60vh",
+              padding: "2rem",
+            }}
+          >
             {cartItems.map((cartItem) => (
               <CartCard
                 cartItem={cartItem}
@@ -189,9 +203,9 @@ export default function ReviewOrder() {
                 locale="pt-BR"
               />
             </Box>
-          </>
-        )}
-      </Paper>
-    </Box>
+          </Paper>
+        </Box>
+      )}
+    </>
   );
 }

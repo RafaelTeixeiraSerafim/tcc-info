@@ -24,18 +24,25 @@ public class Review {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
     private float rating;
+
     private String title;
+
     private String comment;
+
     @CreatedDate
 //    @Column(updatable = false)
     private Date createdAt;
+
     @LastModifiedDate
     private Date updatedAt;
 }
