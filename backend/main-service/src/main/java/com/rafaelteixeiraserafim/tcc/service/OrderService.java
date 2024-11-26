@@ -154,7 +154,7 @@ public class OrderService {
             BigDecimal total = OrderUtils.getOrderTotal(order);
             AddressDto addressDto = addressService.getAddress(order.getAddressId());
             List<OrderItemResponse> orderItems = ModelDtoConversion.createOrderItemResponses(order.getOrderItems());
-            orderResponses.add(new OrderResponse(order.getId(), order.getUser(), order.getDatePlaced(), order.getDateDelivered(), order.getStatus(), addressDto, order.getShippingFee(), order.getDeliveryMinDays(), order.getDeliveryMaxDays(), total, orderItems));
+            orderResponses.add(new OrderResponse(order.getId(), order.getUser(), order.getDatePlaced(), order.getDateDelivered(), order.getStatus(), addressDto, order.getShippingFee(), order.getDeliveryMinDays(), order.getDeliveryMaxDays(), total, orderItems, order.getUpdatedAt()));
         }
 
         return orderResponses;
