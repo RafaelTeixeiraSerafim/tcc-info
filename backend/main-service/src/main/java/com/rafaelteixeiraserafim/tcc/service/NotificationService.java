@@ -75,6 +75,8 @@ public class NotificationService {
                 return Optional.of(notificationRepository.save(new Notification(newNotificationObject, admin, false)));
             }
         }
+
+        return Optional.empty();
     }
 
     public List<Optional<Notification>> createNotificationsIfEmptyStock(List<Product> products) {
