@@ -46,12 +46,12 @@ const WishlistProvider = ({ children }: WishlistProviderProps) => {
     }
 
     try {
-      await axiosInstance.post("/users/wishlist/item", {
+      const response = await axiosInstance.post("/users/wishlist/item", {
         userId: user.id,
         productId,
       });
       newAlert("Adicionado a Lista de Desejos");
-      await getWishlist(user.id);
+      setWishlist([...wishlist, response.data]);
     } catch (error) {
       alert(`Erro ao adicionar favorito: ${(error as AxiosError).message}`);
     }

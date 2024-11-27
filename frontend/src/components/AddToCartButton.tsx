@@ -19,7 +19,7 @@ export default function AddToCartButton({ productId, productQty }: AddToCartButt
       await handleAddToCart(productId, productQty);
     } catch (error) {
       console.error(error);
-      navigate("/login");
+      navigate(`/login?callback=${productId}`);
     }
   };
 

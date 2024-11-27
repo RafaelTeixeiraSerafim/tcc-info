@@ -3,6 +3,8 @@ package com.rafaelteixeiraserafim.tcc.controller;
 import com.mercadopago.resources.payment.Payment;
 import com.rafaelteixeiraserafim.tcc.dto.AddressDto;
 import com.rafaelteixeiraserafim.tcc.dto.PreferenceDto;
+import com.rafaelteixeiraserafim.tcc.model.Notification;
+import com.rafaelteixeiraserafim.tcc.model.Order;
 import com.rafaelteixeiraserafim.tcc.model.OrderItem;
 import com.rafaelteixeiraserafim.tcc.model.User;
 import com.rafaelteixeiraserafim.tcc.service.*;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/payments")
@@ -76,8 +79,12 @@ public class PaymentController {
                 System.out.println("After createPrices");
                 orderService.checkoutOrder(userId, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
                 System.out.println("After checkoutOrder");
-                notificationService.createNotificationsIfStockLessThan5(orderItems.stream().map(OrderItem::getProduct).toList());
-                notificationService.createNotificationsIfEmptyStock(orderItems.stream().map(OrderItem::getProduct).toList());
+                for (OrderItem orderItem : orderItems) {
+                    Optional<Notification> optionalNotification = notificationService.createNotificationIfEmptyStock(orderItem.getProduct());
+                    if (optionalNotification.isEmpty()) {
+                        notificationService.createNotificationIfStockLessThan5(orderItem.getProduct());
+                    }
+                }
             }
         }
         return ResponseEntity.ok(data);

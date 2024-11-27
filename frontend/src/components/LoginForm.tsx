@@ -9,6 +9,10 @@ import Form from "./Form";
 import SignupPrompt from "./SignupPrompt";
 import DisabledUserLoginDialog from "./Dialogs/DisabledUserLoginDialog";
 
+interface LoginFormProps {
+  callback?: string;
+}
+
 const errors = {
   root: [
     {
@@ -18,7 +22,7 @@ const errors = {
   ],
 };
 
-export default function LoginForm() {
+export default function LoginForm({ callback }: LoginFormProps) {
   const [loginUser, setLoginUser] = useState<ILoginUser>({
     email: "",
     password: "",
@@ -40,6 +44,10 @@ export default function LoginForm() {
       );
       console.log(response);
       setUser(response.data);
+      if (callback && callback.length > 0) {
+        navigate(`/product/${callback}`);
+        return;
+      }
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -83,7 +91,7 @@ export default function LoginForm() {
         <Form.SubmitButton disabled={!areInputsFilled()}>
           Entrar
         </Form.SubmitButton>
-        <SignupPrompt />
+        <SignupPrompt callback={callback} />
       </Form.Actions>
       <DisabledUserLoginDialog
         isOpen={isDialogOpen}

@@ -8,6 +8,10 @@ import { signup } from "../service/api";
 import Form from "./Form";
 import LoginPrompt from "./LoginPrompt";
 
+interface SignupFormProps {
+  callback?: string;
+}
+
 const errors = {
   email: [
     {
@@ -25,7 +29,7 @@ const errors = {
   ],
 };
 
-export default function SignupForm() {
+export default function SignupForm({ callback }: SignupFormProps) {
   const [signupUser, setSignupUser] = useState<ISignupUser>({
     username: "",
     email: "",
@@ -42,6 +46,10 @@ export default function SignupForm() {
     try {
       const user = await signup(signupUser, "CLIENT");
       setUser(user);
+      if (callback && callback.length > 0) {
+        navigate(`/product/${callback}`);
+        return;
+      }
       navigate("/");
     } catch (error) {
       console.error(error);
