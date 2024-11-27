@@ -24,8 +24,8 @@ export const translateStatus = (status: string): string => {
 export const getOrderItemPrice = (orderItem: IOrderItem) => {
   return (
     orderItem.qty *
-    (parseFloat(orderItem.product.salePrice || "0") ||
-      parseFloat(orderItem.product.origPrice))
+    (orderItem.product.salePrice || 0) ||
+      orderItem.product.origPrice
   );
 };
 

@@ -74,7 +74,7 @@ function AddressProvider({ children }: AddressProviderProps) {
   const setSelectedAddressById = useCallback(
     (id: number) => {
       if (userAddresses.length === 0) return;
-      
+
       const address = userAddresses.find((address) => address.id === id);
       if (!address) {
         localStorage.removeItem("addressId");
@@ -163,6 +163,18 @@ function AddressProvider({ children }: AddressProviderProps) {
     if (!user || !postalCode) return;
     getShippingOptions(user.id, postalCode);
   }, [user, postalCode]);
+
+  useEffect(() => {
+    if (!user) {
+      setUserAddresses([]);
+      setIncompleteAddress(null);
+      setSelectedAddress(null);
+      setShippingOptions([]);
+      setSelectedShippingOption(null);
+      localStorage.removeItem("postalCode");
+      localStorage.removeItem("addressId");
+    }
+  }, [user]);
 
   return (
     <AddressContext.Provider

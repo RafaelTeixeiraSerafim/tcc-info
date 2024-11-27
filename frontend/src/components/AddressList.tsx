@@ -22,7 +22,7 @@ export default function AddressList({
   return (
     <>
       {userAddresses.length === 0 && (
-        <Typography>
+        <Typography marginY={"1.5rem"}>
           Parece que você não possui nenhum endereço cadastrado...
         </Typography>
       )}

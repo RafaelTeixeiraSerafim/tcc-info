@@ -2,11 +2,11 @@ import { Box, Paper, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import OrderStatus from "../../components/OrderStatus";
+import RouterLink from "../../components/RouterLink";
 import axiosInstance from "../../config/axiosInstance";
 import { useUserContext } from "../../hooks";
 import { IOrderResponse } from "../../interfaces";
-import { daysIn, formatDate } from "../../utils/helpers";
-import RouterLink from "../../components/RouterLink";
+import { formatDate } from "../../utils/helpers";
 
 export default function Purchases() {
   const [purchases, setPurchases] = useState<IOrderResponse[]>([]);
@@ -27,10 +27,9 @@ export default function Purchases() {
         setPurchases(
           response.data.sort(
             (a, b) =>
-              daysIn(new Date(a.updatedAt)) - daysIn(new Date(b.updatedAt))
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           )
         );
-        setPurchases(response.data);
       } catch (error) {
         alert(`Erro ao pegar compras: ${(error as AxiosError).message}`);
       }

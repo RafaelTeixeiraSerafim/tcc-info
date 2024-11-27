@@ -40,9 +40,7 @@ export default function ReviewCard({
           }}
         >
           <Avatar src={review.user.profilePic} alt="" />
-          <Typography>
-            {review.user.username}
-          </Typography>
+          <Typography>{review.user.username}</Typography>
         </Box>
         <Stack direction={"row"} gap={"0.25rem"}>
           <Rating
@@ -56,7 +54,7 @@ export default function ReviewCard({
           <Typography fontWeight={"bold"}>{review.title}</Typography>
         </Stack>
       </Stack>
-      <Typography>{review.comment}</Typography>
+      <Typography whiteSpace={"pre-wrap"}>{review.comment}</Typography>
       <Box>
         <Typography
           variant="caption"

@@ -32,7 +32,7 @@ export default function DisabledUserLoginDialog({
           Se você desejar reativá-la, entre em contato conosco pelo email
           <Typography color="secondary" display={"inline"}>
             {" "}
-            rafael.teixeiraserafim@gmail.com
+            vitoriamilak@gmail.com
           </Typography>{" "}
           ou pelo telefone{" "}
           <Typography color="secondary" display={"inline"}>

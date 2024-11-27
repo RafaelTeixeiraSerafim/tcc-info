@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { IFormAddress } from "../interfaces";
 import axiosInstance from "../config/axiosInstance";
+import { IFormAddress } from "../interfaces";
 import { formatPostalCode, sanitizePostalCode } from "../utils/helpers";
 
 export default function usePostalCodeInput(
@@ -10,12 +10,16 @@ export default function usePostalCodeInput(
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    // const numericValue = e.target.value.replace(/[^0-9]/g, "");
-    // if (numericValue.length > 8) return;
-
     setAddress((prevAddress) => {
-      console.log(formatPostalCode(e.target.value));
-      return { ...prevAddress, postalCode: formatPostalCode(e.target.value) };
+      return {
+        ...prevAddress,
+        postalCode: formatPostalCode(e.target.value),
+        state: "",
+        city: "",
+        neighbourhood: "",
+        street: "",
+        houseNumber: "",
+      };
     });
   };
 

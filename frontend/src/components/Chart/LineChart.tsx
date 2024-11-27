@@ -78,7 +78,6 @@ const LineChart = ({ style }: LineChartProps) => {
       options={{
         responsive: true,
         maintainAspectRatio: false,
-        // aspectRatio: 1.77,
         plugins: {
           legend: {
             display: true,

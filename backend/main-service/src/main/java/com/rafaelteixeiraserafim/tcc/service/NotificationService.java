@@ -5,6 +5,7 @@ import com.rafaelteixeiraserafim.tcc.dto.ProductResponse;
 import com.rafaelteixeiraserafim.tcc.enums.NotificationEntity;
 import com.rafaelteixeiraserafim.tcc.enums.NotificationSeverity;
 import com.rafaelteixeiraserafim.tcc.enums.ProductNotificationType;
+import com.rafaelteixeiraserafim.tcc.enums.UserRole;
 import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.NotificationObjectRepository;
 import com.rafaelteixeiraserafim.tcc.repository.NotificationRepository;
@@ -34,7 +35,11 @@ public class NotificationService {
         if (product.getStockQty() < 5) {
             NotificationObject notificationObject = notificationObjectRepository.findByEntityIdAndEntityAndEntityType(product.getId(), NotificationEntity.PRODUCT, ProductNotificationType.STOCK_LESS_THAN_5.name()).orElse(null);
             if (notificationObject != null) {
-                return;
+                Notification notification = notificationRepository.findByNotifiedAndNotificationObject(userService.getAdmins().get(0), notificationObject).orElse(null);
+
+                if (notification != null && !notification.getRead()) {
+                    return;
+                }
             }
 
             NotificationObject newNotificationObject = new NotificationObject(product.getId(), NotificationEntity.PRODUCT, ProductNotificationType.STOCK_LESS_THAN_5.name(), NotificationSeverity.MEDIUM, "Produto possui menos de 5 unidades no estoque");
@@ -56,7 +61,11 @@ public class NotificationService {
         if (product.getStockQty() == 0) {
             NotificationObject notificationObject = notificationObjectRepository.findByEntityIdAndEntityAndEntityType(product.getId(), NotificationEntity.PRODUCT, ProductNotificationType.EMPTY_STOCK.name()).orElse(null);
             if (notificationObject != null) {
-                return;
+                Notification notification = notificationRepository.findByNotifiedAndNotificationObject(userService.getAdmins().get(0), notificationObject).orElse(null);
+
+                if (notification != null && !notification.getRead()) {
+                    return;
+                }
             }
 
             NotificationObject newNotificationObject = new NotificationObject(product.getId(), NotificationEntity.PRODUCT, ProductNotificationType.EMPTY_STOCK.name(), NotificationSeverity.HIGH, "O estoque deste produto está vazio");
@@ -105,6 +114,16 @@ public class NotificationService {
 
     public void updateNotification(@Min(1) Long notificationId, boolean read) {
         Notification notification = this.getNotification(notificationId);
+        if (notification.getNotified().getRole().equals(UserRole.ADMIN)) {
+            for (User admin : userService.getAdmins()) {
+                Notification adminNotification = notificationRepository.findByNotifiedAndNotificationObject(admin, notification.getNotificationObject()).orElse(null);
+                if (adminNotification != null) {
+                    adminNotification.setRead(read);
+                    notificationRepository.save(adminNotification);
+                }
+            }
+        }
+
         notification.setRead(read);
         notificationRepository.save(notification);
     }

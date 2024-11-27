@@ -18,8 +18,8 @@ export interface IProduct {
   about: string;
   description: string;
   category: ICategory;
-  origPrice: string;
-  salePrice: string | null;
+  origPrice: number;
+  salePrice: number | null;
   stockQty: string;
   length: string;
   width: string;

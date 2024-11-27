@@ -47,7 +47,7 @@ export default function WishlistCard({ wishlistItem }: WishlistCard) {
           <Typography>{wishlistItem.product.name}</Typography>
           <PriceDisplay
             origPrice={wishlistItem.product.origPrice}
-            salePrice={wishlistItem.product.salePrice}
+            salePrice={wishlistItem.product.salePrice || 0}
             size="small"
           />
           <Typography color="gray">

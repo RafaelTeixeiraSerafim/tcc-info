@@ -37,10 +37,10 @@ export default function AdminDashboard() {
             height: "21rem",
           }}
         >
-          <Box width="65%">
+          <Box width="57%">
             <LineChart />
           </Box>
-          <Stack width={"35%"} alignItems={"center"}>
+          <Stack width={"43%"} alignItems={"center"}>
             <PieChart />
           </Stack>
         </Box>

@@ -78,7 +78,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.stockQty ? (
             <PriceDisplay
               origPrice={product.origPrice}
-              salePrice={product.salePrice || ""}
+              salePrice={product.salePrice || 0}
               size="small"
             />
           ) : (

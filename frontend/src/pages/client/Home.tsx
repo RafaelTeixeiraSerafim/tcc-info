@@ -50,20 +50,25 @@ export default function Home() {
         marginTop: 0,
       }}
     >
-      <img
-        src={Banner}
-        alt=""
-      />
+      <img src={Banner} alt="" />
       <Stack
         sx={{
           marginInline: "1.5rem",
-          gap: "3rem"
+          gap: "3rem",
         }}
       >
+        <ProductCarousel
+          title={"Ofertas"}
+          products={products.filter(
+            (product) => product.salePrice
+          )}
+        />
         {filteredCategories.map((category) => (
           <ProductCarousel
-            categoryName={category.name}
-            products={products}
+            title={category.name}
+            products={products.filter(
+              (product) => product.category.id === category.id
+            )}
             key={category.id}
           />
         ))}

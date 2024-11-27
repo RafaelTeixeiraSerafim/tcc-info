@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
-import { darkTheme, lightTheme } from "../themes";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { ThemeContext } from ".";
+import { darkTheme, lightTheme } from "../themes";
 
 interface ThemeProviderWrapperProps {
   children: React.ReactElement;

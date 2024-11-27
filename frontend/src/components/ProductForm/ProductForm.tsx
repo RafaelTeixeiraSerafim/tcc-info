@@ -40,11 +40,15 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
           ...origProduct,
           categoryId: origProduct.category.id.toString(),
           origPrice: formatDecimalInputForFrontend(
-            origProduct.origPrice.toString()
+            parseFloat(origProduct.origPrice.toString()).toFixed(2).toString()
           ),
-          salePrice: formatDecimalInputForFrontend(
-            origProduct.salePrice?.toString() || ""
-          ),
+          salePrice: origProduct.salePrice
+            ? formatDecimalInputForFrontend(
+                parseFloat(origProduct.salePrice.toString())
+                  .toFixed(2)
+                  .toString()
+              )
+            : "",
           length: formatDecimalInputForFrontend(origProduct.length.toString()),
           width: formatDecimalInputForFrontend(origProduct.width.toString()),
           height: formatDecimalInputForFrontend(origProduct.height.toString()),
@@ -278,6 +282,7 @@ export default function ProductForm({ origProduct }: ProductFormProps) {
               name="weight"
               label="Peso (kg)"
               value={formProduct.weight}
+              maxDecimals={3}
               required
               onChange={handleChange}
               fullWidth

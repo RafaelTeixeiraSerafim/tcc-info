@@ -122,6 +122,10 @@ export default function SelectAddressModal({
     setTempSelectedAddress(selectedAddress);
   }, [selectedAddress]);
 
+  useEffect(() => {
+    if (!user) setFormAddress(emptyFormAddress);
+  }, [user]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -171,7 +175,7 @@ export default function SelectAddressModal({
               Usar
             </Button>
           </Box>
-          {formAddress.street && (
+          {formAddress.street ? (
             <Box>
               <Typography>
                 {formAddress.street} - {formAddress.neighbourhood}
@@ -181,6 +185,15 @@ export default function SelectAddressModal({
                 {formatPostalCode(formAddress.postalCode)}
               </Typography>
             </Box>
+          ) : (
+            formAddress.city.length > 0 && (
+              <Box>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                  {formAddress.city}, {formAddress.state} -{" "}
+                  {formatPostalCode(formAddress.postalCode)}
+                </Typography>
+              </Box>
+            )
           )}
           <Form.Action onClick={handleNewAddress}>
             Adicionar endereço completo

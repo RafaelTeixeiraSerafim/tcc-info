@@ -52,7 +52,7 @@ export default function Footer() {
         <Stack direction={"row"} alignItems={"center"} gap={"0.875rem"}>
           <EmailIcon color="secondary" />
           <Typography sx={{ opacity: "70%" }} fontSize="0.875rem">
-            rafael.teixeiraserafim@gmail.com
+            vitoriamilak@gmail.com
           </Typography>
         </Stack>
       </Stack>

@@ -3,8 +3,8 @@ import { formatCurrency, getSalePercent } from "../utils/helpers";
 import { Variant } from "@mui/material/styles/createTypography";
 
 interface PriceDisplayProps {
-  origPrice: string;
-  salePrice: string;
+  origPrice: number;
+  salePrice: number;
   size?: "small" | "medium" | "large";
 }
 
@@ -35,26 +35,20 @@ export default function PriceDisplay({
             variant={sizeToVariant[size].oldPrice}
             sx={{ color: "#666" }}
           >
-            {formatCurrency(parseFloat(origPrice))}
+            {formatCurrency(origPrice)}
           </Typography>
           <Stack direction={"row"} alignItems={"center"} gap={"0.5rem"}>
-            <Typography
-              variant={sizeToVariant[size].newPrice}
-            >
-              {formatCurrency(parseFloat(salePrice))}
+            <Typography variant={sizeToVariant[size].newPrice}>
+              {formatCurrency(salePrice)}
             </Typography>
             <Typography color={"primary"} height={"fit-content"}>
-              {getSalePercent(
-                parseFloat(origPrice),
-                parseFloat(salePrice)
-              )}
-              % OFF
+              {getSalePercent(origPrice, salePrice)}% OFF
             </Typography>
           </Stack>
         </Box>
       ) : (
         <Typography variant={sizeToVariant[size].newPrice}>
-          {formatCurrency(parseFloat(origPrice))}
+          {formatCurrency(origPrice)}
         </Typography>
       )}
     </>

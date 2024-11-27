@@ -86,20 +86,18 @@ const BarChart = () => {
             },
           },
           datalabels: {
-            color: "white",
+            color: theme.palette.text.secondary,
+            opacity: theme.palette.mode === "dark" ? 0.5 : 1,
             anchor: "start", // Place the label at the end of the bar
             align: "start", // Align the label at the start of the bar
             formatter: (_, context) => {
               const productName: string = context.chart.data.labels?.[
                 context.dataIndex
               ] as string;
-              const maxChars = 18; // Define max length for truncation
+              const maxChars = 15; // Define max length for truncation
               return productName.length > maxChars
                 ? `${productName.slice(0, maxChars)}...`
                 : productName;
-            },
-            font: {
-              weight: "bold",
             },
           },
         },

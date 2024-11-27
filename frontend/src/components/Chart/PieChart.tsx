@@ -32,9 +32,11 @@ const PieChart = ({ style }: PieChartProps) => {
   useEffect(() => {
     const getMostBoughtProducts = async () => {
       try {
-        const response = await axiosInstance.get("/products/most-bought");
+        const response = await axiosInstance.get<{
+          mostBoughtProducts: IMostBoughtProduct[];
+        }>("/products/most-bought");
         console.log(response);
-        setMostBoughtProducts(response.data.mostBoughtProducts);
+        setMostBoughtProducts(response.data.mostBoughtProducts.slice(0, 10));
       } catch (error) {
         alert(`Erro ao pegar produtos: ${(error as AxiosError).message}`);
       }
@@ -48,9 +50,11 @@ const PieChart = ({ style }: PieChartProps) => {
       style={style}
       options={{
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             display: true,
+            position: "right",
           },
           title: {
             display: true,

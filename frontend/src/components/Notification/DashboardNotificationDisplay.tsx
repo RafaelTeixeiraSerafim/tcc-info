@@ -77,7 +77,7 @@ export default function DashboardNotificationDisplay({
       <ListItem component={"div"}>
         <RouterLink
           to={"/admin/notifications"}
-          style={{ fontSize: "0.875rem" }}
+          style={{ fontSize: "0.875rem", color: theme.palette.primary.main }}
         >
           Mostrar todas
         </RouterLink>

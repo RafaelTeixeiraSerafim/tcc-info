@@ -93,7 +93,7 @@ export default function ProductDetails() {
               {product.stockQty ? (
                 <>
                   <PriceDisplay
-                    salePrice={product.salePrice || ""}
+                    salePrice={product.salePrice || 0}
                     origPrice={product.origPrice}
                   />
                   <FormControl
