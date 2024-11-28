@@ -80,8 +80,8 @@ public class PaymentController {
                 orderService.checkoutOrder(userId, addressId, shippingFee, deliveryMinDays, deliveryMaxDays);
                 System.out.println("After checkoutOrder");
                 for (OrderItem orderItem : orderItems) {
-                    Optional<Notification> optionalNotification = notificationService.createNotificationIfEmptyStock(orderItem.getProduct());
-                    if (optionalNotification.isEmpty()) {
+                    boolean created = notificationService.createNotificationIfEmptyStock(orderItem.getProduct());
+                    if (!created) {
                         notificationService.createNotificationIfStockLessThan5(orderItem.getProduct());
                     }
                 }

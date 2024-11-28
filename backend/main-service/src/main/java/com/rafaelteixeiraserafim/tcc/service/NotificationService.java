@@ -31,14 +31,20 @@ public class NotificationService {
         this.productService = productService;
     }
 
-    public void createNotificationIfStockLessThan5(Product product) {
+    public boolean createNotificationIfStockLessThan5(Product product) {
         if (product.getStockQty() < 5) {
             NotificationObject notificationObject = notificationObjectRepository.findByEntityIdAndEntityAndEntityType(product.getId(), NotificationEntity.PRODUCT, ProductNotificationType.STOCK_LESS_THAN_5.name()).orElse(null);
             if (notificationObject != null) {
                 Notification notification = notificationRepository.findByNotifiedAndNotificationObject(userService.getAdmins().get(0), notificationObject).orElse(null);
 
                 if (notification != null && !notification.getRead()) {
-                    return;
+                    return false;
+                } else {
+                    for (User admin : userService.getAdmins()) {
+                        notificationRepository.save(new Notification(notificationObject, admin, false));
+                    }
+
+                    return true;
                 }
             }
 
@@ -48,7 +54,10 @@ public class NotificationService {
             for (User admin : userService.getAdmins()) {
                 notificationRepository.save(new Notification(newNotificationObject, admin, false));
             }
+
+            return true;
         }
+        return false;
     }
 
     public void createNotificationsIfStockLessThan5(List<Product> products) {
@@ -57,14 +66,20 @@ public class NotificationService {
         }
     }
 
-    public Optional<Notification> createNotificationIfEmptyStock(Product product) {
+    public boolean createNotificationIfEmptyStock(Product product) {
         if (product.getStockQty() == 0) {
             NotificationObject notificationObject = notificationObjectRepository.findByEntityIdAndEntityAndEntityType(product.getId(), NotificationEntity.PRODUCT, ProductNotificationType.EMPTY_STOCK.name()).orElse(null);
             if (notificationObject != null) {
                 Notification notification = notificationRepository.findByNotifiedAndNotificationObject(userService.getAdmins().get(0), notificationObject).orElse(null);
 
                 if (notification != null && !notification.getRead()) {
-                    return Optional.empty();
+                    return false;
+                } else {
+                    for (User admin : userService.getAdmins()) {
+                        notificationRepository.save(new Notification(notificationObject, admin, false));
+                    }
+
+                    return true;
                 }
             }
 
@@ -72,20 +87,13 @@ public class NotificationService {
             notificationObjectRepository.save(newNotificationObject);
 
             for (User admin : userService.getAdmins()) {
-                return Optional.of(notificationRepository.save(new Notification(newNotificationObject, admin, false)));
+                notificationRepository.save(new Notification(newNotificationObject, admin, false));
             }
+
+            return true;
         }
 
-        return Optional.empty();
-    }
-
-    public List<Optional<Notification>> createNotificationsIfEmptyStock(List<Product> products) {
-        List<Optional<Notification>> notifications = new ArrayList<>();
-        for (Product product : products) {
-            notifications.add(createNotificationIfEmptyStock(product));
-        }
-
-        return notifications;
+        return false;
     }
 
     public List<Notification> getUserNotifications(User user) {
