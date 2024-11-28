@@ -51,7 +51,7 @@ public class WishlistController {
                 .buildAndExpand(wishlistItem.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(wishlistItem);
+        return ResponseEntity.created(location).body(ModelDtoConversion.createWishlistItemResponse(wishlistItem));
     }
 
     @DeleteMapping("/users/wishlist/item/{itemId}")
