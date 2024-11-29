@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Order {
@@ -26,9 +25,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "order_user_id_fk"))
     private User user;
 
     private Long addressId;
@@ -43,7 +41,6 @@ public class Order {
 
     private Date dateDelivered;
 
-    @NonNull
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
@@ -54,7 +51,9 @@ public class Order {
     @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<BoughtProduct> boughtProducts;
+
+    public Order(User user, OrderStatus status) {
+        this.user = user;
+        this.status = status;
+    }
 }

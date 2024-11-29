@@ -81,6 +81,13 @@ public class User implements UserDetails {
     private List<Review> reviews;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> orders;
+
+    @PreRemove
+    private void preRemove() {
+        for (Order order : orders) {
+            order.setUser(null);
+        }
+    }
 }
