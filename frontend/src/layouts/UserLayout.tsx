@@ -35,7 +35,7 @@ export default function UserLayout() {
                   borderBottom: "1px solid transparent", // Prevents margin collapsing
                 }}
               >
-                <Toolbar />
+                <Toolbar sx={{ minHeight: {md: "75px"} }} />
                 <Outlet />
               </main>
               <Footer />

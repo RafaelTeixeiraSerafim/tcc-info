@@ -67,7 +67,7 @@ export default function DeleteCategoriesButton({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus variant="outlined">
+          <Button onClick={handleClose} autoFocus>
             Cancelar
           </Button>
           <Button onClick={handleDelete} color={"error"}>

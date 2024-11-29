@@ -64,7 +64,7 @@ export default function DeactivateProductsButton({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus variant="outlined">
+          <Button onClick={handleClose} autoFocus>
             Cancelar
           </Button>
           <Button onClick={handleDeactivate} color={"warning"}>

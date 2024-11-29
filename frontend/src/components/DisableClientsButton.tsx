@@ -65,11 +65,11 @@ export default function DisableClientsButton({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus variant="outlined">
+          <Button onClick={handleClose} autoFocus>
             Cancelar
           </Button>
           <Button onClick={handleDisable} color={"error"}>
-            Desativar clientes
+            Desativar
           </Button>
         </DialogActions>
       </Dialog>

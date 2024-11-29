@@ -63,7 +63,7 @@ export default function DeleteProductsButton({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus variant="outlined">
+          <Button onClick={handleClose} autoFocus>
             Cancelar
           </Button>
           <Button onClick={handleDelete} color={"error"}>

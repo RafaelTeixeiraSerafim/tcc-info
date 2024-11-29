@@ -1,17 +1,25 @@
-import React from "react";
-import { Box, Stack, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { ICategory, IFormCategory } from "../interfaces";
-import { useNavigate } from "react-router-dom";
-import Form from "./Form";
-import useForm from "../hooks/useForm";
-import { createCategory, updateCategory } from "../service/api";
+import { Box, Stack, Typography } from "@mui/material";
 import { AxiosError } from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useForm from "../hooks/useForm";
+import { ICategory, IFormCategory } from "../interfaces";
+import { createCategory, updateCategory } from "../service/api";
+import Form from "./Form";
 import TitleUnderline from "./TitleUnderline";
 
 interface CategoryFormProps {
   origCategory?: ICategory;
 }
+
+const errors = {
+  name: [
+    {
+      message: "Uma categoria com esse nome já existe",
+      onError: (error: AxiosError) => error.status === 409,
+    },
+  ],
+};
 
 export default function CategoryForm({ origCategory }: CategoryFormProps) {
   const [formCategory, setFormCategory] = useState<IFormCategory>({
@@ -32,19 +40,20 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
 
       navigate("/admin/categories");
     } catch (error) {
-      alert(
-        `Erro ao ${isUpdating ? "alterar" : "criar"} a categoria: ${(error as AxiosError).message}`
-      );
+      console.log(error);
+      throw error;
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    handleTextInputChange(e, setFormCategory);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => handleTextInputChange(e, setFormCategory);
 
   return (
     <Form
       onSubmit={handleSubmit}
       style={{ width: "90%", gap: "2.5rem", height: "80vh" }}
+      errors={errors}
     >
       <Box width={"100%"}>
         <Form.Title>{isUpdating ? "Alterar" : "Nova"} Categoria</Form.Title>
@@ -54,15 +63,18 @@ export default function CategoryForm({ origCategory }: CategoryFormProps) {
         <Typography variant="h4" textAlign={"left"}>
           Informações gerais
         </Typography>
-        <TextField
-          type="text"
-          name="name"
-          label={"Nome"}
-          value={formCategory.name}
-          onChange={handleChange}
-          required
-          fullWidth
-        />
+        <Form.Inputs>
+          <Form.Input
+            type="text"
+            name="name"
+            label={"Nome"}
+            value={formCategory.name}
+            onChange={handleChange}
+            required
+            fullWidth
+            variant="outlined"
+          />
+        </Form.Inputs>
       </Stack>
       {/* <TextField
         multiline

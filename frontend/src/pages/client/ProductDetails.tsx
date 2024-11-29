@@ -56,7 +56,7 @@ export default function ProductDetails() {
             flexDirection: "column",
             paddingInline: "3rem",
             gap: "3rem",
-            mt: "3rem",
+            mt: "2.4rem",
           }}
         >
           <Box

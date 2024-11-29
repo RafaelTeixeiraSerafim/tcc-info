@@ -91,7 +91,7 @@ export interface ISignupUser {
 
 export interface IOrder {
   id: number;
-  user: IUser;
+  user: IUser | null;
   address: IAddress;
   shippingFee: number;
   datePlaced: string;

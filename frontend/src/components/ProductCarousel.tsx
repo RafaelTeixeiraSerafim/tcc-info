@@ -26,7 +26,7 @@ export default function ProductCarousel({
           display: "flex",
           overflowX: "scroll",
           gap: "2rem",
-          paddingBlock: "1rem",
+          paddingBottom: "1rem",
         }}
       >
         {products.map((product) => (

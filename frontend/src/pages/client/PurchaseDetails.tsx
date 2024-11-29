@@ -10,7 +10,7 @@ import {
   formatCurrency,
   formatDatetime,
   formatPhone,
-  formatPostalCode
+  formatPostalCode,
 } from "../../utils/helpers";
 
 export default function PurchaseDetails() {
@@ -48,7 +48,7 @@ export default function PurchaseDetails() {
             flexDirection: "column",
             gap: "1.5rem",
             mb: "3rem",
-            mt: "3rem",
+            mt: "2.4rem",
             width: "80%",
             marginInline: "auto",
           }}

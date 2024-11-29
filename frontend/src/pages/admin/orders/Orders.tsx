@@ -62,7 +62,7 @@ export default function Orders() {
             return {
               id: order.id,
               status: order.status,
-              userEmail: order.user.email,
+              userEmail: order.user ? order.user.email : "[deletado]",
               datePlaced: new Date(order.datePlaced),
             };
           })

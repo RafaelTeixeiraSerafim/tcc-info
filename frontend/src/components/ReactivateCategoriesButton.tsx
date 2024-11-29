@@ -66,11 +66,7 @@ export default function ReactivateCategoriesButton({
           <Button onClick={handleClose} autoFocus>
             Cancelar
           </Button>
-          <Button
-            onClick={handleReactivate}
-            color={"success"}
-            variant="outlined"
-          >
+          <Button onClick={handleReactivate} color={"success"}>
             Reativar
           </Button>
         </DialogActions>

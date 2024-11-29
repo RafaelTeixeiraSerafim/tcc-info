@@ -11,7 +11,7 @@ import {
   formatCurrency,
   formatDatetime,
   formatPhone,
-  formatPostalCode
+  formatPostalCode,
 } from "../../../utils/helpers";
 
 export default function OrderDetails() {
@@ -86,7 +86,8 @@ export default function OrderDetails() {
                     }}
                   >
                     <Typography>
-                      <strong>Status:</strong> <OrderStatus status={order.status} display={"inline"}/>
+                      <strong>Status:</strong>{" "}
+                      <OrderStatus status={order.status} display={"inline"} />
                     </Typography>
                     <Button
                       onClick={() => setIsModalOpen(true)}
@@ -118,10 +119,12 @@ export default function OrderDetails() {
               </Typography>
               <Stack direction={"row"}>
                 <Typography flex={1}>
-                  <strong>Nome:</strong> {order.user.username}
+                  <strong>Nome:</strong>{" "}
+                  {order.user ? order.user.username : "[deletado]"}
                 </Typography>
                 <Typography flex={1}>
-                  <strong>Email:</strong> {order.user.email}
+                  <strong>Email:</strong>{" "}
+                  {order.user ? order.user.email : "[deletado]"}
                 </Typography>
               </Stack>
             </Stack>

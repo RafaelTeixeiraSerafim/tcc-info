@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByDeactivated(boolean deactivated);
+    boolean existsByName(String name);
 }

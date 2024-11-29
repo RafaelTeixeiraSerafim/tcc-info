@@ -68,8 +68,8 @@ export default function EnableClientsButton({
           <Button onClick={handleClose} autoFocus>
             Cancelar
           </Button>
-          <Button onClick={handleEnable} variant="outlined" color={"success"}>
-            Reativar clientes
+          <Button onClick={handleEnable} color={"success"}>
+            Reativar
           </Button>
         </DialogActions>
       </Dialog>

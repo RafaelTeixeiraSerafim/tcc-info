@@ -1,6 +1,7 @@
 package com.rafaelteixeiraserafim.tcc.service;
 
 import com.rafaelteixeiraserafim.tcc.dto.CategoryRequest;
+import com.rafaelteixeiraserafim.tcc.exception.CategoryConflictException;
 import com.rafaelteixeiraserafim.tcc.model.Category;
 import com.rafaelteixeiraserafim.tcc.model.Product;
 import com.rafaelteixeiraserafim.tcc.repository.CategoryRepository;
@@ -42,11 +43,19 @@ public class CategoryService {
     }
 
     public void createCategory(String name, String description) {
+        if (categoryRepository.existsByName(name)) {
+            throw new CategoryConflictException("Category with name " + name + " already exists");
+        }
+
         categoryRepository.save(new Category(name, description, false));
     }
 
     @Transactional
     public Category updateCategory(Long categoryId, CategoryRequest category) {
+        if (categoryRepository.existsByName(category.name())) {
+            throw new CategoryConflictException("Category with name " + category.name() + " already exists");
+        }
+
         Category origCategory = this.getCategory(categoryId);
 
         origCategory.setName(category.name());

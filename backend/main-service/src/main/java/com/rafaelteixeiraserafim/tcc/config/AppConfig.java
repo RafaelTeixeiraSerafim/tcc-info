@@ -6,6 +6,7 @@ import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.*;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
 import com.rafaelteixeiraserafim.tcc.utils.ProductUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

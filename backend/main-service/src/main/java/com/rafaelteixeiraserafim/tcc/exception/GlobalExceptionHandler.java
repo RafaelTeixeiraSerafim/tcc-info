@@ -78,6 +78,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(CategoryConflictException.class)
+    public ResponseEntity<Map<String, String>> handleMissingServletRequestParameterException(CategoryConflictException ex) {
+        return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.CONFLICT);
+    }
+
     // Handle other exceptions (optional)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
