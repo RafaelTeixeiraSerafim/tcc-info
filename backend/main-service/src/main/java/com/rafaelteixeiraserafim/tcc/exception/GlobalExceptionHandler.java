@@ -83,7 +83,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.CONFLICT);
     }
 
-    // Handle other exceptions (optional)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
         ex.printStackTrace();

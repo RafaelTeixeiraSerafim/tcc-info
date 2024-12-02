@@ -3,8 +3,6 @@ from flask_cors import CORS
 from app.database import db
 from app.routes import route_index
 from flask_migrate import Migrate
-from py_eureka_client import eureka_client
-from app.config.get_windows_host_ip import get_windows_host_ip
 from app.config.config import Config
 
 def create_app():
