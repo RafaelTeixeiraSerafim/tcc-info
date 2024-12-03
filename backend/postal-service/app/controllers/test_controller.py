@@ -1,7 +1,7 @@
 import requests
 
 def test_controller():
-    response = requests.get(f"http://main-backend.railway.internal/api/v1/products")
+    response = requests.get(f"http://main-backend.railway.internal:8080/api/v1/products")
 
     if response.status_code == 200:
         print("Response from main-service:", response.json())

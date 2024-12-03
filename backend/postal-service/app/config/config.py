@@ -20,9 +20,9 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     # EUREKA_URL = os.environ['EUREKA_URL']
     FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', 5000)
-    EUREKA_SERVER_HOST = os.environ.get("EUREKA_SERVER_HOST", "localhost")
-    INSTANCE_HOST = os.environ.get("INSTANCE_HOST", "localhost")
-    FLASK_RUN_HOST = os.environ.get("FLASK_RUN_HOST", "0.0.0.0")
+    EUREKA_SERVER_HOST = os.environ.get("EUREKA_SERVER_HOST", "::")
+    INSTANCE_HOST = os.environ.get("INSTANCE_HOST", "::")
+    FLASK_RUN_HOST = os.environ.get("FLASK_RUN_HOST", "::")
 
 
 class ProductionConfig(Config):

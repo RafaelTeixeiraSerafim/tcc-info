@@ -12,4 +12,4 @@ COPY ./app .
 
 WORKDIR /
 
-CMD gunicorn --bind :5000 wsgi:app
+CMD gunicorn --bind [::]:5000 wsgi:app
