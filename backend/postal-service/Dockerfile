@@ -1,10 +1,6 @@
 FROM python:3.11-alpine
 
 COPY wsgi.py wsgi.py
-COPY .flaskenv .flaskenv
-COPY .flaskenv.local .flaskenv.local
-COPY .env .env
-COPY .env.local .env.local
 
 COPY requirements.txt /app/requirements.txt
 

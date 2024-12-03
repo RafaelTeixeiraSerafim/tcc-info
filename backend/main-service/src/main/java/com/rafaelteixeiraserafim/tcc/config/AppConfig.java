@@ -6,24 +6,16 @@ import com.rafaelteixeiraserafim.tcc.model.*;
 import com.rafaelteixeiraserafim.tcc.repository.*;
 import com.rafaelteixeiraserafim.tcc.service.OrderService;
 import com.rafaelteixeiraserafim.tcc.utils.ProductUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 
 @Configuration
 public class AppConfig {
-    @Bean
-//    @LoadBalanced
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
     @Bean
     public CommandLineRunner commandLineRunner(CategoryRepository categoryRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, OrderService orderService) {
         return args -> {
