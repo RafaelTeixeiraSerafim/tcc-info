@@ -4,7 +4,6 @@ from app.database import db
 from app.routes import route_index
 from flask_migrate import Migrate
 from app.config.config import Config
-from py_eureka_client import eureka_client
 
 def create_app():
     app = Flask(__name__)
@@ -15,9 +14,9 @@ def create_app():
 
     migrate = Migrate(app, db)
     migrate.init_app(app, db)
-    eureka_server_host = app.config.get("EUREKA_SERVER_HOST")
-    instance_host = app.config.get("INSTANCE_HOST")
-    eureka_client.init(eureka_server=f'http://{eureka_server_host}:8761/eureka/', app_name="postal-service", instance_host=instance_host, instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_ip="0.0.0.0")
+    # eureka_server_host = app.config.get("EUREKA_SERVER_HOST")
+    # instance_host = app.config.get("INSTANCE_HOST")
+    # eureka_client.init(eureka_server=f'http://{eureka_server_host}:8761/eureka/', app_name="postal-service", instance_host=instance_host, instance_port=int(app.config.get("FLASK_RUN_PORT")), instance_ip="0.0.0.0")
     CORS(app)
     route_index(app)
     return app
